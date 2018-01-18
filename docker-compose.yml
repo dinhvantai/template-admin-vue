@@ -1,0 +1,90 @@
+version: '2'
+
+services:
+    application:
+        container_name: vuex_todos_application
+        image: debian
+        volumes:
+            - ./:/var/www/laravel
+    workspace:
+        container_name: vuex_todos_workspace
+        restart: always
+        image: framgia/laravel-workspace
+        volumes_from:
+            - application
+        tty: true
+    php-fpm:
+        container_name: vuex_todos_php-fpm
+        restart: always
+        image: framgia/laravel-php-fpm
+        volumes_from:
+            - application
+        expose:
+            - "9000"
+        links:
+            - workspace
+    nginx:
+        container_name: vuex_todos_nginx
+        restart: always
+        image: framgia/laravel-nginx
+        volumes_from:
+            - data
+            - logs
+            - application
+        ports:
+            - "6969:80"
+        links:
+            - php-fpm
+    data:
+        container_name: vuex_todos_data
+        image: debian
+        volumes:
+            - .docker/mysql:/var/lib/mysql
+            - .docker/data:/data
+    data_test:
+        container_name: vuex_todos_data_test
+        image: debian
+        volumes:
+            - .docker/mysql_test:/var/lib/mysql
+            - .docker/data_test:/data
+    logs:
+        container_name: vuex_todos_logs
+        image: debian
+        volumes:
+            - .docker/logs/nginx:/var/log/nginx
+            - .docker/logs/mongodb:/var/log/mongodb
+    mysql:
+        container_name: vuex_todos_mysql
+        restart: always
+        image: mysql
+        volumes_from:
+            - data
+            - logs
+        expose:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: vuex_todos
+            MYSQL_USER: vuex_todos
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: root
+    mysql_test:
+        container_name: vuex_todos_mysql_test
+        restart: always
+        image: mysql
+        volumes_from:
+            - data_test
+        expose:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: vuex_todos_test
+            MYSQL_USER: vuex_todos
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: root
+    redis:
+        container_name: vuex_todos_redis
+        restart: always
+        image: redis
+        expose:
+            - "6379"
+        volumes_from:
+            - data
