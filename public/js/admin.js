@@ -10417,7 +10417,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_bootstrap_vue__["a" /* default */]);
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_socket_io___default.a, 'http://localhost:8000');
+// Vue.use(VueSocketIO, 'http://localhost:8000')
 
 var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
   locale: 'en', // set locale
@@ -35490,8 +35490,8 @@ if (false) {
             path: 'dashboard',
             name: 'Dashboard'
         }, {
-            path: 'appchat',
-            name: 'app-chat',
+            path: 'users',
+            name: 'manager-user',
             component: __WEBPACK_IMPORTED_MODULE_2__views_chat_Chat_vue___default.a
         }]
     }]
@@ -35621,11 +35621,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     items: [{
         name: 'Dashboard',
         url: '/dashboard',
-        icon: 'icon-speedometer',
-        badge: {
-            variant: 'primary',
-            text: 'NEW'
-        }
+        icon: 'icon-speedometer'
+        // badge: {
+        //     variant: 'primary',
+        //     text: 'NEW'
+        // }
+    }, {
+        name: 'Manager User',
+        url: '/users',
+        icon: 'icon-people'
     }, {
         title: true,
         name: 'UI elements',
@@ -38940,20 +38944,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         disconnect: function disconnect() {
             this.isConnected = false;
-        },
-
-
-        // Fired when the server sends something on the "messageChannel" channel.
-        pingServer: function pingServer(data) {
-            this.socketMessage = data;
         }
     },
 
     methods: {
         pingServer: function pingServer() {
             // Send the "pingServer" event to the server.
-            console.log(this.inputMessage);
-            this.$socket.emit('pingServer', this.inputMessage);
+            // this.$socket.emit('pingServer', this.inputMessage)
         }
     }
 });

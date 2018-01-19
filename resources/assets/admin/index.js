@@ -26,7 +26,7 @@ Vue.use(VueRouter)
 Vue.use(VueI18n)
 Vue.use(BootstrapVue);
 
-Vue.use(VueSocketIO, 'http://localhost:8000')
+// Vue.use(VueSocketIO, 'http://localhost:8000')
 
 const i18n = new VueI18n({
     locale: 'en', // set locale
