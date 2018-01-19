@@ -30,16 +30,15 @@ export default {
         },
 
         // Fired when the server sends something on the "messageChannel" channel.
-        pingServer(data) {
-            this.socketMessage = data
-        }
+        // pingServer(data) {
+        //     this.socketMessage = data
+        // }
     },
 
     methods: {
         pingServer() {
             // Send the "pingServer" event to the server.
-            console.log(this.inputMessage)
-            this.$socket.emit('pingServer', this.inputMessage)
+            // this.$socket.emit('pingServer', this.inputMessage)
         }
     }
 }

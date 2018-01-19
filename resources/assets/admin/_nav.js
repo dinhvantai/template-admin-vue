@@ -4,11 +4,17 @@ export default {
             name: 'Dashboard',
             url: '/dashboard',
             icon: 'icon-speedometer',
-            badge: {
-                variant: 'primary',
-                text: 'NEW'
-            }
+            // badge: {
+            //     variant: 'primary',
+            //     text: 'NEW'
+            // }
         },
+        {
+            name: 'Manager User',
+            url: '/users',
+            icon: 'icon-people'
+        },
+
         {
             title: true,
             name: 'UI elements',

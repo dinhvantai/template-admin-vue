@@ -15,8 +15,8 @@ export default new VueRouter({
                     name: 'Dashboard'
                 },
                 {
-                    path: 'appchat',
-                    name: 'app-chat',
+                    path: 'users',
+                    name: 'manager-user',
                     component: Chat
                 }
 

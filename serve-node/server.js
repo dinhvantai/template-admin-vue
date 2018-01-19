@@ -14,9 +14,9 @@ io.on('connection', function (socket) {
         console.log(socket.id + ': disconnected')
     })
 
-    socket.on('pingServer', data => {
-        console.log(data);
-        socket.emit('pingServer', { data: data, id: socket.id });
-    })
+    // socket.on('pingServer', data => {
+    //     socket.emit('pingServer', { data: data, id: socket.id }); //only user
+    //     // io.sockets.emit(); multil user
+    // })
 
 });
