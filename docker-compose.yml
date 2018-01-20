@@ -2,19 +2,19 @@ version: '2'
 
 services:
     application:
-        container_name: vue_admin_application
+        container_name: vueadmin_application
         image: debian
         volumes:
             - ./:/var/www/laravel
     workspace:
-        container_name: vue_admin_workspace
+        container_name: vueadmin_workspace
         restart: always
         image: framgia/laravel-workspace
         volumes_from:
             - application
         tty: true
     php-fpm:
-        container_name: vue_admin_php-fpm
+        container_name: vueadmin_php-fpm
         restart: always
         image: framgia/laravel-php-fpm
         volumes_from:
@@ -24,7 +24,7 @@ services:
         links:
             - workspace
     nginx:
-        container_name: vue_admin_nginx
+        container_name: vueadmin_nginx
         restart: always
         image: framgia/laravel-nginx
         volumes_from:
@@ -36,25 +36,25 @@ services:
         links:
             - php-fpm
     data:
-        container_name: vue_admin_data
+        container_name: vueadmin_data
         image: debian
         volumes:
             - .docker/mysql:/var/lib/mysql
             - .docker/data:/data
     data_test:
-        container_name: vue_admin_data_test
+        container_name: vueadmin_data_test
         image: debian
         volumes:
             - .docker/mysql_test:/var/lib/mysql
             - .docker/data_test:/data
     logs:
-        container_name: vue_admin_logs
+        container_name: vueadmin_logs
         image: debian
         volumes:
             - .docker/logs/nginx:/var/log/nginx
             - .docker/logs/mongodb:/var/log/mongodb
     mysql:
-        container_name: vue_admin_mysql
+        container_name: vueadmin_mysql
         restart: always
         image: mysql
         volumes_from:
@@ -63,12 +63,12 @@ services:
         expose:
             - "3306"
         environment:
-            MYSQL_DATABASE: vue_admin
-            MYSQL_USER: vue_admin
+            MYSQL_DATABASE: vueadmin
+            MYSQL_USER: vueadmin
             MYSQL_PASSWORD: secret
             MYSQL_ROOT_PASSWORD: root
     mysql_test:
-        container_name: vue_admin_mysql_test
+        container_name: vueadmin_mysql_test
         restart: always
         image: mysql
         volumes_from:
@@ -76,12 +76,12 @@ services:
         expose:
             - "3306"
         environment:
-            MYSQL_DATABASE: vue_admin_test
-            MYSQL_USER: vue_admin
+            MYSQL_DATABASE: vueadmin_test
+            MYSQL_USER: vueadmin
             MYSQL_PASSWORD: secret
             MYSQL_ROOT_PASSWORD: root
     redis:
-        container_name: vue_admin_redis
+        container_name: vueadmin_redis
         restart: always
         image: redis
         expose:

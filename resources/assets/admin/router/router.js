@@ -1,14 +1,18 @@
 import VueRouter from 'vue-router'
+import { STORAGE_AUTH } from '../store/auth'
+import Login from '../views/auth/Login.vue'
 import Admin from '../components/Admin.vue'
 import Chat from '../views/chat/Chat.vue'
+import Todos from '../views/todos/Todos.vue'
 
-export default new VueRouter({
+const router =  new VueRouter({
     routes: [
         {
             path: '/',
             redirect: '/dashboard',
             component: Admin,
             name: 'Home',
+            meta: { requiresAuth: true },
             children: [
                 {
                     path: 'dashboard',
@@ -16,15 +20,39 @@ export default new VueRouter({
                 },
                 {
                     path: 'users',
-                    name: 'manager-user',
+                    name: 'Manager User',
                     component: Chat
+                },
+                {
+                    path: 'todos',
+                    name: 'Todo',
+                    component: Todos
                 }
-
             ]
         },
+        {
+            path: '/login',
+            name: 'Login',
+            component: Login
+        }
         // {
         //     path: '/*',
         //     redirect: '/dashboard'
         // },
     ]
+
 });
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        const auth = JSON.parse(window.localStorage.getItem(STORAGE_AUTH)) || {};
+
+        if (!auth || !auth.token || !auth.token.access_token) {
+            return next({ path: '/login' })
+        }
+    }
+
+    return next();
+})
+
+export default router;

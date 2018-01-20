@@ -14,7 +14,11 @@ export default {
             url: '/users',
             icon: 'icon-people'
         },
-
+        {
+            name: 'Todos',
+            url: '/todos',
+            icon: 'icon-people'
+        },
         {
             title: true,
             name: 'UI elements',
