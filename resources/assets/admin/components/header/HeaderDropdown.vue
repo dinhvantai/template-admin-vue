@@ -3,6 +3,7 @@
         <template slot="button-content">
             <img src="static/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
         </template>
+        <b-dropdown-header tag="div" class="text-center"><strong>Account</strong></b-dropdown-header>
         <b-dropdown-item @click="logout">
             <i class="fa fa-lock"></i>
             {{ $t('textLogout') }}
@@ -12,38 +13,29 @@
 <script>
 import loading from 'vue-full-loading'
 import { STORAGE_AUTH } from '../../store/auth'
+import { callApiLogout } from '../../api/auth'
 
 export default {
     name: 'header-dropdown',
     components: { loading },
 
     methods: {
-        logout() {
-            this.$swal({
+        async logout() {
+            let willDelete = await this.$swal({
                 title: this.$i18n.t('confirmLogout'),
                 icon: 'warning',
                 buttons: true,
                 dangerMode: true,
             })
-            .then((willDelete) => {
-                if (willDelete) {
-                    let resetAuth = () => {
-                        let defaultAuth = JSON.stringify({ user: {}, token: {} })
-                        localStorage.setItem(STORAGE_AUTH, defaultAuth)
 
-                        return this.$router.push({ path: '/login' })
-                    }
+            if (willDelete) {
+                await callApiLogout()
 
-                    axios.post('/logout')
-                    .then(() => {
-                        return resetAuth()
-                    })
-                    .catch(() => {
-                        return resetAuth()
-                    })
+                let defaultAuth = JSON.stringify({ user: {}, token: {} })
+                localStorage.setItem(STORAGE_AUTH, defaultAuth)
 
-                }
-            });
+                return this.$router.push({ path: '/login' })
+            }
         }
     }
 }

@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export default {
     items: [
         {
@@ -8,6 +10,11 @@ export default {
             //     variant: 'primary',
             //     text: 'NEW'
             // }
+        },
+        {
+            name: 'Menus',
+            url: '/menus',
+            icon: 'icon-list'
         },
         {
             name: 'Manager User',
