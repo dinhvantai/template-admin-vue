@@ -20,4 +20,8 @@ Route::group(['domain' => env('DOMAIN_AMIN'), 'namespace' => 'Api\Admin', 'prefi
     });
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
+
+    Route::group(['middleware' => 'api_auth_admin'], function(){
+        Route::resource('menus', 'MenuController');
+    });
 });

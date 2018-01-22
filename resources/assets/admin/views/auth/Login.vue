@@ -9,35 +9,40 @@
                     <b-card-group>
                         <b-card no-body class="p-4">
                             <b-card-body>
-                                <h1>{{ $t('textLogin') }}</h1>
-                                <p class="text-muted">{{ $t('textSignToAccount') }}</p>
-                                <div class="text-right text-danger">{{ errors.email }}</div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-addon"><i class="icon-user"></i></span>
-                                    <input
-                                        type="email" class="form-control" placeholder="Email"
-                                        v-model="loginForm.email"
-                                    />
-                                </div>
-                                <div class="text-right text-danger">{{ errors.password }}</div>
-                                <div class="input-group mb-4">
-                                    <span class="input-group-addon"><i class="icon-lock"></i></span>
-                                    <input
-                                        type="password" class="form-control" placeholder="Password"
-                                        v-model="loginForm.password"
-                                    />
-                                    <div></div>
-                                </div>
-                                <b-row>
-                                    <b-col cols="6">
-                                        <b-button variant="primary" class="px-4" @click="submitLogin">
-                                            {{ $t('textLogin') }}
-                                        </b-button>
-                                    </b-col>
-                                    <b-col cols="6" class="text-right">
-                                        <b-button variant="link" class="px-0">{{ $t('textForgotPassword') }}</b-button>
-                                    </b-col>
-                                </b-row>
+                                <b-form validated novalidate>
+                                    <b-form-group>
+                                        <h1>{{ $t('textLogin') }}</h1>
+                                        <p class="text-muted">{{ $t('textSignToAccount') }}</p>
+                                        <div class="text-right text-danger">{{ errors.email }}</div>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-addon">@</span>
+                                            <b-form-input
+                                                required type="email"
+                                                placeholder="Email"
+                                                v-model="loginForm.email"
+                                            />
+                                        </div>
+                                        <div class="text-right text-danger">{{ errors.password }}</div>
+                                        <div class="input-group mb-4">
+                                            <span class="input-group-addon"><i class="icon-lock"></i></span>
+                                            <b-form-input
+                                                required type="password"
+                                                placeholder="Password"
+                                                v-model="loginForm.password"
+                                            />
+                                        </div>
+                                        <b-row>
+                                            <b-col cols="6">
+                                                <b-button variant="primary" class="px-4" @click="submitLogin">
+                                                    {{ $t('textLogin') }}
+                                                </b-button>
+                                            </b-col>
+                                            <b-col cols="6" class="text-right">
+                                                <b-button variant="link" class="px-0">{{ $t('textForgotPassword') }}</b-button>
+                                            </b-col>
+                                        </b-row>
+                                    </b-form-group>
+                                </b-form>
                             </b-card-body>
                         </b-card>
                     </b-card-group>
@@ -50,6 +55,7 @@
 <script>
 import { STORAGE_AUTH, PERMISSION_ADMIN } from '../../store/auth'
 import loading from 'vue-full-loading'
+import { callApiLogin } from '../../api/auth'
 
 export default {
     name: 'Login',
@@ -87,30 +93,28 @@ export default {
     },
 
     methods: {
-        submitLogin() {
+        async submitLogin() {
             this.loading.show = true;
+            let response = await callApiLogin(this.loginForm);
+            this.loading.show = false;
 
-            axios.post('/login', this.loginForm)
-            .then( response => {
+            if (response.status == 200) {
                 localStorage.setItem(STORAGE_AUTH, JSON.stringify(response.data))
 
                 let token = response.data.token;
                 axios.defaults.headers.common['Authorization'] = `${token.token_type} ${token.access_token}`;
 
                 this.$toaster.success(this.$i18n.t('textLoginAdminSuccess'))
-                this.loading.show = false;
-
                 return this.$router.push({ path: '/dashboard' })
-            })
-            .catch((error) => {
-                this.loading.show = false;
-
-                let errors = error.response.data.errors
+            } else {
+                let errors = response.response.data.errors
                 this.errors.email = errors.email;
                 this.errors.password = errors.password;
 
-                return this.$toaster.error(errors.message)
-            })
+                if (errors.message) {
+                    return this.$toaster.error(errors.message)
+                }
+            }
         }
     }
 }

@@ -18,5 +18,6 @@ return [
     'logout' => [
         'success' => 'You are logged out!',
         'warning' => "You don't login or access token expired!",
-    ]
+    ],
+    'not_permission' => 'Do not have access to this resource!',
 ];

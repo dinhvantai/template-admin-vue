@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 
-class ApiAuth
+class ApiAuthAdmin
 {
 
     private $guard = 'api';
@@ -21,7 +21,7 @@ class ApiAuth
     {
         $user = \Auth::guard($this->guard)->user();
         if (!$user || !$user->is_active) {
-            throw new AuthenticationException('Unauthenticated.', [$this->guard]);
+            return response(['error' => trans('auth.not_permission')], 401);
         }
 
         return $next($request);

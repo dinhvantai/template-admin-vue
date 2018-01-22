@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Log extends Model
+class Menu extends Model
 {
+    const POSITION_MAIN = 'main';
+    const POSITION_ON_TOP = 'top';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -14,6 +17,7 @@ class Log extends Model
     protected $fillable = [
         'name',
         'description',
-        'user_id',
+        'position',
+        'prioty',
     ];
 }

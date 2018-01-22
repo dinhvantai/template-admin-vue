@@ -2,8 +2,9 @@ import VueRouter from 'vue-router'
 import { STORAGE_AUTH } from '../store/auth'
 import Login from '../views/auth/Login.vue'
 import Admin from '../components/Admin.vue'
+import AdminMenu from '../views/menu/AdminMenu.vue'
 import Chat from '../views/chat/Chat.vue'
-import Todos from '../views/todos/Todos.vue'
+// import Todos from '../views/todos/Todos.vue'
 
 const router =  new VueRouter({
     routes: [
@@ -19,14 +20,14 @@ const router =  new VueRouter({
                     name: 'Dashboard'
                 },
                 {
+                    path: 'menus',
+                    name: 'Menus',
+                    component: AdminMenu
+                },
+                {
                     path: 'users',
                     name: 'Manager User',
                     component: Chat
-                },
-                {
-                    path: 'todos',
-                    name: 'Todo',
-                    component: Todos
                 }
             ]
         },
