@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Helpers\Helper;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use App\Http\Requests\MenuRequest;
 use App\Http\Controllers\Api\ApiController;
 
 class MenuController extends ApiController
@@ -23,10 +24,13 @@ class MenuController extends ApiController
      */
     public function index(Request $request)
     {
-        $perPage = $request->perPage ?: 10;
-        $menus = Menu::orderBy('priority')->paginate($perPage);
+        $menus = Menu::with(['childrenMenus' => function($query){
+            $query->orderBy('prioty', 'desc');
+        }])
+        ->whereNull('parent_id')->orWhere('parent_id', 0)
+        ->orderBy('prioty', 'desc')->get();
 
-        return $this->response(Helper::formatPaginate($menus));
+        return $this->response($menus);
     }
 
     /**
@@ -45,9 +49,13 @@ class MenuController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MenuRequest $request)
     {
-        //
+        if (Menu::create($request->all())) {
+            return $this->response(['message' => trans('message.add_success')]);
+        }
+
+        return $this->response(['message' => trans('message.add_failed')], 401);
     }
 
     /**
@@ -62,26 +70,19 @@ class MenuController extends ApiController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MenuRequest $request, Menu $menu)
     {
-        //
+        if ($menu->fill($request->all())->save()) {
+            return $this->response(['message' => trans('message.edit_success')]);
+        }
+
+        return $this->response(['message' => trans('message.edit_failed')], 401);
     }
 
     /**
@@ -90,8 +91,18 @@ class MenuController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Menu $menu)
     {
-        //
+        if (!$menu->parent_id) {
+            $menu->load('childrenMenus');
+            if ($menu->childrenMenus()->count()) {
+                return $this->response(['message' => trans('message.delete_children_before')], 401);
+            }
+        }
+        if ($menu->delete()) {
+            return $this->response(['message' => trans('message.delete_success')]);
+        }
+
+        return $this->response(['message' => trans('message.delete_failed')], 401);
     }
 }

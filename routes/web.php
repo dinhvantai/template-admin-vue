@@ -10,7 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['domain' => env('DOMAIN_ADMIN')], function(){
+    Route::get('/', function () { return view('admin.index'); });
+});
 
-Route::get('/', function () {
-    return view('index');
-})->name('login');
+Route::group(['domain' => env('DOMAIN_USER'), 'namespace' => 'User'], function(){
+    // Route::get('/', function () { return view('admin.index'); });
+});

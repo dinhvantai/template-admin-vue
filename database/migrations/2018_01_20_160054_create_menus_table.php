@@ -21,6 +21,7 @@ class CreateMenusTable extends Migration
             $table->string('icon')->nullable();
             $table->string('position')->default(\App\Models\Menu::POSITION_MAIN);
             $table->integer('prioty')->default(0);
+            $table->integer('parent_id')->unsigned()->nullable()->default(null);
             $table->timestamps();
         });
     }

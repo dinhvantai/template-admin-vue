@@ -19,5 +19,16 @@ class Menu extends Model
         'description',
         'position',
         'prioty',
+        'path',
+        'parent_id'
     ];
+
+    public function childrenMenus()
+    {
+        return $this->hasMany(Menu::class, 'parent_id');
+    }
+    public function parentMenu()
+    {
+        return $this->belongsTo(Menu::class, 'parent_id');
+    }
 }

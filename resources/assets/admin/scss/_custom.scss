@@ -1,1 +1,9 @@
 // Here you can add other styles
+.nav-item .router-link-exact-active {
+    color: #fff;
+    background: #20a8d8!important;
+
+    i {
+        color: #fff!important;
+    }
+}
