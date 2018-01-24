@@ -15,7 +15,18 @@ const en = {
     textLink: 'Link',
     textPosition: 'Position',
     textPositionMain: 'Position main',
-    textPositionOnTop: 'Position on top'
+    textPositionOnTop: 'Position on top',
+    textAddNew: 'Add new',
+    textCancel: 'Cancel',
+    textNotFillEnough: 'Don\'t fill enough data!',
+    textName: 'Name',
+    textParentMenu: 'Parent menu',
+    textAction: 'Action',
+    textEdit: 'Edit',
+    textDelete: 'Delete',
+    textEditMenu: 'Edit menu',
+    textSave: 'Save',
+    textConfirmDelete: 'Are you sure delete?',
 }
 
 export default en;

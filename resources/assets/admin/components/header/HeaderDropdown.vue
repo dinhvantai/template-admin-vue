@@ -11,13 +11,11 @@
     </b-nav-item-dropdown>
 </template>
 <script>
-import loading from 'vue-full-loading'
 import { STORAGE_AUTH } from '../../store/auth'
 import { callApiLogout } from '../../api/auth'
 
 export default {
     name: 'header-dropdown',
-    components: { loading },
 
     methods: {
         async logout() {

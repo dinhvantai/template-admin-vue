@@ -17,16 +17,6 @@ export default {
             icon: 'icon-list'
         },
         {
-            name: 'Manager User',
-            url: '/users',
-            icon: 'icon-people'
-        },
-        {
-            name: 'Todos',
-            url: '/todos',
-            icon: 'icon-people'
-        },
-        {
             title: true,
             name: 'UI elements',
             class: '',

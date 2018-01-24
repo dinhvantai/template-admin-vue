@@ -2,8 +2,15 @@
     <b-row>
         <AdminMenuAdd
             :submitModalAddMenu='submitModalAddMenu'
-            :openModal="modal.open"
+            :modalAdd="modalAdd"
             :hideModalAddMenu="hideModalAddMenu"
+            :parentMenuOption="parentMenuOption"
+        />
+        <AdminMenuEdit
+            :submitModalEditMenu='submitModalEditMenu'
+            :modalEdit.sync="modalEdit"
+            :hideModalEditMenu="hideModalEditMenu"
+            :parentMenuOption="parentMenuOption"
         />
         <b-col lg="12">
             <b-button-group class="pull-right">
@@ -19,15 +26,37 @@
                     :hover="hover" :striped="striped"
                     :bordered="bordered" :small="small"
                     :fixed="fixed" class="table-responsive-sm"
-                    :items="items" :fields="fields"
+                    :items="items"
+                    :fields="fields"
                     :current-page="currentPage"
                     :per-page="perPage"
                 >
-                    <!-- <template slot="status" slot-scope="data">
-                        <b-badge :variant="getBadge(data.item.status)">{{data.item.status}}</b-badge>
-                    </template> -->
+                    <template slot="name" slot-scope="data">
+                        {{ `${data.item.prefix} ${data.item.name}` }}
+                    </template>
+                    <template slot="position" slot-scope="data">
+                        {{ getTextPosition(data) }}
+                    </template>
+                    <template slot="action" slot-scope="data">
+                        <b-button
+                            type="submit" size="sm"
+                            variant="primary"
+                            @click="clickEditMenu(data.item)"
+                        >
+                            <i class="icon-pencil"></i>
+                            {{ $t('textEdit') }}
+                        </b-button>
+                        <b-button
+                            type="reset" size="sm"
+                            variant="danger"
+                            @click="clickDeleteMenu(data.item.id)"
+                        >
+                            <i class="icon-trash"></i>
+                            {{ $t('textDelete') }}
+                        </b-button>
+                    </template>
                 </b-table>
-                <nav>
+                <!-- <nav>
                     <b-pagination
                         :total-rows="totalRows"
                         :per-page="perPage" v-model="currentPage"
@@ -35,22 +64,22 @@
                         hide-goto-end-buttons
                         @change='changePage'
                     />
-                </nav>
+                </nav> -->
             </b-card>
         </b-col>
     </b-row>
 </template>
 
 <script>
-    const DEFAULT_PER_PAGE = 10;
-
     import AdminMenuAdd from './AdminMenuAdd.vue'
+    import AdminMenuEdit from './AdminMenuEdit.vue'
 
+    import { ADMIN_MENU_POSITION_OPTION } from '../../store/menus'
     import Helper from '../../library/Helper'
 
     export default {
         name: 'AdminMenu',
-        components: { AdminMenuAdd },
+        components: { AdminMenuAdd, AdminMenuEdit },
         props: {
             hover: {
                 type: Boolean,
@@ -72,41 +101,45 @@
                 type: Boolean,
                 default: false
             },
-
         },
 
         beforeMount() {
-            this.$store.dispatch('callFetchMenus', this, { perPage: this.perPage, page: this.currentPage })
+            this.$store.dispatch('callFetchMenus', { vue: this })
         },
 
         data() {
             return {
                 fields: [
-                    {key: 'id'},
-                    {key: this.$i18n.t('textTitle')},
-                    {key: this.$i18n.t('textDescription')},
-                    {key: this.$i18n.t('textLink')},
-                    {key: this.$i18n.t('textPosition')},
-                    {key: this.$i18n.t('textPrioty')},
+                    // {key: 'id'},
+                    {key: 'name', label: this.$i18n.t('textName')},
+                    // {key: 'description'},
+                    {key: 'path', label: this.$i18n.t('textLink')},
+                    {key: 'position', label: this.$i18n.t('textPosition')},
+                    {key: 'prioty', label: this.$i18n.t('textPrioty')},
+                    {key: 'action', label: this.$i18n.t('textAction')},
                 ],
                 currentPage: 1,
-                perPage: DEFAULT_PER_PAGE,
-                modal: {
-                    open: false
-                }
-            }
-        },
-
-        computed: {
-            items() {
-                return this.$store.state.storeAdminMenu.menus
-            },
-            totalRows() {
-                return this.$store.state.storeAdminMenu.total
+                perPage: this.totalRows
             }
         },
 
         methods: {
+            getTextPosition(item) {
+                let index = _.findIndex(ADMIN_MENU_POSITION_OPTION, (option) => option.value === item.item.position)
+
+                return this.$i18n.t(ADMIN_MENU_POSITION_OPTION[index].text)
+            },
+
+            filterData(item) {
+                let result = {}
+                let fields = this.fields
+                for(let i = 0; i < fields.length; i++) {
+                    result[fields[i].key] = item[fields[i].key]
+                }
+
+                return result;
+            },
+
             getBadge(status) {
                 return status === 'Active' ? 'success'
                 : status === 'Inactive' ? 'secondary'
@@ -115,26 +148,101 @@
             },
 
             changePage(page) {
-                this.currentPage = page;
-                this.$store.dispatch('callFetchMenus', { perPage: this.perPage, page: this.currentPage })
+                this.currentPage = page
             },
 
             clickAddNewMenu() {
-                this.modal.open = true;
+                let modalAdd = { ...this.modalAdd, open: true }
+
+                return this.$store.dispatch('setMenuModalAdd', { vue: this, modalAdd })
             },
 
-            submitModalAddMenu(formInput) {
-                let validateForm = formInput.title && formInput.link && formInput.position
+            submitModalAddMenu(params) {
+                 params.parent_id = params.parent_id ? params.parent_id : 0;
 
-                if (validateForm) {
-                    this.modal.open = false;
+                if (!params.name || !params.path || !params.position) {
+                    return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
                 }
 
+                return this.$store.dispatch('callMenuAdd', { vue: this, params })
             },
 
-            hideModalAddMenu() {
-                this.modal.open = false;
+            hideModalAddMenu(formData) {
+                let modalAdd = { ...this.modalAdd, open: false, resetData: false, formData }
+
+                return this.$store.dispatch('setMenuModalAdd', { vue: this, modalAdd })
+            },
+
+            clickEditMenu(formData) {
+                let modalEdit = { ...this.modalEdit, open: true, formData }
+
+                return this.$store.dispatch('setMenuModalEdit', { vue: this, modalEdit })
+            },
+
+            submitModalEditMenu(id, params) {
+                return this.$store.dispatch('callMenuEdit', { vue: this, params, id })
+            },
+
+            hideModalEditMenu() {
+                let modalEdit = { ...this.modalEdit, open: false };
+
+                return this.$store.dispatch('setMenuModalEdit', { vue: this, modalEdit })
+            },
+
+            async clickDeleteMenu(id) {
+                if (id) {
+                    let willDelete = await this.$swal({
+                        title: this.$i18n.t('textConfirmDelete'),
+                        icon: 'warning',
+                        buttons: true,
+                        dangerMode: true,
+                    })
+
+                    return willDelete
+                        && this.$store.dispatch('callMenuDelete', { vue: this, id })
+                }
             }
-        }
+        },
+
+        computed: {
+            items() {
+                let menus = this.$store.state.storeAdminMenu.menus
+                let itemsFilter = []
+
+                for (let i = 0; i < menus.length; i++) {
+                    menus[i]._rowVariant = 'success'
+                    menus[i].prefix = ''
+                    itemsFilter.push(menus[i])
+
+                    let childrenMenus = menus[i].children_menus
+                    for(let j = 0; j < childrenMenus.length; j++) {
+                        childrenMenus[j].prefix = '| - - '
+                        itemsFilter.push(childrenMenus[j])
+                    }
+                }
+                return itemsFilter
+            },
+
+            parentMenuOption() {
+                let menus = this.$store.state.storeAdminMenu.menus
+
+                return [
+                    { value: '', text: '' },
+                    ...menus.map(menu => ({ value: menu.id, text: menu.name})),
+                ]
+            },
+
+            modalAdd() {
+                return this.$store.state.storeAdminMenu.modalAdd
+            },
+
+            modalEdit() {
+                return this.$store.state.storeAdminMenu.modalEdit
+            },
+
+            totalRows() {
+                return this.items.length
+            }
+        },
     }
 </script>

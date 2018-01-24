@@ -4,7 +4,6 @@ import Login from '../views/auth/Login.vue'
 import Admin from '../components/Admin.vue'
 import AdminMenu from '../views/menu/AdminMenu.vue'
 import Chat from '../views/chat/Chat.vue'
-// import Todos from '../views/todos/Todos.vue'
 
 const router =  new VueRouter({
     routes: [
@@ -24,11 +23,11 @@ const router =  new VueRouter({
                     name: 'Menus',
                     component: AdminMenu
                 },
-                {
-                    path: 'users',
-                    name: 'Manager User',
-                    component: Chat
-                }
+                // {
+                //     path: 'users',
+                //     name: 'Manager User',
+                //     component: Chat
+                // }
             ]
         },
         {

@@ -22,6 +22,8 @@ Route::group(['domain' => env('DOMAIN_AMIN'), 'namespace' => 'Api\Admin', 'prefi
     Route::post('logout', 'AuthController@logout');
 
     Route::group(['middleware' => 'api_auth_admin'], function(){
-        Route::resource('menus', 'MenuController');
+        $methodAllow = ['index', 'show', 'store', 'update', 'destroy'];
+
+        Route::resource('menus', 'MenuController')->only($methodAllow);
     });
 });
