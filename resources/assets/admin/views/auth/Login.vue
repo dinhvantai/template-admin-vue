@@ -1,8 +1,5 @@
 <template>
     <div class="app flex-row align-items-center">
-
-        <loading :show="loading.show" />
-
         <div class="container">
             <b-row class="justify-content-center">
                 <b-col md="6">
@@ -54,12 +51,10 @@
 
 <script>
 import { STORAGE_AUTH, PERMISSION_ADMIN } from '../../store/auth'
-import loading from 'vue-full-loading'
 import { callApiLogin } from '../../api/auth'
 
 export default {
     name: 'Login',
-    components: { loading },
 
     beforeMount() {
         let checkAuthAdmin = auth => {
@@ -82,9 +77,6 @@ export default {
                 email: '',
                 password: ''
             },
-            loading: {
-                show: false
-            },
             errors: {
                 email: '',
                 password: ''
@@ -92,11 +84,19 @@ export default {
         }
     },
 
+    computed: {
+        loading() {
+            return this.$store.state.storeLoading.loading
+        }
+    },
+
     methods: {
         async submitLogin() {
-            this.loading.show = true;
+            this.$store.dispatch('setAdminLoading', { ...this.loading, show: true })
+
             let response = await callApiLogin(this.loginForm);
-            this.loading.show = false;
+
+            this.$store.dispatch('setAdminLoading', { ...this.loading, show: false })
 
             if (response.status == 200) {
                 localStorage.setItem(STORAGE_AUTH, JSON.stringify(response.data))

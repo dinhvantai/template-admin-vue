@@ -15,5 +15,5 @@ Route::group(['domain' => env('DOMAIN_ADMIN')], function(){
 });
 
 Route::group(['domain' => env('DOMAIN_USER'), 'namespace' => 'User'], function(){
-    // Route::get('/', function () { return view('admin.index'); });
+    Route::get('/', function () { return view('user.index'); });
 });
