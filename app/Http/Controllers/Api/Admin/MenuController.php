@@ -24,11 +24,13 @@ class MenuController extends ApiController
      */
     public function index(Request $request)
     {
-        $menus = Menu::with(['childrenMenus' => function($query){
-            $query->orderBy('prioty', 'desc');
-        }])
-        ->whereNull('parent_id')->orWhere('parent_id', 0)
-        ->orderBy('prioty', 'desc')->get();
+        $menus = Menu::orderBy('prioty', 'desc')->get();
+
+        // with(['childrenMenus' => function($query){
+        //     $query->orderBy('prioty', 'desc');
+        // }])
+        // ->whereNull('parent_id')->orWhere('parent_id', 0)
+        // ->orderBy('prioty', 'desc')->get();
 
         return $this->response($menus);
     }
@@ -93,12 +95,12 @@ class MenuController extends ApiController
      */
     public function destroy(Menu $menu)
     {
-        if (!$menu->parent_id) {
-            $menu->load('childrenMenus');
-            if ($menu->childrenMenus()->count()) {
-                return $this->response(['message' => trans('message.delete_children_before')], 401);
-            }
-        }
+        // if (!$menu->parent_id) {
+        //     $menu->load('childrenMenus');
+        //     if ($menu->childrenMenus()->count()) {
+        //         return $this->response(['message' => trans('message.delete_children_before')], 401);
+        //     }
+        // }
         if ($menu->delete()) {
             return $this->response(['message' => trans('message.delete_success')]);
         }

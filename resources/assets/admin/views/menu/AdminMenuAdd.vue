@@ -16,6 +16,16 @@
                             </b-form-fieldset>
                         </b-col>
                         <b-col sm="6">
+                            <b-form-fieldset :label="$t('textPosition')">
+                                <b-form-select
+                                    :plain="true" required
+                                    :options="optionPositionMenu"
+                                    v-model="formData.position"
+                                >
+                                </b-form-select>
+                            </b-form-fieldset>
+                        </b-col>
+                        <!-- <b-col sm="6">
                             <b-form-fieldset :label="$t('textParentMenu')">
                                 <b-form-select
                                     :plain="true"
@@ -23,7 +33,7 @@
                                     v-model.number="formData.parent_id"
                                 />
                             </b-form-fieldset>
-                        </b-col>
+                        </b-col> -->
                     </b-row>
                     <b-row>
                         <b-col sm="6">
@@ -35,17 +45,7 @@
                                 />
                             </b-form-fieldset>
                         </b-col>
-                        <b-col sm="3">
-                            <b-form-fieldset :label="$t('textPosition')">
-                                <b-form-select
-                                    :plain="true" required
-                                    :options="optionPositionMenu"
-                                    v-model="formData.position"
-                                >
-                                </b-form-select>
-                            </b-form-fieldset>
-                        </b-col>
-                        <b-col sm="3">
+                        <b-col sm="6">
                             <b-form-fieldset :label="$t('textPrioty')">
                                 <b-form-input type="number" :placeholder="$t('textPrioty')" v-model.number="formData.prioty" />
                             </b-form-fieldset>
@@ -109,7 +109,6 @@ export default {
                 description: '',
                 path: '',
                 position: ADMIN_MENU_POSITION_OPTION[0].value,
-                parent_id: null,
             }
         }
     },
@@ -122,14 +121,13 @@ export default {
                 description: '',
                 path: '',
                 position: ADMIN_MENU_POSITION_OPTION[0].value,
-                parent_id: null,
             }
         },
 
         clickAddMenu() {
             let params = this.formData
 
-            params.parent_id = params.parent_id ? params.parent_id : 0;
+            // params.parent_id = params.parent_id ? params.parent_id : 0;
 
             if (!params.name || !params.path || !params.position) {
                 return this.$toaster.error(this.$i18n.t('textNotFillEnough'))

@@ -2,13 +2,13 @@ import { callFetchMenus, callApiAddMenu } from '../api/adminMenu'
 import { callApiEditMenu, callApiDeleteMenu } from '../api/adminMenu'
 import Helper from '../library/Helper'
 
-export const MENU_POSITION_MAIN = 'main'
+// export const MENU_POSITION_MAIN = 'main'
 export const MENU_POSITION_ON_TOP_LEFT = 'top_left'
 export const MENU_POSITION_ON_TOP_RIGHT = 'top_right'
 
 
 export const ADMIN_MENU_POSITION_OPTION = [
-    { value: MENU_POSITION_MAIN, text: 'textPositionMain' },
+    // { value: MENU_POSITION_MAIN, text: 'textPositionMain' },
     { value: MENU_POSITION_ON_TOP_LEFT, text: 'textPositionOnTopLeft' },
     { value: MENU_POSITION_ON_TOP_RIGHT, text: 'textPositionOnTopRight' }
 ]

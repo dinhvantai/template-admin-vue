@@ -28,7 +28,6 @@ class MenuRequest extends FormRequest
             'path' => 'required',
             'position' => 'required',
             'prioty' => 'numeric',
-            'parent_id' => 'numeric',
         ];
     }
 }

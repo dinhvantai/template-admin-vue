@@ -32,9 +32,6 @@
                         :current-page="currentPage"
                         :per-page="perPage"
                     >
-                        <template slot="name" slot-scope="data">
-                            {{ `${data.item.prefix} ${data.item.name}` }}
-                        </template>
                         <template slot="position" slot-scope="data">
                             {{ getTextPosition(data) }}
                         </template>
@@ -145,7 +142,7 @@
             },
 
             submitModalAddMenu(params) {
-                 params.parent_id = params.parent_id ? params.parent_id : 0;
+                //  params.parent_id = params.parent_id ? params.parent_id : 0;
 
                 if (!params.name || !params.path || !params.position) {
                     return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
@@ -197,22 +194,24 @@
             },
 
             items() {
-                let menus = this.$store.state.storeAdminMenu.menus
-                let itemsFilter = []
+                return this.$store.state.storeAdminMenu.menus
 
-                for (let i = 0; i < menus.length; i++) {
-                    menus[i]._rowVariant = 'success'
-                    menus[i].prefix = ''
-                    itemsFilter.push(menus[i])
+                // let menus = this.$store.state.storeAdminMenu.menus
+                // let itemsFilter = []
 
-                    let childrenMenus = menus[i].children_menus
-                    for(let j = 0; j < childrenMenus.length; j++) {
-                        childrenMenus[j].prefix = '| - - '
-                        childrenMenus[j].position = menus[i].position
-                        itemsFilter.push(childrenMenus[j])
-                    }
-                }
-                return itemsFilter
+                // for (let i = 0; i < menus.length; i++) {
+                //     menus[i]._rowVariant = 'success'
+                //     menus[i].prefix = ''
+                //     itemsFilter.push(menus[i])
+
+                //     let childrenMenus = menus[i].children_menus
+                //     for(let j = 0; j < childrenMenus.length; j++) {
+                //         childrenMenus[j].prefix = '| - - '
+                //         childrenMenus[j].position = menus[i].position
+                //         itemsFilter.push(childrenMenus[j])
+                //     }
+                // }
+                // return itemsFilter
             },
 
             parentMenuOption() {
