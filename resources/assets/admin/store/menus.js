@@ -3,12 +3,14 @@ import { callApiEditMenu, callApiDeleteMenu } from '../api/adminMenu'
 import Helper from '../library/Helper'
 
 export const MENU_POSITION_MAIN = 'main'
-export const MENU_POSITION_ON_TOP = 'top'
+export const MENU_POSITION_ON_TOP_LEFT = 'top_left'
+export const MENU_POSITION_ON_TOP_RIGHT = 'top_right'
 
 
 export const ADMIN_MENU_POSITION_OPTION = [
     { value: MENU_POSITION_MAIN, text: 'textPositionMain' },
-    { value: MENU_POSITION_ON_TOP, text: 'textPositionOnTop' }
+    { value: MENU_POSITION_ON_TOP_LEFT, text: 'textPositionOnTopLeft' },
+    { value: MENU_POSITION_ON_TOP_RIGHT, text: 'textPositionOnTopRight' }
 ]
 
 const ADMIN_MENU_FETCH = 'admin_menu_fetch'
@@ -31,7 +33,13 @@ const state = {
 
 const mutations = {
     async [ADMIN_MENU_FETCH](state, { vue, params }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
+
         let response = await callFetchMenus(params);
+
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+
         if (response.status == 200) {
             return state.menus = response.data
         }

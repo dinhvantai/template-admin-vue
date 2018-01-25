@@ -21,51 +21,44 @@
             </b-button-group>
         </b-col>
         <b-col lg="12">
-            <b-card :header="$t('textMenus')" lg="12">
-                <b-table
-                    :hover="hover" :striped="striped"
-                    :bordered="bordered" :small="small"
-                    :fixed="fixed" class="table-responsive-sm"
-                    :items="items"
-                    :fields="fields"
-                    :current-page="currentPage"
-                    :per-page="perPage"
-                >
-                    <template slot="name" slot-scope="data">
-                        {{ `${data.item.prefix} ${data.item.name}` }}
-                    </template>
-                    <template slot="position" slot-scope="data">
-                        {{ getTextPosition(data) }}
-                    </template>
-                    <template slot="action" slot-scope="data">
-                        <b-button
-                            type="submit" size="sm"
-                            variant="primary"
-                            @click="clickEditMenu(data.item)"
-                        >
-                            <i class="icon-pencil"></i>
-                            {{ $t('textEdit') }}
-                        </b-button>
-                        <b-button
-                            type="reset" size="sm"
-                            variant="danger"
-                            @click="clickDeleteMenu(data.item.id)"
-                        >
-                            <i class="icon-trash"></i>
-                            {{ $t('textDelete') }}
-                        </b-button>
-                    </template>
-                </b-table>
-                <!-- <nav>
-                    <b-pagination
-                        :total-rows="totalRows"
-                        :per-page="perPage" v-model="currentPage"
-                        prev-text="Prev" next-text="Next"
-                        hide-goto-end-buttons
-                        @change='changePage'
-                    />
-                </nav> -->
-            </b-card>
+            <b-tabs pills card>
+                <b-tab :title="$t(option.text)" v-for="option in optionPosition" :key="option.value">
+                    <b-table
+                        :hover="hover" :striped="striped"
+                        :bordered="bordered" :small="small"
+                        :fixed="fixed" class="table-responsive-sm"
+                        :items="getItemFilter(option.value)"
+                        :fields="fields"
+                        :current-page="currentPage"
+                        :per-page="perPage"
+                    >
+                        <template slot="name" slot-scope="data">
+                            {{ `${data.item.prefix} ${data.item.name}` }}
+                        </template>
+                        <template slot="position" slot-scope="data">
+                            {{ getTextPosition(data) }}
+                        </template>
+                        <template slot="action" slot-scope="data">
+                            <b-button
+                                type="submit" size="sm"
+                                variant="primary"
+                                @click="clickEditMenu(data.item)"
+                            >
+                                <i class="icon-pencil"></i>
+                                {{ $t('textEdit') }}
+                            </b-button>
+                            <b-button
+                                type="reset" size="sm"
+                                variant="danger"
+                                @click="clickDeleteMenu(data.item.id)"
+                            >
+                                <i class="icon-trash"></i>
+                                {{ $t('textDelete') }}
+                            </b-button>
+                        </template>
+                    </b-table>
+                </b-tab>
+            </b-tabs>
         </b-col>
     </b-row>
 </template>
@@ -119,7 +112,8 @@
                     {key: 'action', label: this.$i18n.t('textAction')},
                 ],
                 currentPage: 1,
-                perPage: this.totalRows
+                perPage: this.totalRows,
+                optionPosition: ADMIN_MENU_POSITION_OPTION
             }
         },
 
@@ -140,15 +134,8 @@
                 return result;
             },
 
-            getBadge(status) {
-                return status === 'Active' ? 'success'
-                : status === 'Inactive' ? 'secondary'
-                    : status === 'Pending' ? 'warning'
-                    : status === 'Banned' ? 'danger' : 'primary'
-            },
-
-            changePage(page) {
-                this.currentPage = page
+            getItemFilter(position) {
+                return this.items.filter(item => item.position == position)
             },
 
             clickAddNewMenu() {
@@ -168,7 +155,7 @@
             },
 
             hideModalAddMenu(formData) {
-                let modalAdd = { ...this.modalAdd, open: false, resetData: false, formData }
+                let modalAdd = { ...this.modalAdd, open: false }
 
                 return this.$store.dispatch('setMenuModalAdd', { vue: this, modalAdd })
             },
@@ -205,6 +192,10 @@
         },
 
         computed: {
+            loading() {
+                return this.$store.state.storeLoading.loading
+            },
+
             items() {
                 let menus = this.$store.state.storeAdminMenu.menus
                 let itemsFilter = []
@@ -217,6 +208,7 @@
                     let childrenMenus = menus[i].children_menus
                     for(let j = 0; j < childrenMenus.length; j++) {
                         childrenMenus[j].prefix = '| - - '
+                        childrenMenus[j].position = menus[i].position
                         itemsFilter.push(childrenMenus[j])
                     }
                 }

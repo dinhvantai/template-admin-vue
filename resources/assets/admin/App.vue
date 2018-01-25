@@ -1,10 +1,21 @@
 <template>
-    <router-view></router-view>
+    <div>
+        <div class="indicator" v-show="loading.show">
+            <div class="spinner"></div>
+        </div>
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
 export default {
-    name: 'app'
+    name: 'app',
+
+    computed: {
+        loading() {
+            return this.$store.state.storeLoading.loading
+        }
+    }
 }
 </script>
 
