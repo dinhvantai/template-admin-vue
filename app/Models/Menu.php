@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    const POSITION_MAIN = 'main';
+    // const POSITION_MAIN = 'main';
     const POSITION_ON_TOP_LEFT = 'top_left';
     const POSITION_ON_TOP_RIGHT = 'top_right';
 
@@ -21,15 +21,14 @@ class Menu extends Model
         'position',
         'prioty',
         'path',
-        'parent_id'
     ];
 
-    public function childrenMenus()
-    {
-        return $this->hasMany(Menu::class, 'parent_id');
-    }
-    public function parentMenu()
-    {
-        return $this->belongsTo(Menu::class, 'parent_id');
-    }
+    // public function childrenMenus()
+    // {
+    //     return $this->hasMany(Menu::class, 'parent_id');
+    // }
+    // public function parentMenu()
+    // {
+    //     return $this->belongsTo(Menu::class, 'parent_id');
+    // }
 }
