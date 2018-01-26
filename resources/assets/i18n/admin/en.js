@@ -28,6 +28,21 @@ const en = {
     textEditMenu: 'Edit menu',
     textSave: 'Save',
     textConfirmDelete: 'Are you sure delete?',
+    textManageMenu: 'Manage Menu',
+    textTypeProduct: 'Type product',
+    textTypePost: 'Type post',
+    textManageCategory: 'Manage Category',
+    textType: 'Type',
+    textStatus: 'Status',
+    textAddCategory: 'Add Category',
+    textSlug: 'Slug',
+    textParentCategory: 'Parent Category',
+    textShow: 'Show',
+    textHidden: 'Hidden',
+    textSeoKeyword: 'Seo keyword',
+    textSeoDescription: 'Seo description',
+    textAddCategory: 'Add new category',
+    textEditCategory: 'Edit category',
 }
 
 export default en;

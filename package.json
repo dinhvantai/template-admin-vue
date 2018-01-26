@@ -26,6 +26,7 @@
         "lodash": "^4.17.4",
         "sass-loader": "6.0.6",
         "simple-line-icons": "^2.4.1",
+        "slug": "^0.9.1",
         "url-loader": "0.6.2",
         "v-toaster": "^1.0.3",
         "vue": "2.5.6",

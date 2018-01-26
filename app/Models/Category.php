@@ -10,5 +10,27 @@ class Category extends Model
     const TYPE_POST = 'post';
 
     const STATUS_SHOW = 'show';
-    const STATUS_HIDDEN = 'hiden';
+    const STATUS_HIDDEN = 'hidden';
+
+    protected $fillable = [
+        'name',
+        'description',
+        'slug',
+        'type',
+        'prioty',
+        'status',
+        'parent_id',
+        'seo_keyword',
+        'seo_description',
+    ];
+
+    public function childrenCategories()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+    
+    public function parentCategory()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 }

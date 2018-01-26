@@ -103,18 +103,12 @@ export default {
             optionPositionMenu: ADMIN_MENU_POSITION_OPTION.map(option => (
                 { value: option.value, text: this.$i18n.t(option.text) }
             )),
-            formData: {
-                name: '',
-                prioty: 0,
-                description: '',
-                path: '',
-                position: ADMIN_MENU_POSITION_OPTION[0].value,
-            }
+            formData: this.resetFormData()
         }
     },
 
     methods: {
-        resetData() {
+        resetFormData() {
             return this.formData = {
                 name: '',
                 prioty: 0,
@@ -133,7 +127,7 @@ export default {
                 return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
             }
 
-            this.resetData()
+            this.resetFormData()
             return this.submitModalAddMenu(params)
         }
     },

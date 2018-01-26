@@ -22,7 +22,11 @@
         </b-col>
         <b-col lg="12">
             <b-tabs pills card>
-                <b-tab :title="$t(option.text)" v-for="option in optionPosition" :key="option.value">
+                <b-tab
+                    :title="$t(option.text)"
+                    v-for="option in optionPosition"
+                    :key="option.value"
+                >
                     <b-table
                         :hover="hover" :striped="striped"
                         :bordered="bordered" :small="small"
@@ -93,7 +97,8 @@
             },
         },
 
-        beforeMount() {
+        beforeCreate() {
+            Helper.changeTitleAdminPage(this.$i18n.t('textManageMenu'))
             this.$store.dispatch('callFetchMenus', { vue: this })
         },
 
@@ -174,17 +179,14 @@
             },
 
             async clickDeleteMenu(id) {
-                if (id) {
-                    let willDelete = await this.$swal({
+                return id
+                    && await this.$swal({
                         title: this.$i18n.t('textConfirmDelete'),
                         icon: 'warning',
                         buttons: true,
                         dangerMode: true,
                     })
-
-                    return willDelete
-                        && this.$store.dispatch('callMenuDelete', { vue: this, id })
-                }
+                    && this.$store.dispatch('callMenuDelete', { vue: this, id })
             }
         },
 

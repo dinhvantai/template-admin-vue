@@ -122,11 +122,6 @@ export default {
 
             return this.submitModalEditMenu(this.formData.id, params)
         },
-
-        changeFormValue(type, value) {
-            this.formData[type] = value.trim()
-        }
-
     },
 
     computed: {

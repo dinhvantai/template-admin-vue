@@ -52,9 +52,14 @@
 <script>
 import { STORAGE_AUTH, PERMISSION_ADMIN } from '../../store/auth'
 import { callApiLogin } from '../../api/auth'
+import Helper from '../../library/Helper'
 
 export default {
     name: 'Login',
+
+    beforeCreate() {
+        Helper.changeTitleAdminPage(this.$i18n.t('textLogin'))
+    },
 
     beforeMount() {
         let checkAuthAdmin = auth => {
