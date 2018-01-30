@@ -1,4 +1,4 @@
-export function callFetchMenus(params = {}) {
+export function callApiFetchMenus(params = {}) {
     return axios.get('/menus', params)
         .then(response => response)
         .catch(error => error)

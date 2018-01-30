@@ -10,4 +10,12 @@ class Banner extends Model
 
     const STATUS_SHOW = 'show';
     const STATUS_HIDDEN = 'hidden';
+
+    protected $fillable = [
+        'name',
+        'position',
+        'status',
+        'seo_keyword',
+        'seo_description',
+    ];
 }

@@ -1,4 +1,10 @@
 export default {
+    changeTitleAdminPage(title) {
+        let eTitle = document.head.querySelector('title');
+
+        return eTitle && (eTitle.text = title)
+    },
+
     errorsToArray(errors) {
         if (typeof errors == 'string') {
             return [errors];
@@ -24,5 +30,5 @@ export default {
         }
 
         return defaultErorr;
-    }
+    },
 }

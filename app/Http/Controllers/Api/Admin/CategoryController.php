@@ -2,31 +2,28 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Helpers\Helper;
-use App\Models\Menu;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Requests\MenuRequest;
-use App\Http\Controllers\Api\ApiController;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Controllers\Controller;
 
-class MenuController extends ApiController
+class CategoryController extends Controller
 {
-    protected $apiProvider = 'users';
-
-    public function  __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $menus = Menu::orderBy('prioty', 'desc')->get();
+        $categories = Category::with(['childrenCategories' => function($query){
+            $query->orderBy('prioty', 'desc');
+        }])
+        ->whereNull('parent_id')->orWhere('parent_id', 0)
+        ->orderBy('prioty', 'desc')->get();
 
-        return $this->response($menus);
+        return $this->response($categories);
+
     }
 
     /**
@@ -45,9 +42,12 @@ class MenuController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MenuRequest $request)
+    public function store(CategoryRequest $request)
     {
-        if (Menu::create($request->all())) {
+        $data = $request->all();
+        $data['slug'] = str_slug($request->slug);
+
+        if (Category::create($data)) {
             return $this->response(['message' => trans('message.add_success')]);
         }
 
@@ -66,18 +66,32 @@ class MenuController extends ApiController
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MenuRequest $request, Menu $menu)
+    public function update(CategoryRequest $request, Category $category)
     {
-        if ($menu->fill($request->all())->save()) {
+        $category->fill($request->all());
+        $category->slug = str_slug($request->slug);
+
+        if ($category->save()) {
             return $this->response(['message' => trans('message.edit_success')]);
         }
-
+    
         return $this->response(['message' => trans('message.edit_failed')], 401);
     }
 
@@ -87,9 +101,15 @@ class MenuController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Menu $menu)
+    public function destroy(Category $category)
     {
-        if ($menu->delete()) {
+        if (!$category->parent_id) {
+            if ($category->childrenCategories()->count()) {
+                return $this->response(['message' => trans('message.delete_children_before')], 401);
+            }
+        }
+
+        if ($category->delete()) {
             return $this->response(['message' => trans('message.delete_success')]);
         }
 
