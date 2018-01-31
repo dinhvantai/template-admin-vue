@@ -43,6 +43,13 @@ const en = {
     textSeoDescription: 'Seo description',
     textAddCategory: 'Add new category',
     textEditCategory: 'Edit category',
+    textManageProduct: 'Manage Product',
+    textAddProduct: 'Add new Product',
+    textCategory: 'Category',
+    textPrice: 'Price',
+    textGuarantee: 'Guarantee',
+    textDetail: 'Detail',
+    textGuide: 'Guide',
 }
 
 export default en;

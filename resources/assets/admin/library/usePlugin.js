@@ -6,7 +6,6 @@ import BootstrapVue from 'bootstrap-vue'
 import Toaster from 'v-toaster'
 import VueSwal from 'vue-swal'
 
-// import VueSocketIO from 'vue-socket.io';
 
 import 'v-toaster/dist/v-toaster.css'
 
@@ -21,4 +20,6 @@ Vue.use(BootstrapVue);
 Vue.use(Toaster, { timeout: 5000 })
 
 Vue.use(VueSwal)
-// Vue.use(VueSocketIO, 'http://localhost:8000')
+
+import tinymce from 'vue-tinymce-editor'
+Vue.component('tinymce', tinymce)

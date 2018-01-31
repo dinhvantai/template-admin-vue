@@ -15,13 +15,12 @@
                                 <b-form-input 
                                     type="text" required
                                     :placeholder="$t('textName')" 
-                                    v-model="formData.name" 
-                                    @change="handleEnterName"
+                                    v-model="formData.name"
                                 />
                             </b-form-fieldset>
                         </b-col>
                         <b-col sm="4">
-                            <b-form-fieldset :label="$t('textStatus')">
+                            <b-form-fieldset :label="$t('textStatus')" class="text-center">
                                 <c-switch
                                     type="text" variant="primary-outline-alt"
                                     on="On" off="Off"
@@ -34,7 +33,11 @@
                     <b-row>
                         <b-col sm="8">
                             <b-form-fieldset :label="$t('textSlug')">
-                                <b-form-input type="text" :placeholder="$t('textSlug')" v-model="formData.slug" required />
+                                <b-form-input 
+                                    type="text" required
+                                    :placeholder="$t('textSlug')"
+                                    v-model="formSlugName"
+                                />
                             </b-form-fieldset>
                         </b-col>
                         <b-col sm="4">
@@ -144,10 +147,6 @@ export default {
     },
 
     methods: {
-        handleEnterName() {
-            return this.formData.slug = slug(this.formData.name)
-        },
-
         clickSubmitEdit() {
             let params = this.formData
 
@@ -174,6 +173,15 @@ export default {
             return {
                 ...formData,
                 status: formData.status == CATEGORY_STATUS_SHOW ? true : false,
+            }
+        },
+
+        formSlugName: {
+            get() {
+                return this.formData.slug
+            },
+            set(val) {
+                return this.formData.slug = val
             }
         },
 

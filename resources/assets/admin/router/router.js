@@ -5,6 +5,10 @@ import Admin from '../components/Admin.vue'
 import Dashboard from '../views/dashboard/Dashboard.vue'
 import AdminMenu from '../views/menu/AdminMenu.vue'
 import AdminCategory from '../views/category/AdminCategory.vue'
+
+import AdminProduct from '../views/product/AdminProduct.vue'
+import AdminProductAdd from '../views/product/AdminProductAdd.vue'
+import AdminProductEdit from '../views/product/AdminProductEdit.vue'
 // import Chat from '../views/chat/Chat.vue'
 
 const router =  new VueRouter({
@@ -30,7 +34,34 @@ const router =  new VueRouter({
                     path: 'categories',
                     name: 'Categories',
                     component: AdminCategory
-                }
+                },
+                {
+                    name: 'Products',
+                    path: '/',
+                    redirect: 'products',
+                    component: {
+                        render(c) { 
+                            return c('router-view')
+                        }
+                    },
+                    children: [
+                        {
+                            path: 'products',
+                            name: 'List',
+                            component: AdminProduct
+                        },
+                        {
+                            path: 'products/add',
+                            name: 'Add',
+                            component: AdminProductAdd
+                        },
+                        {
+                            path: 'products/edit/:id',
+                            name: 'Edit',
+                            component: AdminProductEdit
+                        }
+                    ]
+                },
             ]
         },
         {

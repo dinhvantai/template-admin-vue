@@ -26,5 +26,6 @@ Route::group(['domain' => env('DOMAIN_AMIN'), 'namespace' => 'Api\Admin', 'prefi
 
         Route::resource('menus', 'MenuController')->only($methodAllow);
         Route::resource('categories', 'CategoryController')->only($methodAllow);
+        Route::resource('products', 'ProductController')->only($methodAllow);
     });
 });

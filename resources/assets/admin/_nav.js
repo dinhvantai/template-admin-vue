@@ -21,6 +21,20 @@ export default {
             url: '/categories',
             icon: 'icon-list'
         },
+        {
+            name: 'Products',
+            icon: 'icon-list',
+            children: [
+                {
+                    name: 'List',
+                    url: '/products',
+                },
+                {
+                    name: 'Add',
+                    url: '/products/add',
+                }
+            ]
+        },
         // {
         //     title: true,
         //     name: 'UI elements',
