@@ -17,8 +17,7 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
-            $table->float('price', 15, 2)->default(0);
-            $table->string('unit')->nullalbe();
+            $table->string('price');
             $table->text('detail');
             $table->text('guide');
             $table->string('guarantee')->nullable();

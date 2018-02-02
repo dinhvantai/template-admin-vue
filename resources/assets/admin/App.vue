@@ -3,6 +3,7 @@
         <div class="indicator" v-show="loading.show">
             <div class="spinner"></div>
         </div>
+        
         <router-view></router-view>
     </div>
 </template>

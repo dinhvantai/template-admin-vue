@@ -16,11 +16,10 @@
                                     type="text" required
                                     :placeholder="$t('textName')" 
                                     v-model="formData.name" 
-                                    @change="handleEnterName"
                                 />
                             </b-form-fieldset>
                         </b-col>
-                        <b-col sm="4">
+                        <b-col sm="4" class="text-center">
                             <b-form-fieldset :label="$t('textStatus')">
                                 <c-switch
                                     type="text" variant="primary-outline-alt"
@@ -34,7 +33,11 @@
                     <b-row>
                         <b-col sm="8">
                             <b-form-fieldset :label="$t('textSlug')">
-                                <b-form-input type="text" :placeholder="$t('textSlug')" v-model="formData.slug" required />
+                                <b-form-input 
+                                    type="text" required
+                                    :placeholder="$t('textSlug')" 
+                                    v-model="formSlugName" 
+                                />
                             </b-form-fieldset>
                         </b-col>
                         <b-col sm="4">
@@ -94,7 +97,7 @@
             </b-col><!--/.col-->
         </b-row>
         <div slot="modal-footer" class="w-100 text-center">
-            <b-button type="submit" size="xs" variant="primary" @click="clickAddMenu">
+            <b-button type="submit" size="xs" variant="primary" @click="clickAddItem">
                 <i class="fa fa-dot-circle-o"></i>
                 {{ $t('textAddNew') }}
             </b-button>
@@ -159,9 +162,9 @@ export default {
             }
         },
 
-        clickAddMenu() {
+        clickAddItem() {
             let params = this.formData
-
+            console.log(this.formData)
             if (!params.name || !params.slug || !params.type) {
                 return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
             }
@@ -169,10 +172,6 @@ export default {
             this.resetFromData()
 
             return this.submitModalAdd(params)
-        },
-
-        handleEnterName() {
-            return this.formData.slug = slug(this.formData.name)
         }
     },
 
@@ -182,6 +181,14 @@ export default {
                 return this.modalAdd.open
             },
             set(val) {}
+        },
+        formSlugName: {
+            get() {
+                return slug(this.formData.name)
+            },
+            set(val) {
+                return this.formData.slug = val
+            }
         }
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\ProductRequest;
 use App\Http\Controllers\Controller;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +16,16 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with(['childrenCategories' => function($query){
-            $query->orderBy('prioty', 'desc');
-        }])
-        ->whereNull('parent_id')->orWhere('parent_id', 0)
-        ->orderBy('prioty', 'desc')->get();
+        $selectCategory = ['id', 'name', 'slug', 'parent_id'];
 
-        return $this->response($categories);
+        $products = Product::with(['category' => function($query) use ($selectCategory){
+            $query->select($selectCategory)->with(['parentCategory' => function($query) use ($selectCategory){
+                $query->select($selectCategory);
+            }]);
+        }])
+        ->orderBy('id', 'desc')->get();
+
+        return $this->response($products);
     }
 
     /**
@@ -41,12 +44,12 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(ProductRequest $request)
     {
         $data = $request->all();
         $data['slug'] = str_slug($request->slug);
 
-        if (Category::create($data)) {
+        if (Product::create($data)) {
             return $this->response(['message' => trans('message.add_success')]);
         }
 
@@ -56,21 +59,21 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        return $this->response($product);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
         //
     }
@@ -79,15 +82,15 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, Category $category)
+    public function update(ProductRequest $request, Product $product)
     {
-        $category->fill($request->all());
-        $category->slug = str_slug($request->slug);
+        $product->fill($request->all());
+        $product->slug = str_slug($request->slug);
 
-        if ($category->save()) {
+        if ($product->save()) {
             return $this->response(['message' => trans('message.edit_success')]);
         }
     
@@ -97,18 +100,12 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Product $product)
     {
-        if (!$category->parent_id) {
-            if ($category->childrenCategories()->count()) {
-                return $this->response(['message' => trans('message.delete_children_before')], 401);
-            }
-        }
-
-        if ($category->delete()) {
+        if ($product->delete()) {
             return $this->response(['message' => trans('message.delete_success')]);
         }
 
