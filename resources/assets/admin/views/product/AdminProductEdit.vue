@@ -94,9 +94,9 @@
                         <b-col sm="12">
                             <b-form-fieldset :label="$t('textDetail')">
                                 <tinymce 
-                                    id="product_add_detail" 
+                                    id="product_edit_detail" 
                                     v-model="formData.detail"
-                                    :value="formData.guide"
+                                    :value="formData.detail"
                                     :other_options="ortherOptions()"
                                 />
                             </b-form-fieldset>
@@ -106,7 +106,7 @@
                         <b-col sm="12">
                             <b-form-fieldset :label="$t('textGuide')">
                                 <tinymce 
-                                    id="product_add_guide"
+                                    id="product_edit_guide"
                                     v-model="formData.guide"
                                     :value="formData.guide"
                                     :other_options="ortherOptions()"
