@@ -15,5 +15,10 @@ Route::group(['domain' => env('DOMAIN_ADMIN')], function(){
 });
 
 Route::group(['domain' => env('DOMAIN_USER'), 'namespace' => 'User'], function(){
-    Route::get('/', function () { return view('user.index'); });
+    Route::get('/', 'HomeController@index')->name('user.index');
+    Route::get('/san-pham/{slug}', 'HomeController@detailProduct')->name('user.product.detail');
+    Route::get('/tin-tuc', 'HomeController@listPost')->name('user.post.list');
+    Route::get('/tin-tuc/{slug}', 'HomeController@detailProduct')->name('user.post.detail');
+    Route::get('/{parent}', 'HomeController@categoryParent')->name('user.category.parent');
+    Route::get('/{parent}/{children}', 'HomeController@categoryChildren')->name('user.category.children');
 });

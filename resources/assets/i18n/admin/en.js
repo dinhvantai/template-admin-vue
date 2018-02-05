@@ -50,6 +50,9 @@ const en = {
     textGuarantee: 'Guarantee',
     textDetail: 'Detail',
     textGuide: 'Guide',
+    textImage: 'Image',
+    textUploadFile: 'Upload file',
+    textDecription: 'Description',
 }
 
 export default en;

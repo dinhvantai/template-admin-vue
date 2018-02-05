@@ -44,7 +44,9 @@ const actions = {
         if (response.status == 200) {
             vue.$store.dispatch('callFetchProducts', { vue })
             
-            return vue.$toaster.success(response.data.message);
+            vue.$toaster.success(response.data.message);
+
+            return vue.$router.push({ path: '/products' })
         }
 
         return vue.$toaster.error(Helper.getFirstError(response, vue.$i18n.t('textDefaultErrorRequest')));
@@ -66,7 +68,9 @@ const actions = {
         if (response.status == 200) {
             vue.$store.dispatch('callFetchProducts', { vue })
 
-            return vue.$toaster.success(response.data.message);
+            vue.$toaster.success(response.data.message)
+            
+            return vue.$router.push({ path: '/products' })
         }
 
         return vue.$toaster.error(Helper.getFirstError(response, vue.$i18n.t('textDefaultErrorRequest')));

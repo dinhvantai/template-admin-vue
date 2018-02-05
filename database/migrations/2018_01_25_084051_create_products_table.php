@@ -18,8 +18,9 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('price');
-            $table->text('detail');
-            $table->text('guide');
+            $table->mediumText('description')->nullable();
+            $table->text('detail')->nullable();
+            $table->text('guide')->nullable();
             $table->string('guarantee')->nullable();
             $table->integer('total_views')->default(0);
             $table->string('image')->nullable();

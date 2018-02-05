@@ -14,6 +14,8 @@ class Product extends Model
         'slug',
         'price',
         'unit',
+        'image',
+        'description',
         'detail',
         'guide',
         'guarantee',

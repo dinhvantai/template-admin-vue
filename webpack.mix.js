@@ -11,5 +11,6 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/admin/index.js', 'public/js/admin.js');
-//    .sass('resources/assets/sass/admin/admin.scss', 'public/css/admin.css');
+mix
+    .js('resources/assets/admin/index.js', 'public/js/admin/index.js')
+    .js('resources/assets/user/slider.js', 'public/js/user/slider.js')
