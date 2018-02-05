@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 
-class CategoryController extends Controller
+class CategoryController extends ApiController
 {
+    protected $apiProvider = 'users';
+
+    public function  __construct()
+    {
+        parent::__construct();
+    }
+    
     /**
      * Display a listing of the resource.
      *

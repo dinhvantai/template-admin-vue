@@ -49,7 +49,7 @@
                                 <b-form-input 
                                     type="text" 
                                     :placeholder="$t('textGuarantee')" 
-                                    v-model.number="formData.guarantee" 
+                                    v-model="formData.guarantee" 
                                 />
                             </b-form-fieldset>
                         </b-col>
@@ -67,6 +67,62 @@
                         <b-col sm="6">
                             <b-form-fieldset :label="$t('textPrioty')">
                                 <b-form-input type="number" :placeholder="$t('textPrioty')" v-model.number="formData.prioty" />
+                            </b-form-fieldset>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col sm="12">
+                            <b-form-fieldset :label="$t('textDecription')">
+                                <textarea 
+                                    class="form-control" 
+                                    :placeholder="$t('textDecription')" 
+                                    v-model="formData.description" 
+                                    rows="4"
+                                />
+                            </b-form-fieldset>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col sm="12">
+                            <b-form-fieldset :label="$t('textImage')"
+                                style="boder: 1px solid #E5E5E5"
+                            >
+                               <vue-transmit class="col-12"
+                                    tag="section"
+                                    v-bind="uploadOptions"
+                                    @success="successUploader"
+                                    upload-area-classes="bg-faded"
+                                    ref="uploader"
+                                >
+                                    <b-row>
+                                        <b-col sm="2"
+                                            style="border-radius: 1rem;"
+                                        >
+                                            <button class="btn btn-primary"
+                                            @click="triggerBrowse"
+                                        >{{ $t('textUploadFile') }}</button>
+                                        </b-col>
+                                        <b-col>
+
+                                        </b-col>
+                                    </b-row>
+                                    <!-- Scoped slot -->
+                                    <template slot="files" slot-scope="props">
+                                        <div v-for="(file, i) in props.files" :key="file.id" :class="{'mt-5': i === 0}">
+                                            <div class="media">
+                                                <img :src="file.dataUrl" class="img-fluid d-flex mr-3" width="30%">
+                                                <div class="media-body">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success"
+                                                            :style="{width: file.upload.progress + '%'}"
+                                                        >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </vue-transmit>
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
@@ -149,6 +205,7 @@ import Helper from '../../library/Helper'
 
 import { CATEGORY_TYPE_PRODUCT } from '../../store/category'
 import { PRODUCT_STATUS_SHOW, PRODUCT_STATUS_HIDDEN } from '../../store/product'
+import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
     name: 'AdminProductAdd',
@@ -161,15 +218,34 @@ export default {
     },
 
     data() {
+        let token = JSON.parse(localStorage.getItem(STORAGE_AUTH)).token
+        let today = new Date()
+
         return {
             formData: this.resetFromData(),
+            uploadOptions: {
+                acceptedFileTypes: ['image/*'],
+                url: '/api/v0/upload-image',
+                clickable: false,
+                params: {
+                    folder: `product-${today.getFullYear()}
+                        -${today.getMonth() + 1}
+                        -${today.getDate()}
+                    `,
+                },
+                maxFiles: 1,                
+                paramName: 'image',
+                headers: {
+                    Authorization: `${token.token_type} ${token.access_token}`
+                }
+            }
         }
     },
 
     computed: {
         formSlugName: {
             get() {
-                return slug(this.formData.name)
+                return slug(this.formData.name.toLowerCase())
             },
             set(val) {
                 return this.formData.slug = val
@@ -177,7 +253,25 @@ export default {
         },
     },
 
+    // filters: {
+    //     json(value) {
+    //         return JSON.stringify(value, null, 2)
+    //     }
+    // },
+
     methods: {
+        triggerBrowse(event) {
+            event.preventDefault()
+
+            return this.$refs.uploader.triggerBrowseFiles()
+        },
+
+        successUploader(response) {
+            let serveRespone = JSON.parse(response.xhr.response)
+            
+            return this.formData.image = serveRespone.path
+        },
+
         ortherOptions() {
             return {
                 ...configTinyMCE,
@@ -214,6 +308,8 @@ export default {
                 name: '',
                 price: '',
                 slug: '',
+                image: '',
+                description: '',
                 status: true,
                 guarantee: '',
                 prioty: 0,
@@ -251,9 +347,7 @@ export default {
 
             this.$store.dispatch('callProductAdd', { vue: this, params });
 
-            this.resetFromData()
-
-            return this.$router.push({ path: '/products' })
+            return this.resetFromData()
         },
 
         clickCancel() {

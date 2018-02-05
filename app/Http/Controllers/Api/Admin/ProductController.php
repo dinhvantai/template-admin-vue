@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 
-class ProductController extends Controller
+class ProductController extends ApiController
 {
+    protected $apiProvider = 'users';
+
+    public function  __construct()
+    {
+        parent::__construct();
+    }
+    
     /**
      * Display a listing of the resource.
      *

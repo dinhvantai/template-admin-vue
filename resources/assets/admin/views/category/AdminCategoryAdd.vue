@@ -184,7 +184,7 @@ export default {
         },
         formSlugName: {
             get() {
-                return slug(this.formData.name)
+                return slug(this.formData.name.toLowerCase())
             },
             set(val) {
                 return this.formData.slug = val

@@ -22,6 +22,13 @@
                     <template slot="link" slot-scope="data">
                         {{ getLinkProduct(data.item) }}
                     </template>
+                    <template slot="image" slot-scope="data">
+                        <img 
+                            :src="`/${data.item.image}`" 
+                            :alt="data.item.name"
+                            style="width: 150px"
+                        />
+                    </template>
                     <template slot="action" slot-scope="data">
                         <b-button
                             type="submit" size="sm"
@@ -87,6 +94,7 @@ import category from '../../store/category';
                     {key: 'id'},
                     {key: 'name', label: this.$i18n.t('textName')},
                     {key: 'link', label: this.$i18n.t('textLink')},
+                    {key: 'image', label: this.$i18n.t('textImage')},
                     {key: 'price', label: this.$i18n.t('textPrice')},
                     {key: 'prioty', label: this.$i18n.t('textPrioty')},
                     {key: 'status', label: this.$i18n.t('textStatus')},
