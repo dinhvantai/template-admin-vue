@@ -82,16 +82,44 @@
                         <div style="clear:both"></div>
                     </div>
                     <div style="clear:both"></div>
+                    <script>
+                        function changeProductTab(event) {
+                            let parents = document.getElementsByClassName('user-product-tab');
+                            for(let i = 0; i < parents.length; i++) {
+                                parents[i].classList.remove('Active');
+                            }
+                            event.classList.add('Active')
+                            
+                            let children = document.getElementsByClassName('user-product-tab-view');
+                            for(let i = 0; i < children.length; i++) {
+                                children[i].style.display = 'none';
+                            }
+
+                            let id = event.getAttribute('data-target')
+                            let element = document.getElementById(id)
+                            if (element) {
+                                element.style.display = 'block';
+                            }
+                        }
+                    </script>
                     <div class="TabView" id="TabView">
                         <div class="Tabs">
-                            <a href="javascript:tabview_switch('TabView', 1);" class="Active">Chi tiết sản phẩm</a>
-                            <a href="javascript:tabview_switch('TabView', 2);" class="">Hướng dẫn sử dụng</a>
+                            <a href="#" class="Active user-product-tab" data-target="user-product-detail"
+                                onclick="changeProductTab(this)"
+                            >
+                                Chi tiết sản phẩm
+                            </a>
+                            <a href="#" class="user-product-tab" data-target="user-product-guide"
+                                onclick="changeProductTab(this)"
+                            >
+                                Hướng dẫn sử dụng
+                            </a>
                         </div>
                         <div class="Pages">
-                            <div class="Page" style="display: block;">
+                            <div class="Page user-product-tab-view" id="user-product-detail" style="display: block;">
                                {!! $data['product']->detail !!}
                             </div>
-                            <div class="Page" style="display: none;">
+                            <div class="Page user-product-tab-view" id="user-product-guide" style="display: none;">
                                 {!! $data['product']->guide !!}
                             </div>
                         </div>
@@ -142,7 +170,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="span-5 last">
             <div class="box silver">

@@ -41,7 +41,7 @@
     <div id="header_nav">
         <div class="fl" style="float:right; margin-right: 10px" id="navid">
             @foreach($userMenu['right'] as $menu)
-                <div style="margin-top: -22px; float: right; margin-right: 9px;">
+                <div style="margin-top: {{ $menu->icon ? '-22px;' : '4px' }};  float: left; margin-right: 9px;">
                     <a title="{{ $menu->name }}" href="{{ $menu->path }}">
                         {{ $menu->name }}
                         @if ($menu->icon)
@@ -54,7 +54,7 @@
         </div>
         <div class="fl" id="navid">
             @foreach($userMenu['left'] as $menu)
-                <div style="margin-top: -22px; float: right; margin-right: 9px;">
+                <div style="margin-top: {{ $menu->icon ? '-22px;' : '4px' }}; float: left; margin-right: 9px;">
                     <a title="{{ $menu->name }}" href="{{ $menu->path }}">
                         {{ $menu->name }}
                         @if ($menu->icon)
