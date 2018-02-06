@@ -35,6 +35,20 @@ export default {
                 }
             ]
         },
+        {
+            name: 'Posts',
+            icon: 'icon-list',
+            children: [
+                {
+                    name: 'List',
+                    url: '/posts',
+                },
+                {
+                    name: 'Add',
+                    url: '/posts/add',
+                }
+            ]
+        },
         // {
         //     title: true,
         //     name: 'UI elements',

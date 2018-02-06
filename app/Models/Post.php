@@ -15,9 +15,15 @@ class Post extends Model
         'description',
         'detail',
         'status',
+        'image',
         'prioty',
         'category_id',
         'seo_keyword',
         'seo_description',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

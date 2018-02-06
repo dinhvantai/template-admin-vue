@@ -53,6 +53,11 @@ const en = {
     textImage: 'Image',
     textUploadFile: 'Upload file',
     textDecription: 'Description',
+    textUploadNewFile: 'Upload new file',
+    textAddPost: 'Add new Post',
+    textManagePost: 'Manage Post',
+    textEditPost: 'Edit post',
+    textEditProduct: 'Edit product',
 }
 
 export default en;

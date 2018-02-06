@@ -9,7 +9,10 @@ import AdminCategory from '../views/category/AdminCategory.vue'
 import AdminProduct from '../views/product/AdminProduct.vue'
 import AdminProductAdd from '../views/product/AdminProductAdd.vue'
 import AdminProductEdit from '../views/product/AdminProductEdit.vue'
-// import Chat from '../views/chat/Chat.vue'
+
+import AdminPost from '../views/post/AdminPost.vue'
+import AdminPostAdd from '../views/post/AdminPostAdd.vue'
+import AdminPostEdit from '../views/post/AdminPostEdit.vue'
 
 const router =  new VueRouter({
     routes: [
@@ -47,18 +50,45 @@ const router =  new VueRouter({
                     children: [
                         {
                             path: 'products',
-                            name: 'List',
+                            name: 'List Product',
                             component: AdminProduct
                         },
                         {
                             path: 'products/add',
-                            name: 'Add',
+                            name: 'Add Product',
                             component: AdminProductAdd
                         },
                         {
                             path: 'products/edit/:id',
-                            name: 'Edit',
+                            name: 'Edit Product',
                             component: AdminProductEdit
+                        }
+                    ]
+                },
+                {
+                    name: 'Posts',
+                    path: '/',
+                    redirect: 'posts',
+                    component: {
+                        render(c) { 
+                            return c('router-view')
+                        }
+                    },
+                    children: [
+                        {
+                            path: 'posts',
+                            name: 'List Post',
+                            component: AdminPost
+                        },
+                        {
+                            path: 'posts/add',
+                            name: 'Add Post',
+                            component: AdminPostAdd
+                        },
+                        {
+                            path: 'posts/edit/:id',
+                            name: 'Edit Post',
+                            component: AdminPostEdit
                         }
                     ]
                 },

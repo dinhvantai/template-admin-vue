@@ -6,6 +6,7 @@ import storeAdminMenu from './menus'
 import storeLoading from './loading'
 import storeAdminCategory from './category'
 import storeAdminProduct from './product'
+import storeAdminPost from './post'
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
         storeAdminMenu,
         storeLoading,
         storeAdminCategory,
-        storeAdminProduct
+        storeAdminProduct,
+        storeAdminPost,
     }
 })
