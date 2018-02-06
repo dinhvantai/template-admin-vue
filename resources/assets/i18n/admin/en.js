@@ -59,6 +59,7 @@ const en = {
     textEditPost: 'Edit post',
     textEditProduct: 'Edit product',
     textIcon: 'Icon',
+    textAccount: 'Account',
 }
 
 export default en;

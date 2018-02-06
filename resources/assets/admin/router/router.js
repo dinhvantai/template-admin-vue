@@ -20,12 +20,12 @@ const router =  new VueRouter({
             path: '/',
             redirect: '/dashboard',
             component: Admin,
-            name: 'Home',
+            name: 'Trang chủ',
             meta: { requiresAuth: true },
             children: [
                 {
                     path: 'dashboard',
-                    name: 'Dashboard',
+                    name: 'Quản lý',
                     component: Dashboard
                 },
                 {
@@ -35,11 +35,11 @@ const router =  new VueRouter({
                 },
                 {
                     path: 'categories',
-                    name: 'Categories',
+                    name: 'Danh mục',
                     component: AdminCategory
                 },
                 {
-                    name: 'Products',
+                    name: 'Sản phẩm',
                     path: '/',
                     redirect: 'products',
                     component: {
@@ -50,23 +50,23 @@ const router =  new VueRouter({
                     children: [
                         {
                             path: 'products',
-                            name: 'List Product',
+                            name: 'Danh sách sản phẩm',
                             component: AdminProduct
                         },
                         {
                             path: 'products/add',
-                            name: 'Add Product',
+                            name: 'Thêm mới sản phẩm',
                             component: AdminProductAdd
                         },
                         {
                             path: 'products/edit/:id',
-                            name: 'Edit Product',
+                            name: 'Cập nhật sản phẩm',
                             component: AdminProductEdit
                         }
                     ]
                 },
                 {
-                    name: 'Posts',
+                    name: 'Bài viết',
                     path: '/',
                     redirect: 'posts',
                     component: {
@@ -77,17 +77,17 @@ const router =  new VueRouter({
                     children: [
                         {
                             path: 'posts',
-                            name: 'List Post',
+                            name: 'Danh sách bài viết',
                             component: AdminPost
                         },
                         {
                             path: 'posts/add',
-                            name: 'Add Post',
+                            name: 'Thêm mới bài viết',
                             component: AdminPostAdd
                         },
                         {
                             path: 'posts/edit/:id',
-                            name: 'Edit Post',
+                            name: 'Cập nhật bài viết',
                             component: AdminPostEdit
                         }
                     ]
@@ -96,7 +96,7 @@ const router =  new VueRouter({
         },
         {
             path: '/login',
-            name: 'Login',
+            name: 'Đăng nhập',
             component: Login
         }
         // {
