@@ -1,7 +1,7 @@
 <div id="header">
     <div id="logo">
         <a title="" href="/">
-            <img src="http://via.placeholder.com/120x40" alt="Camera">
+            <img src="/images/icons/logo.png" alt="Camera289">
         </a>
     </div>
     <div class="searchfield">
@@ -12,28 +12,59 @@
             <input type="submit" value="" class="btnSearch">
         </form>
     </div>
-    <div class="content_right">
-        content right
+    <div class="content_right" style="padding-right:25px;position: relative">
+        <div style="width: 200px; float:left; padding-top:10px">
+            <em style="font-size: 14px; color: rgb(0, 0, 0);">
+                <strong style="color: red;">
+                    TRUNG THỰC
+                </strong>
+            </em><br/>
+            <em style="font-size: 14px; color: rgb(0, 0, 0);">
+                <strong style="color: red;">
+                    CHUYÊN NGHIỆP                        
+                </strong>
+            </em><br/>
+            <em style="font-size: 14px; color: rgb(0, 0, 0);">
+                <strong style="color: red;">
+                    TẬN TÂM
+                </strong>
+            </em>
+        </div>
+        <div style="width: 340px; text-align: right; float:left; font-size:14px; padding-top:10px">
+                <strong>Địa chỉ : </strong>
+                Số 5, ngõ 289 Hoàng Mai, Hà Nội
+                <br/>
+                <strong>Điện thoại : </strong>
+                0943.044.115 - 0975.801.420
+        </div>
     </div>
     <div id="header_nav">
-        <ul class="fl" style="float:right; margin-right: 10px" id="navid">
-            @foreach($userMenu['left'] as $menu)
-                <li>
-                    <a title="{{ $menu->name }}" href="{{ $menu->path }}">
-                        <span>{{ $menu->name }}</span>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-        <ul class="fl" id="navid">
+        <div class="fl" style="float:right; margin-right: 10px" id="navid">
             @foreach($userMenu['right'] as $menu)
-                <li>
+                <div style="margin-top: -22px; float: right; margin-right: 9px;">
                     <a title="{{ $menu->name }}" href="{{ $menu->path }}">
-                        <span>{{ $menu->name }}</span>
+                        {{ $menu->name }}
+                        @if ($menu->icon)
+                            <img alt="" src="{{ Croppa::url('/' . $menu->icon, null, 37, array('resize')) }}" style="height:37px">
+                        @endif
+                        <img alt="" src="/uploads/khuyen-mai.png" style="height:37px">
                     </a>
-                </li>
+                </div>
             @endforeach
-        </ul>
+        </div>
+        <div class="fl" id="navid">
+            @foreach($userMenu['left'] as $menu)
+                <div style="margin-top: -22px; float: right; margin-right: 9px;">
+                    <a title="{{ $menu->name }}" href="{{ $menu->path }}">
+                        {{ $menu->name }}
+                        @if ($menu->icon)
+                            <img alt="" src="{{ Croppa::url('/' . $menu->icon, null, 37, array('resize')) }}" style="height:37px">
+                        @endif
+                        <img alt="" src="/uploads/khuyen-mai.png" style="height:37px">
+                    </a>
+                </div>
+            @endforeach
+        </div>
     </div>
     <div style="clear:both"></div>
 </div>

@@ -206,8 +206,7 @@ form.newsletter input.txt{
 }
 #footer{
     background:url(/images/content_shape.gif) repeat-x top;
-    ;
-    padding:5px 0;
+    padding:10px 0 5px 0px;
     background-color:#fff
 }
 #footer p.footer,p.show_query{
@@ -656,7 +655,7 @@ ul.list_item li{
     margin:0 auto;
     position:relative;
     width:990px;
-    height:185px;
+    height:100px;
     overflow:hidden
 }
 .footer_location{
@@ -830,16 +829,16 @@ a.prev span,a.next span{
     margin-left:0
 }
 #homeTabs li h2 a{
-    padding-bottom:5px;
-    height:156px;
-    width:155px;
+    padding-bottom: 5px;
+    height: 156px;
+    width: 155px;
     background:url(../../themes/default/css//img/imgHome/tabsTopBg.gif) repeat-y 0 0;
     font-size:12px;
     font-weight:normal;
     text-decoration:none;
     text-align:center;
     color:#fff;
-    float:left;
+    float: left;
     display:inline;
     overflow:hidden
 }
@@ -1079,7 +1078,7 @@ a.pro_detail:hover{
     margin-bottom:5px
 }
 #detail .zoom_img{
-    background:url(../../themes/default/images/shops/zoom-img.png) no-repeat left center;
+    background:url(/images/shops/zoom-img.png) no-repeat left center;
     line-height:26px;
     padding-left:20px;
     display:inline-block
@@ -1398,7 +1397,7 @@ div.TabView{
 }
 div.TabView div.Tabs{
     overflow:hidden;
-    background:#F7F7F7 url(../../themes/default/images/shops/bg_divtab.png) repeat-x bottom;
+    background:#F7F7F7 url(/images/shops/bg_divtab.png) repeat-x bottom;
     height:30px
 }
 div.TabView div.Tabs a{
@@ -1419,7 +1418,7 @@ div.TabView div.Tabs a:hover{
 }
 div.TabView div.Tabs a.Active{
     color:#000;
-    background:url(../../themes/default/images/shops/pro_tab.png) repeat-x;
+    background:url(/images/shops/pro_tab.png) repeat-x;
     border-top:1px solid #e6e6e6;
     border-right:1px solid #e6e6e6;
     border-left:1px solid #e6e6e6;
@@ -3747,7 +3746,139 @@ ul.listsub{
 .ddsmoothmenu-v ul li a:hover{
     color:#007da9
 }
+.ul_sub_menu li a {
+    display: block
+}
+
 .a_sub_menu_select{
     background-color:whiteSmoke;
-    color:red !important
+    color:red !important;
+}
+
+div.news_column ul.related{
+    float:left;
+    padding:4px;
+    text-align:justify
+}
+div.news_column ul.fixedwidth{
+    width:28%
+}
+div.span-25 ul.related{
+    width:100%
+}
+div.news_column ul.related li{
+    padding:0 4px 0 0
+}
+div.span-25 ul.related li{
+    padding:0 10px
+}
+div.news_column ul.related a{
+    background:url(/images/arrow_left_orange.png) no-repeat 0 6px;
+    color:#3b3b3b;
+    display:inline-block;
+    padding-left:6px
+}
+
+#news_detail h1{
+    color:#666;
+    font-size:16px;
+    padding:4px 0
+}
+#news_detail .time{
+    display:inline;
+    float:left
+}
+#news_detail span.time{
+    color:#999;
+    font-size:11px
+}
+
+#hometext {
+    font-weight: bold
+}
+
+div.news_column{
+    border-bottom:2px solid #e8e8e8;
+    margin-bottom:10px
+}
+div.news_column div.fixedwidth{
+    float:left;
+    width:68%
+}
+div.news_column div.header a{
+    color:#3b3b3b;
+    display:block;
+    float:left;
+    font-weight:normal;
+    height:28px;
+    line-height:20px;
+    padding:0 0 0 10px
+}
+div.news_column div.header{
+    background:url(/images/news_cat_header.png) repeat-x;
+    border-bottom:1px solid #ccc;
+    padding:4px 0 0 4px
+}
+div.news_column div.header a.current{
+    background:url(/images/news_arrow_down.png) no-repeat center 100%;
+    font-weight:bold;
+    padding:0
+}
+div.news_column div.header a.current span{
+    background:url(/images/news_cat_r.png) no-repeat top right;
+    cursor:pointer;
+    display:block;
+    float:left;
+    height:23px;
+    padding:0 6px 0 0
+}
+div.news_column div.header a.current span span{
+    background:url(/images/news_cat_l.png) no-repeat;
+    color:#fff;
+    padding:0 0 0 6px
+}
+div.news_column div.items{
+    padding:4px
+}
+div.news_column div.border_r{
+    border-right:1px dotted #ccc
+}
+div.news_column div.border_l{
+    border-left:1px dotted #ccc
+}
+div.news_column div.items h3 a{
+    color:#0e73e6;
+    font-weight:bold
+}
+div.news_column div.items h3 a:hover{
+    color:#649ee1
+}
+div.news_column div.items img{
+    border:1px solid #ccc;
+    float:left;
+    margin-right:8px;
+    padding:2px
+}
+div.news_column ul.related{
+    float:left;
+    padding:4px;
+    text-align:justify
+}
+div.news_column ul.fixedwidth{
+    width:28%
+}
+div.span-25 ul.related{
+    width:100%
+}
+div.news_column ul.related li{
+    padding:0 4px 0 0
+}
+div.span-25 ul.related li{
+    padding:0 10px
+}
+div.news_column ul.related a{
+    background:url(/images/arrow_left_orange.png) no-repeat 0 6px;
+    color:#3b3b3b;
+    display:inline-block;
+    padding-left:6px
 }

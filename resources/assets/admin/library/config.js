@@ -55,8 +55,13 @@ window.configTinyMCE = {
     external_plugins: { "filemanager" : "/bower_components/responsive-filemanager/filemanager/plugin.min.js"},
 
     image_advtab: true,
-    toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-    toolbar2: " | image | media | link unlink anchor | print preview"
+    toolbar1: `undo redo | bold italic underline | alignleft aligncenter alignright alignjustify 
+        | bullist numlist outdent indent | styleselect
+        | image media | link unlink anchor | print preview | fontsizeselect |
+    `,
+    // toolbar2: " | image | media | link unlink anchor | print preview | fontsizeselect",
+
+    fontsize_formats: '8pt 10pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 36pt',
 }
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

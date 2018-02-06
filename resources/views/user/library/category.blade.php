@@ -1,6 +1,8 @@
 <div class="nav">
     <ul class="nav fl" id="navid">
-        <li class="current">
+        <li 
+            {{--  class="current"  --}}
+        >
             <a title="Trang chủ" href="/">
                 <span class="span_home">
                     Trang chủ

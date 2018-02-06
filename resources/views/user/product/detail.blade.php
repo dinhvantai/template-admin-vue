@@ -39,6 +39,8 @@
                         {{ $category->name }}
                     </a>
                 @endif
+                    <span class="breakcolumn">»</span>
+                    {{ $data['product']->name }}
             </h3>
 
             <div id="detail">

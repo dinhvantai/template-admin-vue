@@ -29,15 +29,6 @@
                                 </b-form-select>
                             </b-form-fieldset>
                         </b-col>
-                        <!-- <b-col sm="6">
-                            <b-form-fieldset :label="$t('textParentMenu')">
-                                <b-form-select
-                                    :plain="true"
-                                    :options="getParentMenuOption"
-                                    v-model.number="formData.parent_id"
-                                />
-                            </b-form-fieldset>
-                        </b-col> -->
                     </b-row>
                     <b-row>
                         <b-col sm="6">
@@ -52,6 +43,53 @@
                         <b-col sm="6">
                             <b-form-fieldset :label="$t('textPrioty')">
                                 <b-form-input type="number" :placeholder="$t('textPrioty')" v-model.number="formData.prioty" />
+                            </b-form-fieldset>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col sm="12">
+                            <b-form-fieldset :label="$t('textIcon')"
+                                style="boder: 1px solid #E5E5E5"
+                            >
+                                <img :src="`/${formData.icon}`" 
+                                    style="max-width: 120px; paddding: 10px; margin-bottom: 15px"
+                                    v-if="formData.icon"
+                                />
+
+                                <vue-transmit
+                                    tag="section"
+                                    v-bind="uploadOptions"
+                                    @success="successUploader"
+                                    upload-area-classes="bg-faded"
+                                    ref="uploader"
+                                >
+                                    <b-row>
+                                        <b-col sm="2"
+                                            style="border-radius: 1px; boder: 1px solid #DCDCDC"
+                                            class="text-left"
+                                        >
+                                            <button class="btn btn-primary"
+                                            @click="triggerBrowse"
+                                        >{{ $t('textUploadNewFile') }}</button>
+                                        </b-col>
+                                    </b-row>
+                                    <!-- Scoped slot -->
+                                    <template slot="files" slot-scope="props">
+                                        <div v-for="(file, i) in props.files" :key="file.id" :class="{'mt-5': i === 0}">
+                                            <div class="media">
+                                                <img :src="file.dataUrl" class="img-fluid d-flex mr-3">
+                                                <div class="media-body">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success"
+                                                            :style="{width: file.upload.progress + '%'}"
+                                                        >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </vue-transmit>
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
@@ -80,6 +118,7 @@
 
 <script>
 import { ADMIN_MENU_POSITION_OPTION } from '../../store/menus'
+import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
     name: 'AdminMenuEdit',
@@ -104,14 +143,46 @@ export default {
     },
 
     data() {
+        let token = JSON.parse(localStorage.getItem(STORAGE_AUTH)).token
+        let today = new Date()
+
         return {
             optionPositionMenu: ADMIN_MENU_POSITION_OPTION.map(option => (
                 { value: option.value, text: this.$i18n.t(option.text) }
-            ))
+            )),
+
+            uploadOptions: {
+                acceptedFileTypes: ['image/*'],
+                url: '/api/v0/upload-image',
+                clickable: false,
+                params: {
+                    folder: `product-${today.getFullYear()}
+                        -${today.getMonth() + 1}
+                        -${today.getDate()}
+                    `,
+                },
+                maxFiles: 1,                
+                paramName: 'image',
+                headers: {
+                    Authorization: `${token.token_type} ${token.access_token}`
+                }
+            }
         }
     },
 
     methods: {
+        triggerBrowse(event) {
+            event.preventDefault()
+
+            return this.$refs.uploader.triggerBrowseFiles()
+        },
+
+        successUploader(response) {
+            let serveRespone = JSON.parse(response.xhr.response)
+            
+            return this.formData.icon = serveRespone.path
+        },
+
         clickEditMenu() {
             let params = this.formData
             // params.parent_id = params.parent_id ? params.parent_id : 0;

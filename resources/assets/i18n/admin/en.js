@@ -58,6 +58,7 @@ const en = {
     textManagePost: 'Manage Post',
     textEditPost: 'Edit post',
     textEditProduct: 'Edit product',
+    textIcon: 'Icon',
 }
 
 export default en;
