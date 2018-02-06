@@ -71,6 +71,65 @@
                         </b-col>
                     </b-row>
                     <b-row>
+                        <b-col sm="12">
+                            <b-form-fieldset :label="$t('textDecription')">
+                                <textarea 
+                                    class="form-control" 
+                                    :placeholder="$t('textDecription')" 
+                                    v-model="formData.description" 
+                                    rows="4"
+                                />
+                            </b-form-fieldset>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col sm="12">
+                            <b-form-fieldset :label="$t('textImage')"
+                                style="boder: 1px solid #E5E5E5"
+                            >
+                                <img :src="`/${formData.image}`" 
+                                    style="max-width: 150px; paddding: 10px; margin-bottom: 15px"
+                                    v-if="formData.image"
+                                />
+
+                                <vue-transmit
+                                    tag="section"
+                                    v-bind="uploadOptions"
+                                    @success="successUploader"
+                                    upload-area-classes="bg-faded"
+                                    ref="uploader"
+                                >
+                                    <b-row>
+                                        <b-col sm="2"
+                                            style="border-radius: 1px; boder: 1px solid #DCDCDC"
+                                            class="text-left"
+                                        >
+                                            <button class="btn btn-primary"
+                                            @click="triggerBrowse"
+                                        >{{ $t('textUploadNewFile') }}</button>
+                                        </b-col>
+                                    </b-row>
+                                    <!-- Scoped slot -->
+                                    <template slot="files" slot-scope="props">
+                                        <div v-for="(file, i) in props.files" :key="file.id" :class="{'mt-5': i === 0}">
+                                            <div class="media">
+                                                <img :src="file.dataUrl" class="img-fluid d-flex mr-3">
+                                                <div class="media-body">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success"
+                                                            :style="{width: file.upload.progress + '%'}"
+                                                        >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </vue-transmit>
+                            </b-form-fieldset>
+                        </b-col>
+                    </b-row>
+                    <b-row>
                         <b-col sm="6">
                             <b-form-fieldset :label="$t('textSeoKeyword')">
                                 <b-form-input
@@ -119,7 +178,7 @@
         </b-row>
         <div slot="header" class="w-100">
             <b-row>
-                <b-col sm="4">{{ $t('textAddProduct') }}</b-col>
+                <b-col sm="4">{{ $t('textEditProduct') }}</b-col>
                 <b-col sm="8" class="text-right">
                     <b-button type="submit" size="xs" variant="primary" @click="clickSubmitEdit">
                         <i class="fa fa-dot-circle-o"></i>
@@ -151,6 +210,7 @@ import Helper from '../../library/Helper'
 
 import { CATEGORY_TYPE_PRODUCT } from '../../store/category'
 import { PRODUCT_STATUS_SHOW, PRODUCT_STATUS_HIDDEN } from '../../store/product'
+import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
     name: 'AdminProductEdit',
@@ -161,6 +221,30 @@ export default {
         Helper.changeTitleAdminPage(this.$i18n.t('textManageProduct'))
         await this.$store.dispatch('callFetchCategories', { vue: this })
         await this.$store.dispatch('callProductShow', { vue: this, id: this.$route.params.id })
+    },
+
+    data() {
+        let token = JSON.parse(localStorage.getItem(STORAGE_AUTH)).token
+        let today = new Date()
+
+        return {
+            uploadOptions: {
+                acceptedFileTypes: ['image/*'],
+                url: '/api/v0/upload-image',
+                clickable: false,
+                params: {
+                    folder: `product-${today.getFullYear()}
+                        -${today.getMonth() + 1}
+                        -${today.getDate()}
+                    `,
+                },
+                maxFiles: 1,                
+                paramName: 'image',
+                headers: {
+                    Authorization: `${token.token_type} ${token.access_token}`
+                }
+            }
+        }
     },
 
     computed: {
@@ -174,6 +258,18 @@ export default {
     },
 
     methods: {
+        triggerBrowse(event) {
+            event.preventDefault()
+
+            return this.$refs.uploader.triggerBrowseFiles()
+        },
+
+        successUploader(response) {
+            let serveRespone = JSON.parse(response.xhr.response)
+            
+            return this.formData.image = serveRespone.path
+        },
+
         ortherOptions() {
             return {
                 ...configTinyMCE,

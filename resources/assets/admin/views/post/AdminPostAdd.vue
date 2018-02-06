@@ -4,21 +4,12 @@
             <b-col sm="12">
                 <b-form validated>
                     <b-row>
-                        <b-col sm="6">
+                        <b-col sm="10">
                             <b-form-fieldset :label="$t('textName')">
                                 <b-form-input 
                                     type="text" required
                                     :placeholder="$t('textName')" 
                                     v-model="formData.name" 
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                        <b-col sm="4">
-                            <b-form-fieldset :label="$t('textPrice')">
-                                <b-form-input 
-                                    type="text" required
-                                    :placeholder="$t('textPrice')"
-                                    v-model="formData.price" 
                                 />
                             </b-form-fieldset>
                         </b-col>
@@ -35,21 +26,12 @@
                     </b-row>
                     
                     <b-row>
-                        <b-col sm="6">
+                        <b-col sm="12">
                             <b-form-fieldset :label="$t('textSlug')">
                                 <b-form-input 
                                     type="text" required
                                     v-model="formSlugName"
                                     :placeholder="$t('textSlug')" 
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                        <b-col sm="6">
-                            <b-form-fieldset :label="$t('textGuarantee')">
-                                <b-form-input 
-                                    type="text" 
-                                    :placeholder="$t('textGuarantee')" 
-                                    v-model="formData.guarantee" 
                                 />
                             </b-form-fieldset>
                         </b-col>
@@ -155,23 +137,12 @@
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
-                    <b-row>
-                        <b-col sm="12">
-                            <b-form-fieldset :label="$t('textGuide')">
-                                <tinymce 
-                                    id="product_add_guide"
-                                    v-model="formData.guide" 
-                                    :other_options="ortherOptions()"
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                    </b-row>
                 </b-form>
             </b-col><!--/.col-->
         </b-row>
         <div slot="header" class="w-100">
             <b-row>
-                <b-col sm="4">{{ $t('textAddProduct') }}</b-col>
+                <b-col sm="4">{{ $t('textAddPost') }}</b-col>
                 <b-col sm="8" class="text-right">
                     <b-button type="submit" size="xs" variant="primary" @click="clickAddItem">
                         <i class="fa fa-dot-circle-o"></i>
@@ -201,17 +172,17 @@
 import cSwitch from '../../../components/Switch.vue'
 import Helper from '../../library/Helper'
 
-import { CATEGORY_TYPE_PRODUCT } from '../../store/category'
-import { PRODUCT_STATUS_SHOW, PRODUCT_STATUS_HIDDEN } from '../../store/product'
+import { CATEGORY_TYPE_POST } from '../../store/category'
+import { POST_STATUS_SHOW, POST_STATUS_HIDDEN } from '../../store/post'
 import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
-    name: 'AdminProductAdd',
+    name: 'AdminPostAdd',
 
     components: { cSwitch },
 
     beforeCreate() {
-        Helper.changeTitleAdminPage(this.$i18n.t('textManageProduct'))
+        Helper.changeTitleAdminPage(this.$i18n.t('textManagePost'))
         this.$store.dispatch('callFetchCategories', { vue: this })
     },
 
@@ -226,7 +197,7 @@ export default {
                 url: '/api/v0/upload-image',
                 clickable: false,
                 params: {
-                    folder: `product-${today.getFullYear()}
+                    folder: `post-${today.getFullYear()}
                         -${today.getMonth() + 1}
                         -${today.getDate()}
                     `,
@@ -250,12 +221,6 @@ export default {
             }
         },
     },
-
-    // filters: {
-    //     json(value) {
-    //         return JSON.stringify(value, null, 2)
-    //     }
-    // },
 
     methods: {
         triggerBrowse(event) {
@@ -282,7 +247,7 @@ export default {
             let options = []
 
             for (let i = 0; i < categories.length; i++) {
-                if (categories[i].type !== CATEGORY_TYPE_PRODUCT) continue
+                if (categories[i].type !== CATEGORY_TYPE_POST) continue
 
                 options.push({
                     value: categories[i].id,
@@ -304,18 +269,15 @@ export default {
         resetFromData() {
             return this.formData = {
                 name: '',
-                price: '',
                 slug: '',
                 image: '',
                 description: '',
                 status: true,
-                guarantee: '',
                 prioty: 0,
                 category_id: '',
                 seo_keyword: '',
                 seo_description: '',
                 detail: '',
-                guide: '',
             }
         },
 
@@ -323,8 +285,7 @@ export default {
             let params = this.formData
 
             return params.name && params.slug
-                && params.price && params.category_id
-                && params.detail && params.guide
+                && params.category_id && params.detail 
         },
 
         convertDataSubmit() {
@@ -332,7 +293,7 @@ export default {
 
             return {
                 ...params,
-                status: params.status ? PRODUCT_STATUS_SHOW : PRODUCT_STATUS_HIDDEN
+                status: params.status ? POST_STATUS_SHOW : POST_STATUS_HIDDEN
             }
         },
 
@@ -343,13 +304,13 @@ export default {
 
             let params = this.convertDataSubmit();
 
-            this.$store.dispatch('callProductAdd', { vue: this, params });
+            this.$store.dispatch('callPostAdd', { vue: this, params });
 
             return this.resetFromData()
         },
 
         clickCancel() {
-            return this.$router.push({ path: '/products' })
+            return this.$router.push({ path: '/posts' })
         },
     },
 }

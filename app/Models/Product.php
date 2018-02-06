@@ -19,7 +19,6 @@ class Product extends Model
         'detail',
         'guide',
         'guarantee',
-        'total_views',
         'status',
         'prioty',
         'category_id',

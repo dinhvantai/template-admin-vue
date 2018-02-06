@@ -1,24 +1,15 @@
 <template>
-    <b-card>
+   <b-card>
         <b-row>
             <b-col sm="12">
                 <b-form validated>
                     <b-row>
-                        <b-col sm="6">
+                        <b-col sm="10">
                             <b-form-fieldset :label="$t('textName')">
                                 <b-form-input 
                                     type="text" required
                                     :placeholder="$t('textName')" 
                                     v-model="formData.name" 
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                        <b-col sm="4">
-                            <b-form-fieldset :label="$t('textPrice')">
-                                <b-form-input 
-                                    type="text" required
-                                    :placeholder="$t('textPrice')"
-                                    v-model="formData.price" 
                                 />
                             </b-form-fieldset>
                         </b-col>
@@ -35,21 +26,12 @@
                     </b-row>
                     
                     <b-row>
-                        <b-col sm="6">
+                        <b-col sm="12">
                             <b-form-fieldset :label="$t('textSlug')">
                                 <b-form-input 
                                     type="text" required
-                                    v-model="formSlugName"
+                                    v-model="formData.slug"
                                     :placeholder="$t('textSlug')" 
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                        <b-col sm="6">
-                            <b-form-fieldset :label="$t('textGuarantee')">
-                                <b-form-input 
-                                    type="text" 
-                                    :placeholder="$t('textGuarantee')" 
-                                    v-model="formData.guarantee" 
                                 />
                             </b-form-fieldset>
                         </b-col>
@@ -87,6 +69,12 @@
                             <b-form-fieldset :label="$t('textImage')"
                                 style="boder: 1px solid #E5E5E5"
                             >
+                                <img 
+                                    :src="`/${formData.image}`" 
+                                    style="max-width: 150px; paddding: 10px; margin-bottom: 15px"
+                                    v-if="formData.image"
+                                />
+
                                 <vue-transmit
                                     tag="section"
                                     v-bind="uploadOptions"
@@ -101,7 +89,7 @@
                                         >
                                             <button class="btn btn-primary"
                                             @click="triggerBrowse"
-                                        >{{ $t('textUploadFile') }}</button>
+                                        >{{ $t('textUploadNewFile') }}</button>
                                         </b-col>
                                     </b-row>
                                     <!-- Scoped slot -->
@@ -148,19 +136,9 @@
                         <b-col sm="12">
                             <b-form-fieldset :label="$t('textDetail')">
                                 <tinymce 
-                                    id="product_add_detail" 
-                                    v-model="formData.detail" 
-                                    :other_options="ortherOptions()"
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col sm="12">
-                            <b-form-fieldset :label="$t('textGuide')">
-                                <tinymce 
-                                    id="product_add_guide"
-                                    v-model="formData.guide" 
+                                    id="product_edit_detail" 
+                                    v-model="formData.detail"
+                                    :value="formData.detail"
                                     :other_options="ortherOptions()"
                                 />
                             </b-form-fieldset>
@@ -171,11 +149,11 @@
         </b-row>
         <div slot="header" class="w-100">
             <b-row>
-                <b-col sm="4">{{ $t('textAddProduct') }}</b-col>
+                <b-col sm="4">{{ $t('textEditPost') }}</b-col>
                 <b-col sm="8" class="text-right">
-                    <b-button type="submit" size="xs" variant="primary" @click="clickAddItem">
+                    <b-button type="submit" size="xs" variant="primary" @click="clickSubmitEdit">
                         <i class="fa fa-dot-circle-o"></i>
-                        {{ $t('textAddNew') }}
+                        {{ $t('textSave') }}
                     </b-button>
                     <b-button type="reset" size="xs" variant="danger" @click="clickCancel">
                         <i class="fa fa-ban"></i>
@@ -185,9 +163,9 @@
             </b-row>
         </div>
         <div slot="footer" class="w-100 text-center">
-            <b-button type="submit" size="xs" variant="primary" @click="clickAddItem">
+            <b-button type="submit" size="xs" variant="primary" @click="clickSubmitEdit">
                 <i class="fa fa-dot-circle-o"></i>
-                {{ $t('textAddNew') }}
+                {{ $t('textSave') }}
             </b-button>
             <b-button type="reset" size="xs" variant="danger" @click="clickCancel">
                 <i class="fa fa-ban"></i>
@@ -201,18 +179,19 @@
 import cSwitch from '../../../components/Switch.vue'
 import Helper from '../../library/Helper'
 
-import { CATEGORY_TYPE_PRODUCT } from '../../store/category'
-import { PRODUCT_STATUS_SHOW, PRODUCT_STATUS_HIDDEN } from '../../store/product'
+import { CATEGORY_TYPE_POST } from '../../store/category'
+import { POST_STATUS_SHOW, POST_STATUS_HIDDEN } from '../../store/post'
 import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
-    name: 'AdminProductAdd',
+    name: 'AdminPostEdit',
 
     components: { cSwitch },
 
-    beforeCreate() {
-        Helper.changeTitleAdminPage(this.$i18n.t('textManageProduct'))
-        this.$store.dispatch('callFetchCategories', { vue: this })
+    async beforeCreate() {
+        Helper.changeTitleAdminPage(this.$i18n.t('textManagePost'))
+        await this.$store.dispatch('callFetchCategories', { vue: this })
+        await this.$store.dispatch('callPostShow', { vue: this, id: this.$route.params.id })
     },
 
     data() {
@@ -220,7 +199,6 @@ export default {
         let today = new Date()
 
         return {
-            formData: this.resetFromData(),
             uploadOptions: {
                 acceptedFileTypes: ['image/*'],
                 url: '/api/v0/upload-image',
@@ -241,21 +219,14 @@ export default {
     },
 
     computed: {
-        formSlugName: {
-            get() {
-                return slug(this.formData.name.toLowerCase())
-            },
-            set(val) {
-                return this.formData.slug = val
+        formData() {
+            let formData = this.$store.state.storeAdminPost.edit.post
+            return {
+                ...formData,
+                status: formData.status == POST_STATUS_SHOW ? true : false,
             }
         },
     },
-
-    // filters: {
-    //     json(value) {
-    //         return JSON.stringify(value, null, 2)
-    //     }
-    // },
 
     methods: {
         triggerBrowse(event) {
@@ -277,12 +248,44 @@ export default {
             }
         },
 
+        validateForm() {
+            let params = this.formData
+
+            return params.name && params.slug
+                && params.category_id && params.detail
+        },
+
+        convertDataSubmit() {
+            let params = this.formData
+
+            return {
+                ...params,
+                status: params.status ? POST_STATUS_SHOW : POST_STATUS_HIDDEN
+            }
+        },
+
+        clickSubmitEdit() {
+            if (!this.validateForm()) {
+                return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
+            }
+
+            let params = this.convertDataSubmit();
+
+            this.$store.dispatch('callPostEdit', { vue: this, params, id: params.id });
+
+            return this.$router.push({ path: '/posts' })
+        },
+
+        clickCancel() {
+            return this.$router.push({ path: '/posts' })
+        },
+
         categoryOption() {
             let categories = this.$store.state.storeAdminCategory.categories
             let options = []
 
             for (let i = 0; i < categories.length; i++) {
-                if (categories[i].type !== CATEGORY_TYPE_PRODUCT) continue
+                if (categories[i].type !== CATEGORY_TYPE_POST) continue
 
                 options.push({
                     value: categories[i].id,
@@ -300,57 +303,6 @@ export default {
 
             return options
         },
-        
-        resetFromData() {
-            return this.formData = {
-                name: '',
-                price: '',
-                slug: '',
-                image: '',
-                description: '',
-                status: true,
-                guarantee: '',
-                prioty: 0,
-                category_id: '',
-                seo_keyword: '',
-                seo_description: '',
-                detail: '',
-                guide: '',
-            }
-        },
-
-        validateForm() {
-            let params = this.formData
-
-            return params.name && params.slug
-                && params.price && params.category_id
-                && params.detail && params.guide
-        },
-
-        convertDataSubmit() {
-            let params = this.formData
-
-            return {
-                ...params,
-                status: params.status ? PRODUCT_STATUS_SHOW : PRODUCT_STATUS_HIDDEN
-            }
-        },
-
-        clickAddItem() {
-            if (!this.validateForm()) {
-                return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
-            }
-
-            let params = this.convertDataSubmit();
-
-            this.$store.dispatch('callProductAdd', { vue: this, params });
-
-            return this.resetFromData()
-        },
-
-        clickCancel() {
-            return this.$router.push({ path: '/products' })
-        },
-    },
+    }
 }
 </script>

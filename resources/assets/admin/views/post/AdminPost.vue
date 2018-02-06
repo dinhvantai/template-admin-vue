@@ -4,7 +4,7 @@
             <b-button-group class="pull-right">
                 <b-button variant="success" @click="clickAddNewItem">
                     <i class="icon-plus"></i>
-                    {{ $t('textAddProduct') }}
+                    {{ $t('textAddPost') }}
                 </b-button>
             </b-button-group>
         </b-col>
@@ -20,10 +20,10 @@
                     :per-page="perPage"
                 >
                     <template slot="category" slot-scope="data">
-                        {{ getCategoryProduct(data.item) }}
+                        {{ getCategoryPost(data.item) }}
                     </template>
                     <template slot="link" slot-scope="data">
-                        {{ getLinkProduct(data.item) }}
+                        {{ getLinkPost(data.item) }}
                     </template>
                     <template slot="image" slot-scope="data">
                         <img 
@@ -57,12 +57,12 @@
 </template>
 
 <script>
-    import { PRODUCT_STATUS_SHOW, PRODUCT_STATUS_HIDDEN } from '../../store/product'
+    import { POST_STATUS_SHOW, POST_STATUS_HIDDEN } from '../../store/post'
     import Helper from '../../library/Helper'
-import category from '../../store/category';
+    import category from '../../store/category';
 
     export default {
-        name: 'AdminProduct',
+        name: 'AdminPost',
         props: {
             hover: {
                 type: Boolean,
@@ -87,8 +87,8 @@ import category from '../../store/category';
         },
 
         beforeCreate() {
-            Helper.changeTitleAdminPage(this.$i18n.t('textManageProduct'))
-            this.$store.dispatch('callFetchProducts', { vue: this })
+            Helper.changeTitleAdminPage(this.$i18n.t('textManagePost'))
+            this.$store.dispatch('callFetchPosts', { vue: this })
         },
 
         data() {
@@ -99,7 +99,6 @@ import category from '../../store/category';
                     {key: 'category', label: this.$i18n.t('textCategory')},
                     {key: 'link', label: this.$i18n.t('textLink')},
                     {key: 'image', label: this.$i18n.t('textImage')},
-                    {key: 'price', label: this.$i18n.t('textPrice')},
                     {key: 'prioty', label: this.$i18n.t('textPrioty')},
                     {key: 'status', label: this.$i18n.t('textStatus')},
                     {key: 'action', label: this.$i18n.t('textAction')},
@@ -110,32 +109,32 @@ import category from '../../store/category';
         },
 
         methods: {
-            getCategoryProduct(product) {
-                let category = product.category
+            getCategoryPost(post) {
+                let category = post.category
 
                 return category.parent_category 
                     ? `${category.parent_category.name} / ${category.name}`
                     : category.name
             },
 
-            getLinkProduct(product) {
-                return `/san-pham/${product.slug}`
+            getLinkPost(post) {
+                return `/tin-tuc/${post.slug}`
             },
 
             clickAddNewItem() {
-                return this.$router.push({ path: '/products/add' })
+                return this.$router.push({ path: '/posts/add' })
             },
 
             convertDataSubmit(params) {
                 return {
                     ...params,
                     parent_id: params.parent_id ? params.parent_id : null,
-                    status: params.status ? PRODUCT_STATUS_SHOW : PRODUCT_STATUS_HIDDEN
+                    status: params.status ? POST_STATUS_SHOW : POST_STATUSostN
                 }
             },
 
-            clickEditItem(product) {
-                return this.$router.push({ path: `/products/edit/${product.id}` })
+            clickEditItem(post) {
+                return this.$router.push({ path: `/posts/edit/${post.id}` })
             },
 
             async clickDeleteItem(id) {
@@ -146,7 +145,7 @@ import category from '../../store/category';
                         buttons: true,
                         dangerMode: true,
                     })
-                    && this.$store.dispatch('callProductDelete', { vue: this, id })
+                    && this.$store.dispatch('callPostDelete', { vue: this, id })
             }
         },
 
@@ -156,8 +155,8 @@ import category from '../../store/category';
             },
 
             items() {
-                return this.$store.state.storeAdminProduct.products
-            },
+                return this.$store.state.storeAdminPost.posts
+            }
         },
     }
 </script>
