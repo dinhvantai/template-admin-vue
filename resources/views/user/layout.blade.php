@@ -10,9 +10,7 @@
     <meta name="description" content="@yield('seoDescription')">
     <meta name="keywords" content="@yield('seoKeyword')">
     <meta name="language" content="vietnamese">
-    <meta name="robots" content="index, archive, follow, noodp">
-    <meta name="googlebot" content="index,archive,follow,noodp">
-    <link rel="icon" href="/favicon.png" type="image/vnd.microsoft.icon">
+    <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
     <link rel="stylesheet" href="/css/user.css" type="text/css">
     
     @yield('addCss')

@@ -6,6 +6,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Menu;
 use App\Models\Category;
+use App\Models\Post;
 
 class DataComposer
 {
@@ -14,10 +15,12 @@ class DataComposer
     
     public function __construct(
     	Menu $menu,
-    	Category $category
+        Category $category,
+        Post $post
     ){
         $this->menu = $menu;
         $this->category = $category;
+        $this->post = $post;
     }
     /**
      * Bind data to the view.
@@ -52,6 +55,16 @@ class DataComposer
                 ->get();
 
             $view->with('userCategories', $categories);
+        }
+
+        if (Schema::hasTable($this->post->getTable())) {
+            $posts = $this->post
+                ->where('status', POST::STATUS_SHOW)
+                ->orderBy('prioty', 'desc')
+                ->orderBy('id', 'desc')
+                ->take(5)->get();
+
+            $view->with('userHotPosts', $posts);
         }
     }
 }

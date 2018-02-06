@@ -76,16 +76,17 @@
             <div class="box silver">
                 <div class="right_block_title">
                     <div class="bg_left_title">
-                        <p>{{ $category->name }}</p>
+                        <p>{{ $categoryParent->name }}</p>
                     </div>
                 </div>
                 <div id="smoothmenu2" class="ddsmoothmenu-v">
                     <ul class="ul_sub_menu">
-                        @foreach($category->childrenCategories as $children)
+                        @foreach($categoryParent->childrenCategories as $children)
                             <li class="">
-                                <a class="" 
-                                    title="{{ $children->name }}" 
-                                    href="{{ route('user.category.children', [$category->slug, $children->slug]) }}"
+                                <a class="{{ ($children->id == $category->id) ? 'a_sub_menu_select' : ''}}" 
+                                    title="{{ $children->name }}"
+                                    href="{{ route('user.category.children', [$categoryParent->slug, $children->slug]) }}"
+                                    style="display: block"
                                 >
                                     {{ $children->name }}
                                 </a>

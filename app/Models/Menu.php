@@ -21,6 +21,7 @@ class Menu extends Model
         'position',
         'prioty',
         'path',
+        'icon',
     ];
 
     // public function childrenMenus()

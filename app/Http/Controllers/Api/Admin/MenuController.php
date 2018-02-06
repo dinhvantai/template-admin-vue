@@ -89,7 +89,10 @@ class MenuController extends ApiController
      */
     public function destroy(Menu $menu)
     {
+        $icon = $menu->icon;
         if ($menu->delete()) {
+            \App\Helpers\Helper::deleteFile($icon);
+            
             return $this->response(['message' => trans('message.delete_success')]);
         }
 

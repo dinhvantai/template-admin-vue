@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Models\Menu;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -61,6 +62,31 @@ class HomeController extends Controller
 
             return view('user.category.parent-product', compact(['category', 'products']));
         }
+
+        if ($category->type === Category::TYPE_POST) {
+            $countPost = Post::where('status', Post::STATUS_SHOW)
+                ->whereIn('category_id', $categoryIds)->count();
+
+            if ($countPost === 1) {
+                $post = Post::where('status', Post::STATUS_SHOW)
+                    ->whereIn('category_id', $categoryIds)->first();
+                    
+                return view('user.category.one-post', compact(['category', 'post']));
+            }
+
+            $categories = Category::with('parentCategory')
+                ->with(['posts' => function($query){
+                    $query->where('status', Post::STATUS_SHOW)
+                        ->orderBy('id', 'desc')->take(4);
+                }])
+                ->where('status', Category::STATUS_SHOW)
+                ->whereIn('id', $categoryIds)
+                ->orderBy('prioty', 'desc')->get();
+
+            return view('user.category.parent-post', compact(['category', 'categories']));
+        }
+
+        return redirect('/');
     }
 
     public function categoryChildren($parent, $children)
@@ -69,7 +95,7 @@ class HomeController extends Controller
             ->where('status', Category::STATUS_SHOW)->where('slug', $parent)
             ->whereNull('parent_id')->orWhere('parent_id', 0)
             ->first();
-        
+
         if (!$categoryParent) {
             return redirect('/');
         }
@@ -82,7 +108,7 @@ class HomeController extends Controller
             return redirect()->route('user.category.parent', [$categoryParent->slug]);
         }
 
-        if ($category->type === Category::TYPE_PRODUCT) {
+        if ($categoryParent->type === Category::TYPE_PRODUCT) {
             $products = Product::where('status', Product::STATUS_SHOW)                
                 ->where('category_id', $category->id)
                 ->orderBy('prioty', 'desc')->orderBy('id', 'desc')
@@ -90,6 +116,17 @@ class HomeController extends Controller
 
             return view('user.category.children-product', compact(['category', 'products', 'categoryParent']));
         }
+
+        if ($categoryParent->type === Category::TYPE_POST) {
+            $posts = Post::where('status', Post::STATUS_SHOW)
+                ->where('category_id', $category->id)
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+
+            return view('user.category.children-post', compact(['category', 'posts', 'categoryParent']));
+        }
+
+        return redirect('/');
     }
 
     public function detailProduct($slug)
@@ -116,5 +153,34 @@ class HomeController extends Controller
             ->take(12)->get();
 
         return view('user.product.detail', compact(['data']));
+    }
+
+    public function detailPost($slug)
+    {
+        $data['post'] = Post::with('category.parentCategory')
+            ->where('status', Post::STATUS_SHOW)
+            ->where('slug', $slug)->first();
+        
+        if(!$data['post']) {
+            return redirect('/');
+        }
+
+        $data['newer-news'] = Post::where('status', Post::STATUS_SHOW)
+            ->where('created_at', '>', $data['post']->created_at)
+            ->orderBy('id', 'desc')->take(10)->get();
+
+        $data['older-news'] = Post::where('status', Post::STATUS_SHOW)
+            ->where('created_at', '<', $data['post']->created_at)
+            ->orderBy('id', 'desc')->take(10)->get();
+
+        return view('user.post.detail', compact(['data']));
+    }
+
+    public function listPost()
+    {
+        $posts = Post::where('status', Post::STATUS_SHOW)
+            ->paginate(10);
+
+        return view('user.post.popular', compact(['posts']));
     }
 }

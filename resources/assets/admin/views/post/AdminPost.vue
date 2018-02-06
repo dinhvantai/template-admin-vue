@@ -26,7 +26,7 @@
                         {{ getLinkPost(data.item) }}
                     </template>
                     <template slot="image" slot-scope="data">
-                        <img 
+                        <b-img thumbnail 
                             :src="`/${data.item.image}`" 
                             :alt="data.item.name"
                             style="width: 150px"
@@ -118,7 +118,7 @@
             },
 
             getLinkPost(post) {
-                return `/tin-tuc/${post.slug}`
+                return `/news/${post.slug}`
             },
 
             clickAddNewItem() {
