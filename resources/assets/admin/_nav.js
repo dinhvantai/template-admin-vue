@@ -3,7 +3,7 @@ import Vue from 'vue'
 export default {
     items: [
         {
-            name: 'Dashboard',
+            name: 'Quản lý',
             url: '/dashboard',
             icon: 'icon-speedometer',
             // badge: {
@@ -17,34 +17,34 @@ export default {
             icon: 'icon-list'
         },
         {
-            name: 'Categories',
+            name: 'Danh mục',
             url: '/categories',
             icon: 'icon-list'
         },
         {
-            name: 'Products',
+            name: 'Sản phẩm',
             icon: 'icon-list',
             children: [
                 {
-                    name: 'List',
+                    name: 'Danh sách',
                     url: '/products',
                 },
                 {
-                    name: 'Add',
+                    name: 'Thêm mới',
                     url: '/products/add',
                 }
             ]
         },
         {
-            name: 'Posts',
+            name: 'Bài viết',
             icon: 'icon-list',
             children: [
                 {
-                    name: 'List',
+                    name: 'Danh sách',
                     url: '/posts',
                 },
                 {
-                    name: 'Add',
+                    name: 'Thêm mới',
                     url: '/posts/add',
                 }
             ]

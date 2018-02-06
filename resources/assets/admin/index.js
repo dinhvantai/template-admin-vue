@@ -16,7 +16,7 @@ require('./library/usePlugin')
 require('./library/checkAuth')
 
 const i18n = new VueI18n({
-    locale: 'en', // set locale: en, vi ...
+    locale: 'vi', // set locale: en, vi ...
     messages // set locale messages
 })
 
