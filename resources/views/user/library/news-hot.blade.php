@@ -10,7 +10,7 @@
         <ul>
             @foreach($userHotPosts as $post)
                 <li class="clearfix ">
-                    <a href="{{ route('user.post.detail', [$post->id]) }}" title="{{ $post->name }}">
+                    <a href="{{ route('user.post.detail', [$post->slug]) }}" title="{{ $post->name }}">
                         <img src="{{ Croppa::url('/' . $post->image, 60, null, array('resize')) }}" 
                             alt="{{ $post->name }}"
                         />
