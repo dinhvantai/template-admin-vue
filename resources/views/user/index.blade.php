@@ -26,26 +26,15 @@
                             </p>
                         </div>
                     </div>
-                    {{--  <span style="color: rgb(255, 255, 0);">
-                        <span style="font-size: 12px;">
-                            <span style="font-size: 16px;">HOTLINE:
-                                <span style="font-size:14px;">0917.819.833</span>
-                            </span>
-                        </span>
-                        <br>
-                        <span style="font-size: 12px;">
-                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-                            <span style="font-size:14px;">
-                                0977.018.686
-                            </span>
-                        </span>
-                    </span>  --}}
                 </h2>
             </div>
-            {{--  <a href="http://minhan.com.vn/news/Khuyen-mai/Khuyen-mai-50-doi-voi-goi-Camera-co-ban-180/"
-                target="_blank">
-                <img alt="" src="./camera_files/quang-cao.png" style="width: 255px; height: 150px;">
-            </a>  --}}
+            @if ($banner['ad'])
+                <a href="{{ $banner['ad']->link }}" title="{{ $banner['ad']->name }}" target="_blank">
+                    <img alt="{{ $banner['ad']->name }}" src="/{{ $banner['ad']->image }}" 
+                        style="width: 250px; height: 200px;"
+                    />
+                </a>
+            @endif
             <div style="clear: both;height: 0px;"> &nbsp;</div>
         </div>
         <div style="clear:both"></div>
@@ -116,14 +105,16 @@
 
         <div class="clear"></div>
 
-        <div style="color: rgb(84, 84, 84);font-size: 18px;word-spacing: -1px;text-indent: 20px;font-weight: normal; ">
-            <span style="color:rgb(0, 0, 205);">Khách hàng- Đối tác chính</span>
+        <div style="color: rgb(84, 84, 84);font-size: 18px;word-spacing: -1px;text-indent: 20px;font-weight: normal;margin-top: 20px ">
+            <span style="color:rgb(0, 0, 205);">Khách hàng - Đối tác chính</span>
         </div>
-        <div style="height:40px; width: 970px; margin: 0 auto; overflow: hidden;">
-            <div style="height:40px; width: 970px; margin: 0 auto;animation: notify_textmove 25s linear infinite;-webkit-animation: notify_textmove 25s linear infinite;">
-                <a href="http://minhan.com.vn/shops/Wansview/">
-                    {{--  <img alt="" height="29" src="./camera_files/genviet.jpg" width="81">  --}}
-                </a>
+        <div style="height:80px; width: 970px; margin: 0 auto; overflow: hidden;">
+            <div style="height:80px; width: 970px; margin: 0 auto;animation: notify_textmove 25s linear infinite;-webkit-animation: notify_textmove 25s linear infinite;">
+                @foreach($banner['partner'] as $partner)
+                    <a href="{{ $partner->link }}">
+                        <img alt="{{ $partner->name }}" height="60" src="/{{ $partner->image }}" width="120">
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>

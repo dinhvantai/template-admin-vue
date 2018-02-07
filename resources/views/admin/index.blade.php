@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
-        <title>Admin Template</title>
+        <title>Admin</title>
         {{--  <style href={{ mix('/css/admin.css') }}></style>  --}}
     </head>
     <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">

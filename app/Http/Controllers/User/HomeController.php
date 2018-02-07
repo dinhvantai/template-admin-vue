@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Post;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,14 +15,14 @@ class HomeController extends Controller
     public function index()
     {
         $homeCategories = Category::with(['childrenCategories' => function($query){
-            $query->where('status', Category::STATUS_SHOW)
-                ->orderBy('prioty', 'desc')->orderBy('id');
-        }])
-        ->where('type', Category::TYPE_PRODUCT)
-        ->where('status', Category::STATUS_SHOW)
-        ->whereNull('parent_id')->orWhere('parent_id', 0)
-        ->orderBy('prioty', 'desc')->orderBy('id')
-        ->take(5)->get();
+                $query->where('status', Category::STATUS_SHOW)
+                    ->orderBy('prioty', 'desc')->orderBy('id');
+            }])
+            ->where('type', Category::TYPE_PRODUCT)
+            ->where('status', Category::STATUS_SHOW)
+            ->whereNull('parent_id')->orWhere('parent_id', 0)
+            ->orderBy('prioty', 'desc')->orderBy('id')
+            ->take(5)->get();
 
         foreach ($homeCategories as $key => $category) {
             $categoryIds = array_merge(
@@ -35,7 +36,14 @@ class HomeController extends Controller
                 ->take(8)->get();
         }
 
-        return view('user.index', compact(['homeCategories']));
+        $banner['ad'] = Banner::where('status', Banner::STATUS_SHOW)
+            ->where('position', Banner::POSITION_AD)
+            ->orderBy('id', 'desc')->first();
+        $banner['partner'] = Banner::where('status', Banner::STATUS_SHOW)
+            ->where('position', Banner::POSITION_PARTNER)
+            ->get();
+
+        return view('user.index', compact(['homeCategories', 'banner']));
     }
 
     public function categoryParent($parent)
@@ -138,6 +146,9 @@ class HomeController extends Controller
         if(!$data['product']) {
             return redirect('/');
         }
+
+        $data['product']->total_views += 1;
+        $data['product']->save();
 
         if ($data['product']->category->parentCategory) {
             $parentCategory = $data['product']->category->parentCategory;
