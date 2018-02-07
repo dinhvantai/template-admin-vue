@@ -14,6 +14,8 @@ import AdminPost from '../views/post/AdminPost.vue'
 import AdminPostAdd from '../views/post/AdminPostAdd.vue'
 import AdminPostEdit from '../views/post/AdminPostEdit.vue'
 
+import AdminSetup from '../views/setup/AdminSetup.vue'
+
 const router =  new VueRouter({
     routes: [
         {
@@ -91,6 +93,11 @@ const router =  new VueRouter({
                             component: AdminPostEdit
                         }
                     ]
+                },
+                {
+                    name: 'Cài đặt',
+                    path: 'setups',
+                    component: AdminSetup
                 },
             ]
         },

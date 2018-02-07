@@ -141,6 +141,8 @@ export default {
                 { value: option.value, text: this.$i18n.t(option.text) }
             )),
 
+            showUploadFile: true,
+
             formData: this.resetFormData(),
 
             uploadOptions: {
@@ -166,6 +168,10 @@ export default {
         triggerBrowse(event) {
             event.preventDefault()
 
+            if (this.$refs.uploader.files.length >= this.uploadOptions.maxFiles) {
+                return this.$toaster.error(this.$i18n.t('textNotAddFile'));
+            }
+            
             return this.$refs.uploader.triggerBrowseFiles()
         },
 
@@ -195,6 +201,7 @@ export default {
             }
 
             this.resetFormData()
+            this.$refs.uploader.files = []
             return this.submitModalAddMenu(params)
         }
     },

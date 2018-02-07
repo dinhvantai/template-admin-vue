@@ -60,6 +60,9 @@ const en = {
     textEditProduct: 'Edit product',
     textIcon: 'Icon',
     textAccount: 'Account',
+    textLogo: 'Logo',
+    textSetups: 'Setup',
+    textNotAddFile: 'Can not add file anymore!',
 }
 
 export default en;

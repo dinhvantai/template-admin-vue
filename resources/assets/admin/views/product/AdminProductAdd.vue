@@ -82,10 +82,10 @@
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
+
                     <b-row>
                         <b-col sm="12">
                             <b-form-fieldset :label="$t('textImage')"
-                                style="boder: 1px solid #E5E5E5"
                             >
                                 <vue-transmit
                                     tag="section"
@@ -93,37 +93,55 @@
                                     @success="successUploader"
                                     upload-area-classes="bg-faded"
                                     ref="uploader"
+                                    style="border: 1px solid #E5E5E5"
                                 >
                                     <b-row>
-                                        <b-col sm="2"
-                                            style="border-radius: 1px; boder: 1px solid #DCDCDC"
-                                            class="text-left"
+                                        <b-col sm="12"
+                                            style="border-radius: 1px; boder: 1px solid #DCDCDC; padding-top:5px;margin-bottom: 5px"
+                                            class="text-center"
                                         >
                                             <button class="btn btn-primary"
-                                            @click="triggerBrowse"
-                                        >{{ $t('textUploadFile') }}</button>
+                                                @click="triggerBrowse"
+                                                style="margin-left: 20px"
+                                            >{{ $t('textUploadFile') }}</button>
                                         </b-col>
                                     </b-row>
                                     <!-- Scoped slot -->
                                     <template slot="files" slot-scope="props">
-                                        <div v-for="(file, i) in props.files" :key="file.id" :class="{'mt-5': i === 0}">
-                                            <div class="media">
-                                                <img :src="file.dataUrl" class="img-fluid d-flex mr-3">
-                                                <div class="media-body">
+                                        <div v-for="(file, i) in props.files" 
+                                            :key="file.id" :class="{'mt-5': i === 0}"
+                                            style="margin-bottom: 20px"
+                                        >
+                                            <b-row>
+                                                <b-col sm="2">
+                                                    <b-img thumbnail 
+                                                        :src="file.dataUrl" 
+                                                        class="img-fluid d-flex mr-3"
+                                                    />
+                                                </b-col>
+                                                <b-col sm="9">
                                                     <div class="progress">
                                                         <div class="progress-bar bg-success"
                                                             :style="{width: file.upload.progress + '%'}"
                                                         >
-                                                        </div>
+                                                        </div>                                          
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </b-col>
+                                                <b-col sm="1">
+                                                    <b-button type="reset" size="sm" variant="danger" 
+                                                        @click="removeUploadFile(i, $event)"
+                                                    >
+                                                        <i class="fa fa-remove"></i>  
+                                                    </b-button>                                  
+                                                </b-col>
+                                            </b-row>
                                         </div>
                                     </template>
                                 </vue-transmit>
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
+                    
                     <b-row>
                         <b-col sm="6">
                             <b-form-fieldset :label="$t('textSeoKeyword')">
@@ -251,17 +269,30 @@ export default {
         },
     },
 
-    // filters: {
-    //     json(value) {
-    //         return JSON.stringify(value, null, 2)
-    //     }
-    // },
-
     methods: {
         triggerBrowse(event) {
             event.preventDefault()
-
+            
+            if (this.$refs.uploader.files.length >= this.uploadOptions.maxFiles) {
+                return this.$toaster.error(this.$i18n.t('textNotAddFile'));
+            }
+            
             return this.$refs.uploader.triggerBrowseFiles()
+        },
+
+        async removeUploadFile(index, event) {
+            event.preventDefault();
+
+            let files = this.$refs.uploader.files
+
+            await this.$swal({
+                title: this.$i18n.t('textConfirmDelete'),
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }) && (this.$refs.uploader.files = files.filter((f, i) => i !== index))
+
+            return this.formData.image = ''
         },
 
         successUploader(response) {

@@ -30,5 +30,8 @@ Route::group(['domain' => env('DOMAIN_AMIN'), 'namespace' => 'Api\Admin', 'prefi
         Route::resource('posts', 'PostController')->only($methodAllow);
 
         Route::post('upload-image', 'MediaController@uploadImage');
+
+        Route::get('setups', 'ExtraController@getSetup');
+        Route::put('setups', 'ExtraController@putSetup');
     });
 });
