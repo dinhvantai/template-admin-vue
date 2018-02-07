@@ -139,7 +139,8 @@ a:hover{
     width:40px
 }
 div.contentwrapper{
-    position:relative
+    position:relative;
+    margin-top: 30px;
 }
 .contentmid{
     background-color:#fff
@@ -655,7 +656,7 @@ ul.list_item li{
     margin:0 auto;
     position:relative;
     width:990px;
-    height:100px;
+    height:150px;
     overflow:hidden
 }
 .footer_location{

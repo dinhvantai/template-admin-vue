@@ -60,6 +60,9 @@ const vi = {
     textEditProduct: 'Sửa sản phẩm',
     textIcon: 'Icon',
     textAccount: 'Tài khoản',
+    textLogo: 'Logo',
+    textSetups: 'Cài đặt',
+    textNotAddFile: 'Không thể thêm file được nữa',
 }
 
 export default vi;

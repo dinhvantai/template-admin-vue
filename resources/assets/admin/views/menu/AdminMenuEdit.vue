@@ -46,7 +46,7 @@
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
-                    <b-row>
+                    <b-row v-show="openModalValue">
                         <b-col sm="12">
                             <b-form-fieldset :label="$t('textIcon')"
                                 style="boder: 1px solid #E5E5E5"
@@ -174,6 +174,10 @@ export default {
         triggerBrowse(event) {
             event.preventDefault()
 
+            if (this.$refs.uploader.files.length >= this.uploadOptions.maxFiles) {
+                return this.$toaster.error(this.$i18n.t('textNotAddFile'));
+            }
+
             return this.$refs.uploader.triggerBrowseFiles()
         },
 
@@ -190,6 +194,8 @@ export default {
             if (!params.name || !params.path || !params.position) {
                 return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
             }
+
+            this.$refs.uploader.files = []
 
             return this.submitModalEditMenu(this.formData.id, params)
         },

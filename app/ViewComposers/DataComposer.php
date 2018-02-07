@@ -55,6 +55,17 @@ class DataComposer
                 ->get();
 
             $view->with('userCategories', $categories);
+
+            $postCategories = $this->category->with(['childrenCategories' => function($query){
+                $query->where('status', Category::STATUS_SHOW)
+                    ->orderBy('prioty', 'desc')->orderBy('id');
+            }])
+            ->where('type', Category::TYPE_POST)
+            ->where('status', Category::STATUS_SHOW)
+            ->whereNull('parent_id')->orWhere('parent_id', 0)
+            ->get();
+
+            $view->with('userPostCategories', $postCategories);
         }
 
         if (Schema::hasTable($this->post->getTable())) {

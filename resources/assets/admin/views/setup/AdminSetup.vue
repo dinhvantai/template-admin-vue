@@ -4,69 +4,18 @@
             <b-col sm="12">
                 <b-form validated>
                     <b-row>
-                        <b-col sm="10">
-                            <b-form-fieldset :label="$t('textName')">
-                                <b-form-input 
-                                    type="text" required
-                                    :placeholder="$t('textName')" 
-                                    v-model="formData.name" 
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                        <b-col sm="2">
-                            <b-form-fieldset :label="$t('textStatus')" class="text-center">
-                                <c-switch
-                                    type="text" variant="primary-outline-alt"
-                                    on="On" off="Off"
-                                    :pill="true" :checked="true"
-                                    v-model="formData.status"
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                    </b-row>
-                    
-                    <b-row>
                         <b-col sm="12">
-                            <b-form-fieldset :label="$t('textSlug')">
-                                <b-form-input 
-                                    type="text" required
-                                    v-model="formData.slug"
-                                    :placeholder="$t('textSlug')" 
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col sm="6">
-                            <b-form-fieldset :label="$t('textCategory')">
-                                <b-form-select
-                                    :plain="true" required
-                                    :options="categoryOption()"
-                                    v-model.number="formData.category_id"
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                        <b-col sm="6">
-                            <b-form-fieldset :label="$t('textPrioty')">
-                                <b-form-input type="number" :placeholder="$t('textPrioty')" v-model.number="formData.prioty" />
-                            </b-form-fieldset>
-                        </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col sm="12">
-                            <b-form-fieldset :label="$t('textDecription')">
-                                <textarea 
-                                    class="form-control" 
-                                    :placeholder="$t('textDecription')" 
-                                    v-model="formData.description" 
-                                    rows="4"
+                            <b-form-fieldset :label="$t('textTitle')">
+                                <b-form-input
+                                    :placeholder="$t('textTitle')" 
+                                    v-model="formData.option.title" 
                                 />
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
                     <b-row>
                         <b-col sm="12">
-                            <b-form-fieldset :label="$t('textImage')"
+                            <b-form-fieldset :label="$t('textLogo')"
                             >
                                 <vue-transmit
                                     tag="section"
@@ -82,9 +31,9 @@
                                             class="text-left"
                                         >
                                             <b-img thumbnail 
-                                                :src="`/${formData.currentImage}`" 
+                                                :src="`/${formData.currentLogo}`" 
                                                 style="max-width: 150px; margin-left: 10px; margin-bottom: 15px"
-                                                v-if="formData.currentImage"
+                                                v-if="formData.currentLogo"
                                             />
                                             <button class="btn btn-primary"
                                                 @click="triggerBrowse"
@@ -115,7 +64,8 @@
                                                 </b-col>
                                                 <b-col sm="1">
                                                     <b-button type="reset" size="sm" variant="danger" 
-                                                        @click="removeUploadFile(i, $event)">
+                                                        @click="removeUploadFile(i, $event)"
+                                                    >
                                                         <i class="fa fa-remove"></i>  
                                                     </b-button>                                  
                                                 </b-col>
@@ -127,7 +77,7 @@
                         </b-col>
                     </b-row>
                     <b-row>
-                        <b-col sm="6">
+                        <b-col sm="12">
                             <b-form-fieldset :label="$t('textSeoKeyword')">
                                 <b-form-input
                                     type="text"
@@ -136,7 +86,9 @@
                                 />
                             </b-form-fieldset>
                         </b-col>
-                        <b-col sm="6">
+                    </b-row>
+                    <b-row>
+                        <b-col sm="12">
                             <b-form-fieldset :label="$t('textSeoDescription')">
                                 <b-form-input
                                     type="text"
@@ -146,24 +98,12 @@
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
-                    <b-row>
-                        <b-col sm="12">
-                            <b-form-fieldset :label="$t('textDetail')">
-                                <tinymce 
-                                    id="product_edit_detail" 
-                                    v-model="formData.detail"
-                                    :value="formData.detail"
-                                    :other_options="ortherOptions()"
-                                />
-                            </b-form-fieldset>
-                        </b-col>
-                    </b-row>
                 </b-form>
             </b-col><!--/.col-->
         </b-row>
         <div slot="header" class="w-100">
             <b-row>
-                <b-col sm="4">{{ $t('textEditPost') }}</b-col>
+                <b-col sm="4">{{ $t('textSetups') }}</b-col>
                 <b-col sm="8" class="text-right">
                     <b-button type="submit" size="xs" variant="primary" @click="clickSubmitEdit">
                         <i class="fa fa-dot-circle-o"></i>
@@ -190,22 +130,31 @@
 </template>
 
 <script>
-import cSwitch from '../../../components/Switch.vue'
 import Helper from '../../library/Helper'
 
-import { CATEGORY_TYPE_POST } from '../../store/category'
-import { POST_STATUS_SHOW, POST_STATUS_HIDDEN } from '../../store/post'
 import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
-    name: 'AdminPostEdit',
+    name: 'AdminSetup',
 
-    components: { cSwitch },
+    beforeCreate() {
+        Helper.changeTitleAdminPage(this.$i18n.t('textSetups'))
+    },
 
-    async beforeCreate() {
-        Helper.changeTitleAdminPage(this.$i18n.t('textManagePost'))
-        await this.$store.dispatch('callFetchCategories', { vue: this })
-        await this.$store.dispatch('callPostShow', { vue: this, id: this.$route.params.id })
+    async mounted() {
+        let response = await axios.get('/setups');
+
+        if (response.status == 200) {
+            let formData = response.data;
+            formData.option = JSON.parse(formData.option);
+            formData.currentLogo = formData.option.logo
+
+            return this.formData = formData;
+        }
+
+        this.$toaster.error(Helper.getFirstError(response, this.$i18n.t('textDefaultErrorRequest')))
+
+        return this.$router.push({ path: '/dashboard' })
     },
 
     data() {
@@ -213,12 +162,23 @@ export default {
         let today = new Date()
 
         return {
+            formData: {
+                seo_keywork: '',
+                seo_description: '',
+                option: {
+                    logo: '',
+                    title: '',
+                },
+
+                currentLogo: '',
+            },
+
             uploadOptions: {
                 acceptedFileTypes: ['image/*'],
                 url: '/api/v0/upload-image',
                 clickable: false,
                 params: {
-                    folder: `product-${today.getFullYear()}
+                    folder: `logo-${today.getFullYear()}
                         -${today.getMonth() + 1}
                         -${today.getDate()}
                     `,
@@ -232,18 +192,22 @@ export default {
         }
     },
 
-    computed: {
-        formData() {
-            let formData = this.$store.state.storeAdminPost.edit.post
-            return {
-                ...formData,
-                currentImage: formData.image,
-                status: formData.status == POST_STATUS_SHOW ? true : false,
-            }
-        },
-    },
-
     methods: {
+        async removeUploadFile(index, event) {
+            event.preventDefault()
+
+            let files = this.$refs.uploader.files
+
+            await this.$swal({
+                title: this.$i18n.t('textConfirmDelete'),
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }) && (this.$refs.uploader.files = files.filter((f, i) => i !== index))
+
+            return this.formData.option.logo = this.formData.currentLogo
+        },
+
         triggerBrowse(event) {
             event.preventDefault()
 
@@ -253,93 +217,34 @@ export default {
 
             return this.$refs.uploader.triggerBrowseFiles()
         },
-        
-        async removeUploadFile(index, event) {
-            event.preventDefault()
-
-            let files = this.$refs.uploader.files
-
-            let confirm = await this.$swal({
-                title: this.$i18n.t('textConfirmDelete'),
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-            })
-
-            if (confirm) {
-                this.formData.image = this.formData.currentImage
-
-                return this.$refs.uploader.files = files.filter((f, i) => i !== index)                
-            }
-        },
 
         successUploader(response) {
             let serveRespone = JSON.parse(response.xhr.response)
             
-            return this.formData.image = serveRespone.path
-        },
-
-        ortherOptions() {
-            return {
-                ...configTinyMCE,
-                height: 250,
-            }
-        },
-
-        validateForm() {
-            let params = this.formData
-
-            return params.name && params.slug
-                && params.category_id && params.detail
+            return this.formData.option.logo = serveRespone.path
         },
 
         convertDataSubmit() {
-            let params = this.formData
-
-            return {
-                ...params,
-                status: params.status ? POST_STATUS_SHOW : POST_STATUS_HIDDEN
-            }
+            return this.formData
         },
 
-        clickSubmitEdit() {
-            if (!this.validateForm()) {
-                return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
-            }
-
+        async clickSubmitEdit() {
             let params = this.convertDataSubmit();
 
-            this.$store.dispatch('callPostEdit', { vue: this, params, id: params.id });
+            let response = await axios.put('/setups', params)
 
-            return this.$router.push({ path: '/posts' })
+            if (response.status == 200) {
+                this.$toaster.success(response.data.message);
+                this.formData.currentLogo = this.formData.option.logo
+
+                return this.$refs.uploader.files = []
+            }
+
+            return this.$toaster.error(Helper.getFirstError(response, this.$i18n.t('textDefaultErrorRequest')))
         },
 
         clickCancel() {
-            return this.$router.push({ path: '/posts' })
-        },
-
-        categoryOption() {
-            let categories = this.$store.state.storeAdminCategory.categories
-            let options = []
-
-            for (let i = 0; i < categories.length; i++) {
-                if (categories[i].type !== CATEGORY_TYPE_POST) continue
-
-                options.push({
-                    value: categories[i].id,
-                    text: categories[i].name,
-                })
-
-                let children = categories[i].children_categories
-                for (let j = 0; j < children.length; j++) {
-                    options.push({
-                        value: children[j].id,
-                        text: `|-- ${children[j].name}`,
-                    })
-                }
-            }
-
-            return options
+            return this.$router.push({ path: '/dashboard' })
         },
     }
 }

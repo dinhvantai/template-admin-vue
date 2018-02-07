@@ -49,6 +49,11 @@ export default {
                 }
             ]
         },
+        {
+            name: 'Cài đặt',
+            icon: 'icon-list',
+            url: 'setups',
+        },
         // {
         //     title: true,
         //     name: 'UI elements',
