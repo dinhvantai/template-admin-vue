@@ -52,21 +52,12 @@ export default {
         {
             name: 'Banner',
             icon: 'icon-list',
-            url: 'banners',
+            url: '/banners',
         },
         {
             name: 'Cài đặt',
             icon: 'icon-list',
-            url: 'setups',
+            url: '/setups',
         },
-        // {
-        //     title: true,
-        //     name: 'UI elements',
-        //     class: '',
-        //     wrapper: {
-        //         element: '',
-        //         attributes: {}
-        //     }
-        // },
     ]
 }

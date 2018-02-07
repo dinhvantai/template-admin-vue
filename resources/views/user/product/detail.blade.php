@@ -54,16 +54,12 @@
                                 style="border:1px solid #eeeeee; padding:2px"
                             />
                         </a>
-                        <br>
-                        <a href="#" title="{{ $data['product']->name }}">
-                            <span class="zoom_img">Xem ảnh lớn</span>
-                        </a>
                     </span>
                     <div class="info_product fl">
                         <h2>{{ $data['product']->name }}</h2>
                         <span class="date_up">
-                            Đăng ngày {{ $data['product']->created_at->format('d-mm-Y H:i:s') }}
-                             - 1192 Lượt xem
+                            Đăng ngày {{ $data['product']->created_at->format('d-m-Y H:i') }}
+                             - {{ $data['product']->total_views }} lượt xem
                         </span>
                         <p>
                             Giá :

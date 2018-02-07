@@ -115,6 +115,7 @@
                     {key: 'name', label: this.$i18n.t('textName')},
                     {key: 'link', label: this.$i18n.t('textLink')},
                     {key: 'image', label: this.$i18n.t('textImage')},
+                    {key: 'status', label: this.$i18n.t('textStatus')},
                     {key: 'action', label: this.$i18n.t('textAction')},
                 ],
                 currentPage: 1,
@@ -174,7 +175,11 @@
             },
 
             submitModalEdit(id, params) {
-                return this.$store.dispatch('callBannerEdit', { vue: this, params, id })
+                return this.$store.dispatch('callBannerEdit', { 
+                    vue: this,
+                    params: this.convertDataSubmit(params), 
+                    id 
+                })
             },
 
             hideModalEdit() {

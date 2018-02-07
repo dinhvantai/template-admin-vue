@@ -20,5 +20,6 @@ Route::group(['domain' => env('DOMAIN_USER'), 'namespace' => 'User'], function()
     Route::get('/posts', 'HomeController@listPost')->name('user.post.list');
     Route::get('/post/{slug}', 'HomeController@detailPost')->name('user.post.detail');
     Route::get('/{parent}', 'HomeController@categoryParent')->name('user.category.parent');
-    Route::get('/{parent}/{children}', 'HomeController@categoryChildren')->name('user.category.children');
+    Route::get('/{parent}/{children}', 'HomeController@categoryChildren')
+        ->name('user.category.children');
 });
