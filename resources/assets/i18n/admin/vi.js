@@ -63,6 +63,13 @@ const vi = {
     textLogo: 'Logo',
     textSetups: 'Cài đặt',
     textNotAddFile: 'Không thể thêm file được nữa',
+    textPositionSlider: 'Vị trí slider',
+    textPositionAd: 'Vị trí quảng cáo',
+    textPositionPartner: 'Vị trí Đối tác',
+    textAddBanner: 'Thêm mới banner',
+    textManageBanner: 'Quản lý banner',
+    textPleaseUploadImage: 'Vui lòng tải ảnh lên!',
+    textEditBanner: 'Sửa banner',
 }
 
 export default vi;

@@ -1,15 +1,15 @@
 <template>
     <b-row>
         <AdminMenuAdd
-            :submitModalAddMenu='submitModalAddMenu'
+            :submitModalAdd='submitModalAdd'
             :modalAdd="modalAdd"
-            :hideModalAddMenu="hideModalAddMenu"
+            :hideModalAdd="hideModalAdd"
             :parentMenuOption="parentMenuOption"
         />
         <AdminMenuEdit
-            :submitModalEditMenu='submitModalEditMenu'
+            :submitModalEdit='submitModalEdit'
             :modalEdit.sync="modalEdit"
-            :hideModalEditMenu="hideModalEditMenu"
+            :hideModalEdit="hideModalEdit"
             :parentMenuOption="parentMenuOption"
         />
         <b-col lg="12">
@@ -109,11 +109,8 @@
         data() {
             return {
                 fields: [
-                    // {key: 'id'},
                     {key: 'name', label: this.$i18n.t('textName')},
-                    // {key: 'description'},
                     {key: 'path', label: this.$i18n.t('textLink')},
-                    {key: 'position', label: this.$i18n.t('textPosition')},
                     {key: 'prioty', label: this.$i18n.t('textPrioty')},
                     {key: 'action', label: this.$i18n.t('textAction')},
                 ],
@@ -150,9 +147,7 @@
                 return this.$store.dispatch('setMenuModalAdd', { vue: this, modalAdd })
             },
 
-            submitModalAddMenu(params) {
-                //  params.parent_id = params.parent_id ? params.parent_id : 0;
-
+            submitModalAdd(params) {
                 if (!params.name || !params.path || !params.position) {
                     return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
                 }
@@ -160,7 +155,7 @@
                 return this.$store.dispatch('callMenuAdd', { vue: this, params })
             },
 
-            hideModalAddMenu(formData) {
+            hideModalAdd(formData) {
                 let modalAdd = { ...this.modalAdd, open: false }
 
                 return this.$store.dispatch('setMenuModalAdd', { vue: this, modalAdd })
@@ -172,11 +167,11 @@
                 return this.$store.dispatch('setMenuModalEdit', { vue: this, modalEdit })
             },
 
-            submitModalEditMenu(id, params) {
+            submitModalEdit(id, params) {
                 return this.$store.dispatch('callMenuEdit', { vue: this, params, id })
             },
 
-            hideModalEditMenu() {
+            hideModalEdit() {
                 let modalEdit = { ...this.modalEdit, open: false };
 
                 return this.$store.dispatch('setMenuModalEdit', { vue: this, modalEdit })
@@ -201,23 +196,6 @@
 
             items() {
                 return this.$store.state.storeAdminMenu.menus
-
-                // let menus = this.$store.state.storeAdminMenu.menus
-                // let itemsFilter = []
-
-                // for (let i = 0; i < menus.length; i++) {
-                //     menus[i]._rowVariant = 'success'
-                //     menus[i].prefix = ''
-                //     itemsFilter.push(menus[i])
-
-                //     let childrenMenus = menus[i].children_menus
-                //     for(let j = 0; j < childrenMenus.length; j++) {
-                //         childrenMenus[j].prefix = '| - - '
-                //         childrenMenus[j].position = menus[i].position
-                //         itemsFilter.push(childrenMenus[j])
-                //     }
-                // }
-                // return itemsFilter
             },
 
             parentMenuOption() {

@@ -50,6 +50,11 @@ export default {
             ]
         },
         {
+            name: 'Banner',
+            icon: 'icon-list',
+            url: 'banners',
+        },
+        {
             name: 'Cài đặt',
             icon: 'icon-list',
             url: 'setups',

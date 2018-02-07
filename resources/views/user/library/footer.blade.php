@@ -21,11 +21,11 @@
 
         <div class="footer_menu" >
             <div class="nav_foot">
-               <ul class="nav_foot_ul">
-                   @foreach($userPostCategories as $postCategory)
-                        @php
-                            if (!$postCategory->childrenCategories->count()) continue;
-                        @endphp
+                @foreach($userPostCategories as $postCategory)
+                    @php
+                        if (!$postCategory->childrenCategories->count()) continue;
+                    @endphp
+                    <ul class="nav_foot_ul">
                         <li>
                             <h3>
                                 <a title="{{ $postCategory->name }}"
@@ -46,8 +46,8 @@
                                 @endforeach
                             </ul>
                         </li>
-                  @endforeach
-               </ul>
+                    </ul>
+                @endforeach                
             </div>
          </div>
     </div>

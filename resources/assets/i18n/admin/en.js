@@ -63,6 +63,13 @@ const en = {
     textLogo: 'Logo',
     textSetups: 'Setup',
     textNotAddFile: 'Can not add file anymore!',
+    textPositionSlider: 'Position slider',
+    textPositionAd: 'Position Advertisement',
+    textPositionPartner: 'Position Partner',
+    textAddBanner: 'Add Banner',
+    textManageBanner: 'Manage Banner',
+    textPleaseUploadImage: 'Please upload image!',
+    textEditBanner: 'Edit Banner',
 }
 
 export default en;
