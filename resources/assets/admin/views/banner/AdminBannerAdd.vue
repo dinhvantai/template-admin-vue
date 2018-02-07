@@ -1,32 +1,28 @@
 <template>
     <b-modal
-        :title="$t('textEditMenu')"
+        :title="$t('textAddBanner')"
         v-model="openModalValue"
-        @ok="submitModalEdit"
-        @hidden="hideModalEdit"
+        @ok="submitModalAdd"
+        @hidden="hideModalAdd"
         :centered="true" size="lg"
     >
         <b-row>
             <b-col sm="12">
                 <b-form validated>
                     <b-row>
-                        <b-col sm="6">
+                        <b-col sm="10">
                             <b-form-fieldset :label="$t('textName')">
-                                <b-form-input
-                                    type="text" required
-                                    :placeholder="$t('textName')"
-                                    v-model.number="formData.name"
-                                />
+                                <b-form-input type="text" :placeholder="$t('textName')" v-model="formData.name"/>
                             </b-form-fieldset>
                         </b-col>
-                        <b-col sm="6">
-                            <b-form-fieldset :label="$t('textPosition')">
-                                <b-form-select
-                                    :plain="true" required
-                                    :options="optionPositionMenu"
-                                    v-model="formData.position"
-                                >
-                                </b-form-select>
+                        <b-col sm="2" class="text-center">
+                            <b-form-fieldset :label="$t('textStatus')">
+                                <c-switch
+                                    type="text" variant="primary-outline-alt"
+                                    on="On" off="Off"
+                                    :pill="true" :checked="true"
+                                    v-model="formData.status"
+                                />
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
@@ -34,28 +30,28 @@
                         <b-col sm="6">
                             <b-form-fieldset :label="$t('textLink')">
                                 <b-form-input
-                                    type="text" required
+                                    type="text"
                                     :placeholder="$t('textLink')"
-                                    v-model="formData.path"
+                                    v-model="formData.link"
                                 />
                             </b-form-fieldset>
                         </b-col>
                         <b-col sm="6">
-                            <b-form-fieldset :label="$t('textPrioty')">
-                                <b-form-input type="number" :placeholder="$t('textPrioty')" v-model.number="formData.prioty" />
+                            <b-form-fieldset :label="$t('textPosition')">
+                                <b-form-select
+                                    :plain="true" required
+                                    :options="optionPosition"
+                                    v-model="formData.position"
+                                >
+                                </b-form-select>
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
-                    <b-row v-show="openModalValue">
+                    <b-row>
                         <b-col sm="12">
-                            <b-form-fieldset :label="$t('textIcon')"
+                            <b-form-fieldset :label="$t('textImage')"
                                 style="boder: 1px solid #E5E5E5"
                             >
-                                <img :src="`/${formData.icon}`" 
-                                    style="max-width: 120px; paddding: 10px; margin-bottom: 15px"
-                                    v-if="formData.icon"
-                                />
-
                                 <vue-transmit
                                     tag="section"
                                     v-bind="uploadOptions"
@@ -70,7 +66,7 @@
                                         >
                                             <button class="btn btn-primary"
                                             @click="triggerBrowse"
-                                        >{{ $t('textUploadNewFile') }}</button>
+                                        >{{ $t('textUploadFile') }}</button>
                                         </b-col>
                                     </b-row>
                                     <!-- Scoped slot -->
@@ -93,22 +89,35 @@
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
-                    <b-form-fieldset :label="$t('textDescription')">
-                        <b-form-input
-                            v-model="formData.description"
-                            :placeholder="$t('textDescription')"
-                        >
-                        </b-form-input>
-                    </b-form-fieldset>
+                    <b-row>
+                        <b-col sm="6">
+                            <b-form-fieldset :label="$t('textSeoKeyword')">
+                                <b-form-input
+                                    type="text"
+                                    :placeholder="$t('textSeoKeyword')"
+                                    v-model="formData.seo_keyword"
+                                />
+                            </b-form-fieldset>
+                        </b-col>
+                        <b-col sm="6">
+                            <b-form-fieldset :label="$t('textSeoDescription')">
+                                <b-form-input
+                                    type="text"
+                                    :placeholder="$t('textSeoDescription')"
+                                    v-model="formData.seo_description"
+                                />
+                            </b-form-fieldset>
+                        </b-col>
+                    </b-row>
                 </b-form>
             </b-col><!--/.col-->
         </b-row>
         <div slot="modal-footer" class="w-100 text-center">
-            <b-button type="submit" size="xs" variant="primary" @click="clickEditMenu">
+            <b-button type="submit" size="xs" variant="primary" @click="clickAddMenu">
                 <i class="fa fa-dot-circle-o"></i>
-                {{ $t('textSave') }}
+                {{ $t('textAddNew') }}
             </b-button>
-            <b-button type="reset" size="xs" variant="danger" @click="hideModalEdit">
+            <b-button type="reset" size="xs" variant="danger" @click="hideModalAdd">
                 <i class="fa fa-ban"></i>
                 {{ $t('textCancel') }}
             </b-button>
@@ -117,22 +126,26 @@
 </template>
 
 <script>
-import { ADMIN_MENU_POSITION_OPTION } from '../../store/menus'
+import cSwitch from '../../../components/Switch.vue'
+
+import { ADMIN_BANNER_POSITION_OPTION } from '../../store/banner'
 import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
-    name: 'AdminMenuEdit',
+    name: 'AdminMenuAdd',
+
+    components: { cSwitch },
 
     props: {
-        modalEdit: {
+        modalAdd: {
             type: Object,
             required: true
         },
-        submitModalEdit: {
+        submitModalAdd: {
             type: Function,
             required: true
         },
-        hideModalEdit: {
+        hideModalAdd: {
             type: Function,
             required: true
         },
@@ -143,16 +156,20 @@ export default {
         let today = new Date()
 
         return {
-            optionPositionMenu: ADMIN_MENU_POSITION_OPTION.map(option => (
+            optionPosition: ADMIN_BANNER_POSITION_OPTION.map(option => (
                 { value: option.value, text: this.$i18n.t(option.text) }
             )),
+
+            showUploadFile: true,
+
+            formData: this.resetFormData(),
 
             uploadOptions: {
                 acceptedFileTypes: ['image/*'],
                 url: '/api/v0/upload-image',
                 clickable: false,
                 params: {
-                    folder: `product-${today.getFullYear()}
+                    folder: `menu-${today.getFullYear()}
                         -${today.getMonth() + 1}
                         -${today.getDate()}
                     `,
@@ -173,41 +190,54 @@ export default {
             if (this.$refs.uploader.files.length >= this.uploadOptions.maxFiles) {
                 return this.$toaster.error(this.$i18n.t('textNotAddFile'));
             }
-
+            
             return this.$refs.uploader.triggerBrowseFiles()
         },
 
         successUploader(response) {
             let serveRespone = JSON.parse(response.xhr.response)
             
-            return this.formData.icon = serveRespone.path
+            return this.formData.image = serveRespone.path
         },
 
-        clickEditMenu() {
-            let params = this.formData
-            // params.parent_id = params.parent_id ? params.parent_id : 0;
+        resetFormData() {
+            return this.formData = {
+                name: '',
+                link: '',
+                image: '',
+                position: ADMIN_BANNER_POSITION_OPTION[0].value,
+                status: true,
+                seo_keyword: '',
+                seo_description: '',
+            }
+        },
 
-            if (!params.name || !params.path || !params.position) {
+        clickAddMenu() {
+            let params = this.formData
+
+            if (!params.image) {
+                return this.$toaster.error(this.$i18n.t('textPleaseUploadImage'))
+            }
+
+            if (!params.position) {
                 return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
             }
 
+            this.resetFormData()
             this.$refs.uploader.files = []
 
-            return this.submitModalEdit(this.formData.id, params)
-        },
+            return this.submitModalAdd(params)
+        }
     },
 
     computed: {
         openModalValue: {
             get() {
-                return this.modalEdit.open
+                return this.modalAdd.open
             },
             set(val) {
             }
-        },
-        formData() {
-            return {...this.modalEdit.formData}
-        },
+        }
     }
 }
 </script>

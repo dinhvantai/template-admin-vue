@@ -14,6 +14,8 @@ import AdminPost from '../views/post/AdminPost.vue'
 import AdminPostAdd from '../views/post/AdminPostAdd.vue'
 import AdminPostEdit from '../views/post/AdminPostEdit.vue'
 
+import AdminBanner from '../views/banner/AdminBanner.vue'
+
 import AdminSetup from '../views/setup/AdminSetup.vue'
 
 const router =  new VueRouter({
@@ -93,6 +95,11 @@ const router =  new VueRouter({
                             component: AdminPostEdit
                         }
                     ]
+                },
+                {
+                    name: 'Banners',
+                    path: 'banners',
+                    component: AdminBanner
                 },
                 {
                     name: 'Cài đặt',

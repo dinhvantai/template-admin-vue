@@ -1,6 +1,6 @@
 <template>
     <b-modal
-        :title="$t('textEditMenu')"
+        :title="$t('textEditBanner')"
         v-model="openModalValue"
         @ok="submitModalEdit"
         @hidden="hideModalEdit"
@@ -10,23 +10,19 @@
             <b-col sm="12">
                 <b-form validated>
                     <b-row>
-                        <b-col sm="6">
+                        <b-col sm="10">
                             <b-form-fieldset :label="$t('textName')">
-                                <b-form-input
-                                    type="text" required
-                                    :placeholder="$t('textName')"
-                                    v-model.number="formData.name"
-                                />
+                                <b-form-input type="text" :placeholder="$t('textName')" v-model="formData.name"/>
                             </b-form-fieldset>
                         </b-col>
-                        <b-col sm="6">
-                            <b-form-fieldset :label="$t('textPosition')">
-                                <b-form-select
-                                    :plain="true" required
-                                    :options="optionPositionMenu"
-                                    v-model="formData.position"
-                                >
-                                </b-form-select>
+                        <b-col sm="2" class="text-center">
+                            <b-form-fieldset :label="$t('textStatus')">
+                                <c-switch
+                                    type="text" variant="primary-outline-alt"
+                                    on="On" off="Off"
+                                    :pill="true" :checked="true"
+                                    v-model="formData.status"
+                                />
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
@@ -34,26 +30,31 @@
                         <b-col sm="6">
                             <b-form-fieldset :label="$t('textLink')">
                                 <b-form-input
-                                    type="text" required
+                                    type="text"
                                     :placeholder="$t('textLink')"
-                                    v-model="formData.path"
+                                    v-model="formData.link"
                                 />
                             </b-form-fieldset>
                         </b-col>
                         <b-col sm="6">
-                            <b-form-fieldset :label="$t('textPrioty')">
-                                <b-form-input type="number" :placeholder="$t('textPrioty')" v-model.number="formData.prioty" />
+                            <b-form-fieldset :label="$t('textPosition')">
+                                <b-form-select
+                                    :plain="true" required
+                                    :options="optionPosition"
+                                    v-model="formData.position"
+                                >
+                                </b-form-select>
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
                     <b-row v-show="openModalValue">
                         <b-col sm="12">
-                            <b-form-fieldset :label="$t('textIcon')"
+                            <b-form-fieldset :label="$t('textImage')"
                                 style="boder: 1px solid #E5E5E5"
                             >
-                                <img :src="`/${formData.icon}`" 
+                                <img :src="`/${formData.image}`" 
                                     style="max-width: 120px; paddding: 10px; margin-bottom: 15px"
-                                    v-if="formData.icon"
+                                    v-if="formData.image"
                                 />
 
                                 <vue-transmit
@@ -93,13 +94,26 @@
                             </b-form-fieldset>
                         </b-col>
                     </b-row>
-                    <b-form-fieldset :label="$t('textDescription')">
-                        <b-form-input
-                            v-model="formData.description"
-                            :placeholder="$t('textDescription')"
-                        >
-                        </b-form-input>
-                    </b-form-fieldset>
+                    <b-row>
+                        <b-col sm="6">
+                            <b-form-fieldset :label="$t('textSeoKeyword')">
+                                <b-form-input
+                                    type="text"
+                                    :placeholder="$t('textSeoKeyword')"
+                                    v-model="formData.seo_keyword"
+                                />
+                            </b-form-fieldset>
+                        </b-col>
+                        <b-col sm="6">
+                            <b-form-fieldset :label="$t('textSeoDescription')">
+                                <b-form-input
+                                    type="text"
+                                    :placeholder="$t('textSeoDescription')"
+                                    v-model="formData.seo_description"
+                                />
+                            </b-form-fieldset>
+                        </b-col>
+                    </b-row>
                 </b-form>
             </b-col><!--/.col-->
         </b-row>
@@ -117,11 +131,16 @@
 </template>
 
 <script>
-import { ADMIN_MENU_POSITION_OPTION } from '../../store/menus'
+import cSwitch from '../../../components/Switch.vue'
+
+import { ADMIN_BANNER_POSITION_OPTION } from '../../store/banner'
+import { BANNER_STATUS_SHOW } from '../../store/banner'
 import { STORAGE_AUTH } from '../../store/auth'
 
 export default {
     name: 'AdminMenuEdit',
+
+    components: { cSwitch },
 
     props: {
         modalEdit: {
@@ -143,7 +162,7 @@ export default {
         let today = new Date()
 
         return {
-            optionPositionMenu: ADMIN_MENU_POSITION_OPTION.map(option => (
+            optionPosition: ADMIN_BANNER_POSITION_OPTION.map(option => (
                 { value: option.value, text: this.$i18n.t(option.text) }
             )),
 
@@ -152,7 +171,7 @@ export default {
                 url: '/api/v0/upload-image',
                 clickable: false,
                 params: {
-                    folder: `product-${today.getFullYear()}
+                    folder: `banner-${today.getFullYear()}
                         -${today.getMonth() + 1}
                         -${today.getDate()}
                     `,
@@ -180,14 +199,17 @@ export default {
         successUploader(response) {
             let serveRespone = JSON.parse(response.xhr.response)
             
-            return this.formData.icon = serveRespone.path
+            return this.formData.image = serveRespone.path
         },
 
         clickEditMenu() {
             let params = this.formData
-            // params.parent_id = params.parent_id ? params.parent_id : 0;
 
-            if (!params.name || !params.path || !params.position) {
+            if (!params.image) {
+                return this.$toaster.error(this.$i18n.t('textPleaseUploadImage'))
+            }
+
+            if (!params.position) {
                 return this.$toaster.error(this.$i18n.t('textNotFillEnough'))
             }
 
@@ -206,7 +228,11 @@ export default {
             }
         },
         formData() {
-            return {...this.modalEdit.formData}
+            let formData = this.modalEdit.formData
+            return {
+                ...formData,
+                status: formData.status == BANNER_STATUS_SHOW ? true : false,
+            }
         },
     }
 }

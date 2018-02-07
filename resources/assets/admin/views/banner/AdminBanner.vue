@@ -1,22 +1,21 @@
 <template>
     <b-row>
-        <AdminCategoryAdd
+        <AdminBannerAdd
             :submitModalAdd='submitModalAdd'
             :modalAdd="modalAdd"
             :hideModalAdd="hideModalAdd"
-            :parentCategoryOption="parentCategoryOption"
+            
         />
-        <AdminCategoryEdit
+        <AdminBannerEdit
             :submitModalEdit='submitModalEdit'
             :modalEdit.sync="modalEdit"
             :hideModalEdit="hideModalEdit"
-            :parentCategoryOption="parentCategoryOption"
         />
         <b-col lg="12">
             <b-button-group class="pull-right">
                 <b-button variant="success" @click="clickAddNewItem">
                     <i class="icon-plus"></i>
-                    {{ $t('textAddCategory') }}
+                    {{ $t('textAddBanner') }}
                 </b-button>
             </b-button-group>
         </b-col>
@@ -24,7 +23,7 @@
             <b-tabs pills card>
                 <b-tab
                     :title="$t(option.text)"
-                    v-for="option in optionType"
+                    v-for="option in optionPosition"
                     :key="option.value"
                 >
                     <b-table
@@ -36,14 +35,21 @@
                         :current-page="currentPage"
                         :per-page="perPage"
                     >
-                        <template slot="name" slot-scope="data">
-                            {{ `${data.item.prefix} ${data.item.name}` }}
+                        <template slot="image" slot-scope="data">
+                            <b-img thumbnail 
+                                :src="`/${data.item.image}`" 
+                                :alt="data.item.name"
+                                style="width: 150px"
+                            />
+                        </template>
+                        <template slot="position" slot-scope="data">
+                            {{ getTextPosition(data) }}
                         </template>
                         <template slot="action" slot-scope="data">
                             <b-button
                                 type="submit" size="sm"
                                 variant="primary"
-                                @click="clickEditItem(data.item)"
+                                @click="clickEditMenu(data.item)"
                             >
                                 <i class="icon-pencil"></i>
                                 {{ $t('textEdit') }}
@@ -51,7 +57,7 @@
                             <b-button
                                 type="reset" size="sm"
                                 variant="danger"
-                                @click="clickDeleteItem(data.item.id)"
+                                @click="clickDeleteMenu(data.item.id)"
                             >
                                 <i class="icon-trash"></i>
                                 {{ $t('textDelete') }}
@@ -65,16 +71,16 @@
 </template>
 
 <script>
-    import AdminCategoryAdd from './AdminCategoryAdd.vue'
-    import AdminCategoryEdit from './AdminCategoryEdit.vue'
+    import AdminBannerAdd from './AdminBannerAdd.vue'
+    import AdminBannerEdit from './AdminBannerEdit.vue'
 
-    import { ADMIN_CATEGORY_TYPE_OPTION} from '../../store/category'
-    import { CATEGORY_STATUS_SHOW, CATEGORY_STATUS_HIDDEN } from '../../store/category'
+    import { ADMIN_BANNER_POSITION_OPTION } from '../../store/banner'
+    import { BANNER_STATUS_SHOW, BANNER_STATUS_HIDDEN } from '../../store/banner'
     import Helper from '../../library/Helper'
 
     export default {
-        name: 'AdminCategory',
-        components: { AdminCategoryAdd, AdminCategoryEdit },
+        name: 'AdminMenu',
+        components: { AdminBannerAdd, AdminBannerEdit },
         props: {
             hover: {
                 type: Boolean,
@@ -99,31 +105,29 @@
         },
 
         beforeCreate() {
-            Helper.changeTitleAdminPage(this.$i18n.t('textManageCategory'))
-            this.$store.dispatch('callFetchCategories', { vue: this })
+            Helper.changeTitleAdminPage(this.$i18n.t('textManageBanner'))
+            this.$store.dispatch('callFetchBanners', { vue: this })
         },
 
         data() {
             return {
                 fields: [
-                    // {key: 'id'},
                     {key: 'name', label: this.$i18n.t('textName')},
                     {key: 'link', label: this.$i18n.t('textLink')},
-                    {key: 'prioty', label: this.$i18n.t('textPrioty')},
-                    {key: 'status', label: this.$i18n.t('textStatus')},
+                    {key: 'image', label: this.$i18n.t('textImage')},
                     {key: 'action', label: this.$i18n.t('textAction')},
                 ],
                 currentPage: 1,
                 perPage: this.totalRows,
-                optionType: ADMIN_CATEGORY_TYPE_OPTION
+                optionPosition: ADMIN_BANNER_POSITION_OPTION
             }
         },
 
         methods: {
-            getTextType(item) {
-                let index = _.findIndex(ADMIN_CATEGORY_TYPE_OPTION, (option) => option.value === item.item.type)
+            getTextPosition(item) {
+                let index = _.findIndex(ADMIN_BANNER_POSITION_OPTION, (option) => option.value === item.item.position)
 
-                return this.$i18n.t(ADMIN_CATEGORY_TYPE_OPTION[index].text)
+                return this.$i18n.t(ADMIN_BANNER_POSITION_OPTION[index].text)
             },
 
             filterData(item) {
@@ -136,58 +140,50 @@
                 return result;
             },
 
-            getItemFilter(type) {
-                return this.items.filter(item => item.type == type)
+            getItemFilter(position) {
+                return this.items.filter(item => item.position == position)
             },
 
             clickAddNewItem() {
                 let modalAdd = { ...this.modalAdd, open: true }
 
-                return this.$store.dispatch('setCategoryModalAdd', { vue: this, modalAdd })
-            },
-
-            submitModalAdd(params) {
-                return this.$store.dispatch('callCategoryAdd', { 
-                    vue: this,
-                    params: this.convertDataSubmit(params) 
-                })
+                return this.$store.dispatch('setBannerModalAdd', { vue: this, modalAdd })
             },
 
             convertDataSubmit(params) {
                 return {
                     ...params,
-                    parent_id: params.parent_id ? params.parent_id : null,
-                    status: params.status ? CATEGORY_STATUS_SHOW : CATEGORY_STATUS_HIDDEN
+                    status: params.status ? BANNER_STATUS_SHOW : BANNER_STATUS_HIDDEN
                 }
+            },
+
+            submitModalAdd(params) {
+                return this.$store.dispatch('callBannerAdd', { vue: this, params: this.convertDataSubmit(params) })
             },
 
             hideModalAdd(formData) {
                 let modalAdd = { ...this.modalAdd, open: false }
 
-                return this.$store.dispatch('setCategoryModalAdd', { vue: this, modalAdd })
+                return this.$store.dispatch('setBannerModalAdd', { vue: this, modalAdd })
             },
 
-            clickEditItem(formData) {
+            clickEditMenu(formData) {
                 let modalEdit = { ...this.modalEdit, open: true, formData }
 
-                return this.$store.dispatch('setCategoryModalEdit', { vue: this, modalEdit })
+                return this.$store.dispatch('setBannerModalEdit', { vue: this, modalEdit })
             },
 
             submitModalEdit(id, params) {
-                return this.$store.dispatch('callCategoryEdit', { 
-                    vue: this,
-                    params: this.convertDataSubmit(params),
-                    id,
-                })
+                return this.$store.dispatch('callBannerEdit', { vue: this, params, id })
             },
 
             hideModalEdit() {
                 let modalEdit = { ...this.modalEdit, open: false };
 
-                return this.$store.dispatch('setCategoryModalEdit', { vue: this, modalEdit })
+                return this.$store.dispatch('setBannerModalEdit', { vue: this, modalEdit })
             },
 
-            async clickDeleteItem(id) {
+            async clickDeleteMenu(id) {
                 return id
                     && await this.$swal({
                         title: this.$i18n.t('textConfirmDelete'),
@@ -195,7 +191,7 @@
                         buttons: true,
                         dangerMode: true,
                     })
-                    && this.$store.dispatch('callCategoryDelete', { vue: this, id })
+                    && this.$store.dispatch('callBannerDelete', { vue: this, id })
             }
         },
 
@@ -205,44 +201,15 @@
             },
 
             items() {
-                // return this.$store.state.storeAdminCategory.categories
-
-                let categories = this.$store.state.storeAdminCategory.categories
-
-                let itemsFilter = []
-
-                for (let i = 0; i < categories.length; i++) {
-                    categories[i]._rowVariant = 'success'
-                    categories[i].prefix = ''
-                    categories[i].link = `/${categories[i].slug}`
-                    itemsFilter.push(categories[i])
-
-                    let children = categories[i].children_categories
-                    for(let j = 0; j < children.length; j++) {
-                        children[j].prefix = '| - - '
-                        children[j].type = categories[i].type
-                        children[j].link = `${categories[i].link}/${children[j].slug}`
-                        itemsFilter.push(children[j])
-                    }
-                }
-                return itemsFilter
-            },
-
-            parentCategoryOption() {
-                let categories = this.$store.state.storeAdminCategory.categories
-
-                return [
-                    { value: '', text: '' },
-                    ...categories.map(category => ({ value: category.id, text: category.name})),
-                ]
+                return this.$store.state.storeAdminBanner.banners
             },
 
             modalAdd() {
-                return this.$store.state.storeAdminCategory.modalAdd
+                return this.$store.state.storeAdminBanner.modalAdd
             },
 
             modalEdit() {
-                return this.$store.state.storeAdminCategory.modalEdit
+                return this.$store.state.storeAdminBanner.modalEdit
             },
 
             totalRows() {

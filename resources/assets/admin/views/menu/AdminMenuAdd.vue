@@ -2,8 +2,8 @@
     <b-modal
         :title="$t('textAddMenu')"
         v-model="openModalValue"
-        @ok="submitModalAddMenu"
-        @hidden="hideModalAddMenu"
+        @ok="submitModalAdd"
+        @hidden="hideModalAdd"
         :centered="true" size="lg"
     >
         <b-row>
@@ -98,7 +98,7 @@
                 <i class="fa fa-dot-circle-o"></i>
                 {{ $t('textAddNew') }}
             </b-button>
-            <b-button type="reset" size="xs" variant="danger" @click="hideModalAddMenu">
+            <b-button type="reset" size="xs" variant="danger" @click="hideModalAdd">
                 <i class="fa fa-ban"></i>
                 {{ $t('textCancel') }}
             </b-button>
@@ -118,18 +118,14 @@ export default {
             type: Object,
             required: true
         },
-        submitModalAddMenu: {
+        submitModalAdd: {
             type: Function,
             required: true
         },
-        hideModalAddMenu: {
+        hideModalAdd: {
             type: Function,
             required: true
         },
-        parentMenuOption: {
-            type:Array,
-            required: true
-        }
     },
 
     data() {
@@ -202,7 +198,7 @@ export default {
 
             this.resetFormData()
             this.$refs.uploader.files = []
-            return this.submitModalAddMenu(params)
+            return this.submitModalAdd(params)
         }
     },
 
