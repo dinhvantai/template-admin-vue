@@ -62,7 +62,11 @@ const actions = {
     async callBannerAdd({ commit }, { vue, params }) {
         let modalAdd = vue.$store.state.storeAdminBanner.modalAdd
 
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiAddBanner(params)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+
         if (response.status == 200) {
             commit(ADMIN_BANNER_MODAL_ADD, { modalAdd: { ...modalAdd, open:false } })
             vue.$store.dispatch('callFetchBanners', { vue })
@@ -82,7 +86,11 @@ const actions = {
     async callBannerEdit({ commit }, { vue, id, params }) {
         let modalEdit = vue.$store.state.storeAdminBanner.modalEdit
 
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiEditBanner(id, params)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+
         if (response.status == 200) {
             commit(ADMIN_BANNER_MODAL_EDIT, { modalEdit: { ...modalEdit, open:false } })
             vue.$store.dispatch('callFetchBanners', { vue })
@@ -100,7 +108,10 @@ const actions = {
     },
 
     async callBannerDelete({ commit }, { vue, id }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiDeleteBanner(id)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
 
         if (response.status == 200) {
             vue.$store.dispatch('callFetchBanners', { vue })

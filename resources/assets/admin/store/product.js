@@ -40,7 +40,11 @@ const actions = {
     },
 
     async callProductAdd({ commit }, { vue, params }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiAddProduct(params)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+        
         if (response.status == 200) {
             vue.$store.dispatch('callFetchProducts', { vue })
             
@@ -53,7 +57,11 @@ const actions = {
     },
 
     async callProductShow( { commit }, { vue, id }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiShowProduct(id)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+
         if (response.status == 200) {
             return commit(ADMIN_PRODUCT_SET_PRODUCT, { product: response.data })
         }
@@ -64,7 +72,11 @@ const actions = {
     },
 
     async callProductEdit({ commit }, { vue, id, params }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiEditProduct(id, params)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+
         if (response.status == 200) {
             vue.$store.dispatch('callFetchProducts', { vue })
 
@@ -77,7 +89,10 @@ const actions = {
     },
 
     async callProductDelete({ commit }, { vue, id }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiDeleteProduct(id)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
 
         if (response.status == 200) {
             vue.$store.dispatch('callFetchProducts', { vue })

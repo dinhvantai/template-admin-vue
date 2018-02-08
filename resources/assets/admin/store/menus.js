@@ -59,7 +59,11 @@ const actions = {
     async callMenuAdd({ commit }, { vue, params }) {
         let modalAdd = vue.$store.state.storeAdminMenu.modalAdd
         
-        let response = await callApiAddMenu(params)        
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
+        let response = await callApiAddMenu(params)    
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+    
         if (response.status == 200) {
             commit(ADMIN_MENU_MODAL_ADD, { modalAdd: { ...modalAdd, open: false }})
             vue.$store.dispatch('callFetchMenus', { vue, params })
@@ -79,7 +83,11 @@ const actions = {
     async callMenuEdit({ commit }, { vue, id, params }) {
         let modalEdit = vue.$store.state.storeAdminMenu.modalEdit
 
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })        
         let response = await callApiEditMenu(id, params)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+    
         if (response.status == 200) {
             commit(ADMIN_MENU_MODAL_EDIT, { modalEdit: { ...modalEdit, open:false } })
             vue.$store.dispatch('callFetchMenus', { vue, params })
@@ -97,7 +105,10 @@ const actions = {
     },
 
     async callMenuDelete({ commit }, { vue, id }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })        
         let response = await callApiDeleteMenu(id)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
 
         if (response.status == 200) {
             vue.$store.dispatch('callFetchMenus', { vue })

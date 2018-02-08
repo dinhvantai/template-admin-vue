@@ -40,7 +40,11 @@ const actions = {
     },
 
     async callPostAdd({ commit }, { vue, params }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiAddPost(params)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+
         if (response.status == 200) {
             vue.$store.dispatch('callFetchPosts', { vue })
             
@@ -53,7 +57,11 @@ const actions = {
     },
 
     async callPostShow( { commit }, { vue, id }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiShowPost(id)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+        
         if (response.status == 200) {
             return commit(ADMIN_POST_SET_POST, { post: response.data })
         }
@@ -64,7 +72,11 @@ const actions = {
     },
 
     async callPostEdit({ commit }, { vue, id, params }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiEditPost(id, params)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
+        
         if (response.status == 200) {
             vue.$store.dispatch('callFetchPosts', { vue })
 
@@ -77,7 +89,10 @@ const actions = {
     },
 
     async callPostDelete({ commit }, { vue, id }) {
+        let loading = vue.$store.state.storeLoading.loading
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: true })
         let response = await callApiDeletePost(id)
+        vue.$store.dispatch('setAdminLoading', { ...loading, show: false })
 
         if (response.status == 200) {
             vue.$store.dispatch('callFetchPosts', { vue })
