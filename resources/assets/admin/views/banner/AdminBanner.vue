@@ -45,6 +45,7 @@
                                 :src="`/${data.item.image}`" 
                                 :alt="data.item.name"
                                 style="width: 150px"
+                                v-if="data.item.image"
                             />
                         </template>
                         <template slot="position" slot-scope="data">
