@@ -7,20 +7,25 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Menu;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Extra;
 
 class DataComposer
 {
 	protected $menu;
     protected $category;
+    protected $post;
+    protected $extra;
     
     public function __construct(
     	Menu $menu,
         Category $category,
-        Post $post
+        Post $post,
+        Extra $extra
     ){
         $this->menu = $menu;
         $this->category = $category;
         $this->post = $post;
+        $this->extra = $extra;
     }
     /**
      * Bind data to the view.
@@ -76,6 +81,12 @@ class DataComposer
                 ->take(5)->get();
 
             $view->with('userHotPosts', $posts);
+        }
+
+        if (Schema::hasTable($this->extra->getTable())) {
+            $setups = $this->extra->where('position', Extra::POSITION_MAIN)->first();
+
+            $view->with('userSetups', $setups);
         }
     }
 }
