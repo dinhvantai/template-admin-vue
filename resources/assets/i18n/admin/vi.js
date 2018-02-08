@@ -70,6 +70,9 @@ const vi = {
     textManageBanner: 'Quản lý banner',
     textPleaseUploadImage: 'Vui lòng tải ảnh lên!',
     textEditBanner: 'Sửa banner',
+    show: 'Hiển thị',
+    hidden: 'Ẩn',
+    textInputFilter: 'Tìm kiếm...',
 }
 
 export default vi;

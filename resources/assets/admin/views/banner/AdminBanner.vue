@@ -35,6 +35,11 @@
                         :current-page="currentPage"
                         :per-page="perPage"
                     >
+                        <template slot="status" slot-scope="data">
+                            <b-button size="sm" :variant="data.item.status == 'show' ? 'success' : 'danger'">
+                                {{ $t(data.item.status) }}
+                            </b-button>
+                        </template>
                         <template slot="image" slot-scope="data">
                             <b-img thumbnail 
                                 :src="`/${data.item.image}`" 

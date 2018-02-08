@@ -70,6 +70,9 @@ const en = {
     textManageBanner: 'Manage Banner',
     textPleaseUploadImage: 'Please upload image!',
     textEditBanner: 'Edit Banner',
+    show: 'Show',
+    hidden: 'Hidden',
+    textInputFilter: 'Please input value for filter field!',
 }
 
 export default en;
