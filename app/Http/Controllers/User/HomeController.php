@@ -152,8 +152,10 @@ class HomeController extends Controller
 
         if ($data['product']->category->parentCategory) {
             $parentCategory = $data['product']->category->parentCategory;
+            $data['parentCategory'] = $parentCategory;
             $categoryIds =  $parentCategory->childrenCategories()->pluck('id')->toArray();
         } else {
+            $data['parentCategory'] = $data['product']->category;
             $categories = $data['product']->category->childrenCategories()->pluck('id')->toArray();
             $categoryIds = array_merge([$data['product']->category->id], $categories);
         }
