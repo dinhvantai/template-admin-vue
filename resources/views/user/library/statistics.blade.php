@@ -15,8 +15,8 @@
         <hr>
         <p>
             <span>
-                <img src="/themes/default/images/online/today.png" width="16" height="16" alt="Hôm nay">
-                {{ Visitor::range(Carbon\Carbon::now()->startOfDay(), Carbon\Carbon::now()->endOfDay()) }}
+                <img src="/images/online/today.png" width="16" height="16" alt="Hôm nay">
+                Hôm nay: {{ Visitor::range(Carbon\Carbon::now()->startOfDay(), Carbon\Carbon::now()->endOfDay()) }}
             </span>
         </p>
         <p>
