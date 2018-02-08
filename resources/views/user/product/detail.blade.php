@@ -178,7 +178,7 @@
                 </div>
                 <div id="smoothmenu2" class="ddsmoothmenu-v">
                     <ul class="ul_sub_menu">
-                        @foreach($category->childrenCategories as $children)
+                        @foreach($data['parentCategory']->childrenCategories as $children)
                             <li class="">
                                 <a class="" 
                                     title="{{ $children->name }}" 
