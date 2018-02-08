@@ -43,6 +43,7 @@
                             :src="`/${data.item.image}`" 
                             :alt="data.item.name"
                             style="width: 150px"
+                            v-if="data.item.image"
                         />
                     </template>
                     <template slot="action" slot-scope="data">
@@ -179,13 +180,15 @@
             },
 
             filterItems() {
-                if (!this.valueFilter) {
+                let valueFilter = this.valueFilter.trim();
+
+                if (!valueFilter) {
                     return this.items
                 }
                 
                 return this.items.filter(item => {
                     for (let i in item) {
-                        if (item[i] && String(item[i]).indexOf(this.valueFilter) != -1) return true
+                        if (item[i] && String(item[i]).indexOf(valueFilter) != -1) return true
                     }
 
                     return false;
