@@ -36,6 +36,11 @@
                         :current-page="currentPage"
                         :per-page="perPage"
                     >
+                        <template slot="status" slot-scope="data">
+                            <b-button size="sm" :variant="data.item.status == 'show' ? 'success' : 'danger'">
+                                {{ $t(data.item.status) }}
+                            </b-button>
+                        </template>
                         <template slot="name" slot-scope="data">
                             {{ `${data.item.prefix} ${data.item.name}` }}
                         </template>

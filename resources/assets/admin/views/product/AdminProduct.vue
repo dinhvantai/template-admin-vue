@@ -1,12 +1,20 @@
 <template>
     <b-row>
-        <b-col lg="12">
-            <b-button-group class="pull-right">
-                <b-button variant="success" @click="clickAddNewItem">
-                    <i class="icon-plus"></i>
-                    {{ $t('textAddProduct') }}
-                </b-button>
-            </b-button-group>
+        <b-col sm="12">
+            <b-row>
+                <b-col lg="3"></b-col>
+                <b-col lg="6" class="text-center" style="padding-bottom: 20px">
+                    <b-form-input type="text" :placeholder="$t('textInputFilter')" v-model="valueFilter" />
+                </b-col>
+                <b-col lg="3">
+                    <b-button-group class="pull-right">
+                        <b-button variant="success" @click="clickAddNewItem">
+                            <i class="icon-plus"></i>
+                            {{ $t('textAddProduct') }}
+                        </b-button>
+                    </b-button-group>
+                </b-col>
+            </b-row>
         </b-col>
         <b-col lg="12">
             <b-card>
@@ -14,11 +22,16 @@
                     :hover="hover" :striped="striped"
                     :bordered="bordered" :small="small"
                     :fixed="fixed" class="table-responsive-sm"
-                    :items="items"
+                    :items="filterItems"
                     :fields="fields"
                     :current-page="currentPage"
                     :per-page="perPage"
                 >
+                    <template slot="status" slot-scope="data">
+                        <b-button size="sm" :variant="data.item.status == 'show' ? 'success' : 'danger'">
+                            {{ $t(data.item.status) }}
+                        </b-button>
+                    </template>
                     <template slot="category" slot-scope="data">
                         {{ getCategoryProduct(data.item) }}
                     </template>
@@ -30,6 +43,7 @@
                             :src="`/${data.item.image}`" 
                             :alt="data.item.name"
                             style="width: 150px"
+                            v-if="data.item.image"
                         />
                     </template>
                     <template slot="action" slot-scope="data">
@@ -51,6 +65,16 @@
                         </b-button>
                     </template>
                 </b-table>
+                <nav>
+                    <b-pagination 
+                        :total-rows="filterItems.length" 
+                        :per-page="perPage" 
+                        v-model="currentPage" 
+                        prev-text="< Pre" 
+                        next-text="Next >" 
+                        hide-goto-end-buttons
+                    />
+                </nav>
             </b-card>            
         </b-col>
     </b-row>
@@ -105,7 +129,8 @@ import category from '../../store/category';
                     {key: 'action', label: this.$i18n.t('textAction')},
                 ],
                 currentPage: 1,
-                perPage: 10
+                perPage: 10,
+                valueFilter: '',
             }
         },
 
@@ -153,6 +178,20 @@ import category from '../../store/category';
         computed: {
             loading() {
                 return this.$store.state.storeLoading.loading
+            },
+
+            filterItems() {
+                if (!this.valueFilter) {
+                    return this.items
+                }
+                
+                return this.items.filter(item => {
+                    for (let i in item) {
+                        if (item[i] && String(item[i]).indexOf(this.valueFilter) != -1) return true
+                    }
+
+                    return false;
+                })
             },
 
             items() {
