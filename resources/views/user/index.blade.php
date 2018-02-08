@@ -1,8 +1,15 @@
 @extends('user.layout')
 
-@section('userTitle', 'Trang chủ')
-@section('seoDescription', 'Trang chủ')
-@section('seoKeyword', 'Trang chủ')
+@php
+    $options = '';
+    if($userSetups) {
+        $options = json_decode($userSetups->option, true);
+    }
+@endphp
+
+@section('userTitle', $options ? $options['title'] : 'Trang chủ')
+@section('seoDescription', $userSetups ? $userSetups->seo_description : 'Trang chủ')
+@section('seoKeyword',  $userSetups ? $userSetups->seo_keyword : 'Trang chủ')
 
 @section('content')
     <div class="contentwrapper background">

@@ -1,13 +1,26 @@
+@php
+    $options = '';
+    if($userSetups) {
+        $options = json_decode($userSetups->option, true);
+    }
+@endphp
+
 <div id="header">
     <div id="logo">
         <a title="" href="/">
-            <img src="/images/icons/logo.png" alt="Camera289">
+            @if ($options && $options['logo'])
+                <img src="{{ Croppa::url('/' . $options['logo'], null, 76, array('resize')) }}" alt="Camera289">
+            @else
+                <img src="/images/icons/logo.png" alt="Camera289">
+            @endif
         </a>
     </div>
     <div class="searchfield">
-        <form action="/search" method="get" id="skypeSearchForm">
+        <form action="{{ route('user.search') }}" method="get" id="skypeSearchForm">
             <div class="typesearch">
-                <input class="typeKey" title="Tìm kiếm" type="text" name="q" id="topmenu_search_query" maxlength="60" placeholder="Nhập tên sản phẩm hoặc từ khóa tìm kiếm...">
+                <input class="typeKey" title="Tìm kiếm" type="text" name="key"
+                    maxlength="60" placeholder="Nhập tên sản phẩm hoặc từ khóa tìm kiếm..."
+                >
             </div>
             <input type="submit" value="" class="btnSearch">
         </form>

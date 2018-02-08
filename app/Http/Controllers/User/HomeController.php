@@ -97,6 +97,21 @@ class HomeController extends Controller
         return redirect('/');
     }
 
+    public function search(Request $request) {
+        $key = $request->key;
+
+        $products = Product::where('status', Product::STATUS_SHOW)                
+                ->where('name', 'like', "%{$key}%")
+                ->where('description', 'like', "%{$key}%")
+                ->where('detail', 'like', "%{$key}%")
+                ->where('guide', 'like', "%{$key}%")
+                ->where('guide', 'like', "%{$key}%")
+                ->orderBy('prioty', 'desc')->orderBy('id', 'desc')
+                ->paginate(10);
+
+        return view('user.search.search', compact('products'));
+    }
+
     public function categoryChildren($parent, $children)
     {
         $categoryParent = Category::with('childrenCategories')

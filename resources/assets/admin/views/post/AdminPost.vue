@@ -180,15 +180,15 @@
             },
 
             filterItems() {
-                let valueFilter = this.valueFilter.trim();
+                let valueFilter = this.valueFilter.trim().toLowerCase();
 
                 if (!valueFilter) {
                     return this.items
                 }
-                
+
                 return this.items.filter(item => {
                     for (let i in item) {
-                        if (item[i] && String(item[i]).indexOf(valueFilter) != -1) return true
+                        if (String(item[i]).toLowerCase().indexOf(valueFilter) !== -1) return true
                     }
 
                     return false;
