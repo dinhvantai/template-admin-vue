@@ -161,8 +161,10 @@
                                 </div>
                             </div>
                         </div>
+                        @if ($loop->index % 3 === 0)
+                            <div style="clear:both"></div>
+                        @endif
                     @endforeach
-                    <div style="clear:both"></div>
                 </div>
             </div>
         </div>
