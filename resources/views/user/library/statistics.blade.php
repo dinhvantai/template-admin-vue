@@ -7,37 +7,29 @@
     <div class="content online">
         <p>
             <span>
-                {{--  <img src="/themes/default/images/online/users.png" width="16" height="16" alt="Đang truy cập">  --}}
+                <img src="/images/online/users.png" width="16" height="16" alt="Đang truy cập">
             </span>
-            <span>Đang truy cập : 15
+            <span>Đang truy cập : {{ Visitor::count() }}
             </span>
-        </p>
-        <p>
-            <span class="item">
-                <strong>•</strong>Máy chủ tìm kiếm : 1</span>
-        </p>
-        <p>
-            <span class="item">
-                <strong>•</strong>Khách viếng thăm : 14</span>
         </p>
         <hr>
         <p>
             <span>
-                {{--  <img src="/themes/default/images/online/today.png" width="16" height="16" alt="Hôm nay">  --}}
-                Hôm nay : 907
+                <img src="/themes/default/images/online/today.png" width="16" height="16" alt="Hôm nay">
+                {{ Visitor::range(Carbon\Carbon::now()->startOfDay(), Carbon\Carbon::now()->endOfDay()) }}
             </span>
         </p>
         <p>
             <span>
-                {{--  <img src="/themes/default/images/online/month.png" width="16" height="16" alt="Tháng hiện tại">  --}}
-                Tháng hiện tại : 10774
+                <img src="/images/online/month.png" width="16" height="16" alt="Tháng hiện tại">
+                Tháng hiện tại : {{ Visitor::range(Carbon\Carbon::now()->startOfMonth(), Carbon\Carbon::now()->endOfMonth()) }}
             </span>
         </p>
         <p>
             <span>
-                {{--  <img src="/themes/default/images/online/hits.png" width="16" height="16" alt="Tổng lượt truy cập">  --}}
+                <img src="/images/online/hits.png" width="16" height="16" alt="Tổng lượt truy cập">
                 Tổng lượt truy cập :
-                <strong>5717519</strong>
+                <strong>{{ Visitor::clicks() }}</strong>
             </span>
         </p>
     </div>

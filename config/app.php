@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerProvider::class,
         Bkwld\Croppa\ServiceProvider::class,
+        Weboap\Visitor\VisitorServiceProvider::class
 
     ],
 
@@ -228,7 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Croppa' => Bkwld\Croppa\Facade::class,
-
+        
     ],
 
 ];
