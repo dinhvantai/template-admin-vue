@@ -49,7 +49,7 @@
                                 <b-form-input 
                                     type="text" 
                                     :placeholder="$t('textGuarantee')" 
-                                    v-model.number="formData.guarantee" 
+                                    v-model="formData.guarantee" 
                                 />
                             </b-form-fieldset>
                         </b-col>
