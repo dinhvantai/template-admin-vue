@@ -28,9 +28,10 @@
                     :key="option.value"
                 >
                     <b-table
-                        :hover="hover" :striped="striped"
-                        :bordered="bordered" :small="small"
-                        :fixed="fixed" class="table-responsive-sm"
+                        class="mb-0 table-outline text-center"                    
+                        head-variant="light"
+                        :hover="true" :striped="false"
+                        :bordered="true" :fixed="true" 
                         :items="getItemFilter(option.value)"
                         :fields="fields"
                         :current-page="currentPage"
@@ -78,28 +79,6 @@
     export default {
         name: 'AdminMenu',
         components: { AdminMenuAdd, AdminMenuEdit },
-        props: {
-            hover: {
-                type: Boolean,
-                default: false
-            },
-            striped: {
-                type: Boolean,
-                default: false
-            },
-            bordered: {
-                type: Boolean,
-                default: false
-            },
-            small: {
-                type: Boolean,
-                default: false
-            },
-            fixed: {
-                type: Boolean,
-                default: false
-            },
-        },
 
         beforeCreate() {
             Helper.changeTitleAdminPage(this.$i18n.t('textManageMenu'))
@@ -109,8 +88,8 @@
         data() {
             return {
                 fields: [
-                    {key: 'name', label: this.$i18n.t('textName')},
-                    {key: 'path', label: this.$i18n.t('textLink')},
+                    {key: 'name', label: this.$i18n.t('textName'), tdClass: ' text-left'},
+                    {key: 'path', label: this.$i18n.t('textLink'), tdClass: ' text-left'},
                     {key: 'prioty', label: this.$i18n.t('textPrioty')},
                     {key: 'action', label: this.$i18n.t('textAction')},
                 ],

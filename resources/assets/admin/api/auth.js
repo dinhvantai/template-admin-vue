@@ -9,3 +9,9 @@ export function callApiLogout() {
         .then(response => response)
         .catch(error => error)
 }
+
+export function callApiChangePassword(params) {
+    return axios.put('/change-password', params)
+        .then(response => response)
+        .catch(error => error)
+}

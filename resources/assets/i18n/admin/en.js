@@ -73,6 +73,11 @@ const en = {
     show: 'Show',
     hidden: 'Hidden',
     textInputFilter: 'Please input value for filter field!',
+    textChangePassword: 'Change password',
+    textOldPassword: 'Old password',
+    textNewPassword: 'New password',
+    textConfirmPassword: 'Confirm password',
+    textConfirmPasswordNotCorrect: 'Please enter the same password above',
 }
 
 export default en;

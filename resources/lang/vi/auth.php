@@ -20,4 +20,6 @@ return [
         'warning' => 'Bạn không đăng nhập hoặc token đã hết hạn!',
     ],
     'not_permission' => 'Bạn không có quyền truy cập!',
+    'old_pass_incorrect' => 'Mật khẩu cũ không đúng!',
+    'change_pass_sucess' => 'Đổi mật khẩu thành công!',
 ];

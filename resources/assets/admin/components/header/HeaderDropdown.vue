@@ -27,7 +27,9 @@ export default {
             })
 
             if (willDelete) {
+                this.$store.dispatch('setAdminLoading', { ...this.loading, show: true })
                 await callApiLogout()
+                this.$store.dispatch('setAdminLoading', { ...this.loading, show: false })
 
                 let defaultAuth = JSON.stringify({ user: {}, token: {} })
                 localStorage.setItem(STORAGE_AUTH, defaultAuth)
