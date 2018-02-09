@@ -73,6 +73,11 @@ const vi = {
     show: 'Hiển thị',
     hidden: 'Ẩn',
     textInputFilter: 'Tìm kiếm...',
+    textChangePassword: 'Đổi mật khẩu',
+    textOldPassword: 'Mật khẩu cũ',
+    textNewPassword: 'Mật khẩu mới',
+    textConfirmPassword: 'Nhập lại mật khẩu',
+    textConfirmPasswordNotCorrect: 'Vui lòng nhập giống mật khẩu ở trên',
 }
 
 export default vi;

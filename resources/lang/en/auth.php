@@ -20,4 +20,6 @@ return [
         'warning' => "You don't login or access token expired!",
     ],
     'not_permission' => 'Do not have access to this resource!',
+    'old_pass_incorrect' => 'Old password not correct!',
+    'change_pass_sucess' => 'Change password successfully!',
 ];

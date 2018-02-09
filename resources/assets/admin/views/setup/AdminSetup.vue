@@ -231,7 +231,9 @@ export default {
         async clickSubmitEdit() {
             let params = this.convertDataSubmit();
 
+            this.$store.dispatch('setAdminLoading', { ...this.loading, show: true })
             let response = await axios.put('/setups', params)
+            this.$store.dispatch('setAdminLoading', { ...this.loading, show: false })
 
             if (response.status == 200) {
                 this.$toaster.success(response.data.message);

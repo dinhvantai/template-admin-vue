@@ -34,6 +34,8 @@ Route::group(['domain' => env('DOMAIN_ADMIN'), 'namespace' => 'Api\Admin', 'pref
 
         Route::get('setups', 'ExtraController@getSetup');
         Route::put('setups', 'ExtraController@putSetup');
+
+        Route::put('change-password', 'UserController@changePassword');
     });
 });
 

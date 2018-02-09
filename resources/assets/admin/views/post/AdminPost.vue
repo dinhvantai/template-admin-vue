@@ -19,9 +19,10 @@
         <b-col lg="12">
             <b-card>
                 <b-table
-                    :hover="hover" :striped="striped"
-                    :bordered="bordered" :small="small"
-                    :fixed="fixed" class="table-responsive-sm"
+                    class="mb-0 table-outline text-center"                
+                    head-variant="light"
+                    :hover="true" :striped="false"
+                    :bordered="true" :fixed="true" 
                     :items="filterItems"
                     :fields="fields"
                     :current-page="currentPage"
@@ -87,28 +88,6 @@
 
     export default {
         name: 'AdminPost',
-        props: {
-            hover: {
-                type: Boolean,
-                default: false
-            },
-            striped: {
-                type: Boolean,
-                default: false
-            },
-            bordered: {
-                type: Boolean,
-                default: false
-            },
-            small: {
-                type: Boolean,
-                default: false
-            },
-            fixed: {
-                type: Boolean,
-                default: false
-            },
-        },
 
         beforeCreate() {
             Helper.changeTitleAdminPage(this.$i18n.t('textManagePost'))
@@ -118,12 +97,12 @@
         data() {
             return {
                 fields: [
-                    {key: 'id'},
-                    {key: 'name', label: this.$i18n.t('textName')},
-                    {key: 'category', label: this.$i18n.t('textCategory')},
-                    {key: 'link', label: this.$i18n.t('textLink')},
+                    {key: 'id', sortable: true},
+                    {key: 'name', label: this.$i18n.t('textName'), tdClass: 'text-left'},
+                    {key: 'category', label: this.$i18n.t('textCategory'), tdClass: 'text-left'},
+                    {key: 'link', label: this.$i18n.t('textLink'), tdClass: 'text-left'},
                     {key: 'image', label: this.$i18n.t('textImage')},
-                    {key: 'prioty', label: this.$i18n.t('textPrioty')},
+                    {key: 'prioty', label: this.$i18n.t('textPrioty'), sortable: true},
                     {key: 'status', label: this.$i18n.t('textStatus')},
                     {key: 'action', label: this.$i18n.t('textAction')},
                 ],

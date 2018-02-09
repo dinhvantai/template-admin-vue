@@ -1,7 +1,11 @@
 <template>
     <div>
-        <div class="indicator" v-show="loading.show">
+        <!-- <div class="indicator" v-show="loading.show">
             <div class="spinner"></div>
+        </div> -->
+        <div class="splash-screen" v-show="loading.show">
+            <div class="splash-overlay" v-show="loading.show"></div>
+            <div class="splash-spinner"></div>
         </div>
         
         <router-view></router-view>
