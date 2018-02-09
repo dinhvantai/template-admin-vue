@@ -142,7 +142,9 @@ export default {
     },
 
     async mounted() {
-        let response = await axios.get('/setups');
+        this.$store.dispatch('setAdminLoading', { ...this.loading, show: true })
+        let response = await axios.get('/setups')
+        this.$store.dispatch('setAdminLoading', { ...this.loading, show: false })
 
         if (response.status == 200) {
             let formData = response.data;
