@@ -9,7 +9,7 @@
                     {{ $t('textChangePassword') }}
                 </b-btn>
             </b-card-header>
-            <b-collapse id="admin-change-password" accordion="my-accordion" role="tabpanel">
+            <b-collapse visible id="admin-change-password" accordion="my-accordion" role="tabpanel">
                 <b-card-body>
                     <b-form validated>
                         <b-row>
@@ -126,7 +126,7 @@ export default {
 
             if (response.status == 200) {
                 this.formData = this.resetFormData()
-                
+
                 return this.$toaster.success(response.data.message)
             } else {
                 let errors = response.response.data.errors || {}
